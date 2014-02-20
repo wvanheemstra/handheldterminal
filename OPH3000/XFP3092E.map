@@ -51,7 +51,7 @@ LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02\libgcc.a
  APP_INFO       0x06000010       0x26 startup.o
                 0x06000036                __cs_end = .
 
-PROGRAM         0x06000036    0x29352
+PROGRAM         0x06000036    0x2934e
                 0x06000036                __text = .
  *(APP_START)
  APP_START      0x06000036      0x8c3 startup.o
@@ -503,7 +503,7 @@ PROGRAM         0x06000036    0x29352
                 0x06000a0b                _set_barcodes
                 0x06000d63                _diplay_input_data
                 0x06000e06                _store_input_data
-                0x06000f5d                _string_quantity_to_long
+                0x06000f5d                _string_wearer_to_long
                 0x06001009                _fill_record_struct
                 0x06001092                _FindBarcodeInDatabase
                 0x06001114                _ScanLabels
@@ -587,7 +587,7 @@ PROGRAM         0x06000036    0x29352
  *(C_2)
  *(C)
  *fill*         0x0600529a        0x2 00
- C              0x0600529c     0x7e90 obj/demo.o
+ C              0x0600529c     0x7e8c obj/demo.o
                 0x0600529c                __scan
                 0x0600549e                __scroll
                 0x060056a0                __tools
@@ -608,30 +608,30 @@ PROGRAM         0x06000036    0x29352
                 0x060074be                __fonts
                 0x060076c0                __vga_15_32
                 0x0600b2c4                _logo_pix
- C              0x0600d12c       0x18 obj/input.o
- C              0x0600d144       0x80 obj/menu.o
- C              0x0600d1c4    0x1c1c4 obj/oph1005_pic.o
-                0x0600d1c4                __barcode_pic
-                0x0600fd5d                __folder_fonts_pic
-                0x06011f9e                __info_pic
-                0x06013a1a                __open_file_pic
-                0x06015119                __recycle_pic
-                0x06017c47                __setting_pic
-                0x060192a3                __wireless_pic
-                0x0601b0e3                __exit_pic
-                0x0601c79c                __com_port_pic
-                0x0601d85e                __memory_pic
-                0x0601f0cd                __protocol_pic
-                0x06020594                __checked
-                0x06022168                __uncheck
-                0x06023a15                __data_bits_pic
-                0x06024c17                __stop_bits_pic
-                0x06025f13                __parity_pic
-                0x0602717b                __baudrate_pic
-                0x06029388                __etext = .
-                0x06029388                . = ALIGN (0x4)
+ C              0x0600d128       0x18 obj/input.o
+ C              0x0600d140       0x80 obj/menu.o
+ C              0x0600d1c0    0x1c1c4 obj/oph1005_pic.o
+                0x0600d1c0                __barcode_pic
+                0x0600fd59                __folder_fonts_pic
+                0x06011f9a                __info_pic
+                0x06013a16                __open_file_pic
+                0x06015115                __recycle_pic
+                0x06017c43                __setting_pic
+                0x0601929f                __wireless_pic
+                0x0601b0df                __exit_pic
+                0x0601c798                __com_port_pic
+                0x0601d85a                __memory_pic
+                0x0601f0c9                __protocol_pic
+                0x06020590                __checked
+                0x06022164                __uncheck
+                0x06023a11                __data_bits_pic
+                0x06024c13                __stop_bits_pic
+                0x06025f0f                __parity_pic
+                0x06027177                __baudrate_pic
+                0x06029384                __etext = .
+                0x06029384                . = ALIGN (0x4)
 
-.data           0x04000000      0x42c load address 0x06029388
+.data           0x04000000      0x42c load address 0x06029384
                 0x04000000                __data = .
  *(.data)
  *(.data.*)
@@ -657,7 +657,7 @@ PROGRAM         0x06000036    0x29352
  *(D_2)
                 0x0400042c                __edata = .
 
-.bss            0x0400042c      0x528 load address 0x060297b4
+.bss            0x0400042c      0x528 load address 0x060297b0
                 0x0400042c                __bss = .
  *(.bss)
  *(.bss.*)
@@ -685,7 +685,7 @@ PROGRAM         0x06000036    0x29352
  B_1            0x04000954        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
  *(B_2)
                 0x04000954                __ebss = .
-OUTPUT(XFP3092F.elf elf32-rx-le)
+OUTPUT(XFP3092E.elf elf32-rx-le)
 
 .debug_frame    0x00000000      0xf1c
  .debug_frame   0x00000000      0x504 obj/demo.o
@@ -742,18 +742,18 @@ OUTPUT(XFP3092F.elf elf32-rx-le)
  .debug_line    0x00001058       0x36 obj/app_version.o
  .debug_line    0x0000108e      0x200 startup.o
 
-.debug_str      0x00000000     0x1082
- .debug_str     0x00000000      0x951 obj/demo.o
-                                0xa25 (size before relaxing)
- .debug_str     0x00000951      0x26e obj/database.o
+.debug_str      0x00000000     0x1085
+ .debug_str     0x00000000      0x954 obj/demo.o
+                                0xa20 (size before relaxing)
+ .debug_str     0x00000954      0x26e obj/database.o
                                 0x39b (size before relaxing)
- .debug_str     0x00000bbf      0x1d7 obj/input.o
+ .debug_str     0x00000bc2      0x1d7 obj/input.o
                                 0x677 (size before relaxing)
- .debug_str     0x00000d96      0x2b4 obj/menu.o
+ .debug_str     0x00000d99      0x2b4 obj/menu.o
                                 0x7c7 (size before relaxing)
- .debug_str     0x0000104a       0x16 obj/oph1005_pic.o
+ .debug_str     0x0000104d       0x16 obj/oph1005_pic.o
                                 0x153 (size before relaxing)
- .debug_str     0x00001060       0x22 obj/app_version.o
+ .debug_str     0x00001063       0x22 obj/app_version.o
                                  0x67 (size before relaxing)
 
 .comment        0x00000000       0x1c
@@ -1329,7 +1329,7 @@ strcspn                                           startup.o
 strdup                                            startup.o
 strerror                                          startup.o
 strftime                                          startup.o
-string_quantity_to_long                           obj/demo.o
+string_wearer_to_long                             obj/demo.o
 strlcat                                           startup.o
 strlcpy                                           startup.o
 strlen                                            startup.o

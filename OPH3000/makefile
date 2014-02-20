@@ -12,7 +12,7 @@
 VERSION=
 
 # The final output file we want to create. The extension is always .hex and this should not be added to the name here.
-TARGET = XFP3092F
+TARGET = XFP3092E
 
 # C source files. List all the c-files here and add ".c" to the filename
 CSRC = demo.c database.c input.c menu.c oph1005_pic.c
