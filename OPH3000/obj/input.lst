@@ -1,0 +1,2469 @@
+   1                             		.file	"input.c"
+   2                             		.section P,"ax"
+   3                             	.Ltext0:
+   5                             	_keybeep:
+   6                             	.LFB0:
+   7                             		.file 1 "SOURCES/input.c"
+   1:SOURCES/input.c **** //
+   2:SOURCES/input.c **** // input.c
+   3:SOURCES/input.c **** //
+   4:SOURCES/input.c **** // implementation of the input functions
+   5:SOURCES/input.c **** //
+   6:SOURCES/input.c **** // Martin Jansen
+   7:SOURCES/input.c **** //
+   8:SOURCES/input.c **** // KeyboardInput function is based on the get_string() function from
+   9:SOURCES/input.c **** // Oscar Jacobse
+  10:SOURCES/input.c **** //
+  11:SOURCES/input.c **** // For questions:
+  12:SOURCES/input.c **** // email:	support@opticon.com
+  13:SOURCES/input.c **** // web:		www.opticon.com
+  14:SOURCES/input.c **** //
+  15:SOURCES/input.c **** //
+  16:SOURCES/input.c **** // 03/06/2005: 	Bug fix in display_input() function, cursor position was
+  17:SOURCES/input.c **** //				not correctly calculated.
+  18:SOURCES/input.c **** //
+  19:SOURCES/input.c **** // 08/06/2005: 	Added function ScanBarcodeSymbol(), ScanOrKeyboardInputSymbol(), 
+  20:SOURCES/input.c **** //				Added INPUT_PRINT define (all printable characters)
+  21:SOURCES/input.c **** //				Added Automatic cursor on when selecting Keyboard input
+  22:SOURCES/input.c **** //				Automatic setecho(ON) and setecho(OFF) keyboardinput with INPUT_ALPHA or NPUT_PRINT
+  23:SOURCES/input.c **** //				Changed display_input function to indicate difference between full string and max display_len
+  24:SOURCES/input.c **** //
+  25:SOURCES/input.c **** // 20/06/2005: 	Added KeyboardNumeric function for input a whole numeric values displaying is done 
+  26:SOURCES/input.c **** //				left to right to give numeric input a more natural feeling
+  27:SOURCES/input.c **** //
+  28:SOURCES/input.c **** 
+  29:SOURCES/input.c **** #include <stdio.h>
+  30:SOURCES/input.c **** #include <stdlib.h>
+  31:SOURCES/input.c **** #include <stdarg.h> // needed for va_xxxx
+  32:SOURCES/input.c **** #include <ctype.h>
+  33:SOURCES/input.c **** #include <string.h>
+  34:SOURCES/input.c **** 
+  35:SOURCES/input.c **** #include "input.h"
+  36:SOURCES/input.c **** #include "lib.h"
+  37:SOURCES/input.c **** 
+  38:SOURCES/input.c **** 
+  39:SOURCES/input.c **** 
+  40:SOURCES/input.c **** static void keybeep( void )
+  41:SOURCES/input.c **** {
+   8                             		.loc 1 41 0
+   9 0000 7E A6                   		push.l	r6
+  10                             	.LCFI0:
+  11 0002 EF 06                   		mov.L	r0, r6
+  12                             	.LCFI1:
+  13 0004 60 C0                   		sub	#12, r0
+  42:SOURCES/input.c **** 	sound( TSHORT, VMEDIUM, SHIGH, 0);
+  14                             		.loc 1 42 0
+  15 0006 3E 00 20                		mov.L	#32, [r0]
+  16 0009 F9 0A 01 AC 0D          		mov.L	#0xdac, 4[r0]
+  17 000e 3E 02 00                		mov.L	#0, 8[r0]
+  18 0011 66 31                   		mov.L	#3, r1
+  19 0013 05 00 00 00             		bsr	_sound
+  43:SOURCES/input.c **** }
+  20                             		.loc 1 43 0
+  21 0017 3F 66 04                		rtsd	#16, r6-r6
+  22                             	.LFE0:
+  25                             	_okbeep:
+  26                             	.LFB1:
+  44:SOURCES/input.c **** 
+  45:SOURCES/input.c **** static void okbeep( void )
+  46:SOURCES/input.c **** {
+  27                             		.loc 1 46 0
+  28 001a 7E A6                   		push.l	r6
+  29                             	.LCFI2:
+  30 001c EF 06                   		mov.L	r0, r6
+  31                             	.LCFI3:
+  32 001e 71 00 EC                		add	#-20, r0
+  47:SOURCES/input.c **** 	sound( TSTANDARD, VMEDIUM, SHIGH, SMEDIUM, SHIGH, 0);
+  33                             		.loc 1 47 0
+  34 0021 3E 00 20                		mov.L	#32, [r0]
+  35 0024 F9 0A 01 AC 0D          		mov.L	#0xdac, 4[r0]
+  36 0029 F9 0A 02 C4 09          		mov.L	#0x9c4, 8[r0]
+  37 002e F9 0A 03 AC 0D          		mov.L	#0xdac, 12[r0]
+  38 0033 3E 04 00                		mov.L	#0, 16[r0]
+  39 0036 66 51                   		mov.L	#5, r1
+  40 0038 05 00 00 00             		bsr	_sound
+  48:SOURCES/input.c **** }
+  41                             		.loc 1 48 0
+  42 003c 3F 66 06                		rtsd	#24, r6-r6
+  43                             	.LFE1:
+  45                             		.global	_WaitForKey
+  47                             	_WaitForKey:
+  48                             	.LFB2:
+  49:SOURCES/input.c **** 
+  50:SOURCES/input.c **** //
+  51:SOURCES/input.c **** // Wait for keyboard input, when key is pressed
+  52:SOURCES/input.c **** // return the key.
+  53:SOURCES/input.c **** //
+  54:SOURCES/input.c **** int WaitForKey( void )
+  55:SOURCES/input.c **** {
+  49                             		.loc 1 55 0
+  50 003f 6E 6C                   		pushm	r6-r12
+  51                             	.LCFI4:
+  52 0041 71 06 FC                		add	#-4, r0, r6
+  53                             	.LCFI5:
+  54 0044 EF 60                   		mov.L	r6, r0
+  55                             	.LCFI6:
+  56:SOURCES/input.c **** 	int c;
+  57:SOURCES/input.c **** 
+  58:SOURCES/input.c **** 	while( ( c = getchar()) == EOF)
+  56                             		.loc 1 58 0
+  57 0046 0E                      		bra	.L4
+  58                             	.L7:
+  59:SOURCES/input.c **** 		idle(); // idle for powersaving
+  59                             		.loc 1 59 0
+  60 0047 05 00 00 00             		bsr	_idle
+  61 004b 03                      		.balign 2,3,5
+  62                             	.L4:
+  58:SOURCES/input.c **** 	while( ( c = getchar()) == EOF)
+  63                             		.loc 1 58 0 discriminator 1
+  64 004c FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+  65 0052 EC AA                   		mov.L	[r10], r10
+  66 0054 ED AA 01                		mov.L	4[r10], r10
+  67 0057 ED AB 01                		mov.L	4[r10], r11
+  68 005a 60 1B                   		sub	#1, r11
+  69 005c E7 AB 01                		mov.L	r11, 4[r10]
+  70 005f ED AA 01                		mov.L	4[r10], r10
+  71 0062 61 0A                   		cmp	#0, r10
+  72 0064 28 21                   		bge	.L5
+  73 0066 FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+  74 006c EC AB                   		mov.L	[r10], r11
+  75 006e FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+  76 0074 EC AA                   		mov.L	[r10], r10
+  77 0076 ED AA 01                		mov.L	4[r10], r10
+  78 0079 EF B1                   		mov.L	r11, r1
+  79 007b EF A2                   		mov.L	r10, r2
+  80 007d 05 00 00 00             		bsr	___srget_r
+  81 0081 EF 1C                   		mov.L	r1, r12
+  82 0083 2E 17                   		bra	.L6
+  83                             	.L5:
+  58:SOURCES/input.c **** 	while( ( c = getchar()) == EOF)
+  84                             		.loc 1 58 0 is_stmt 0 discriminator 2
+  85 0085 FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+  86 008b EC AA                   		mov.L	[r10], r10
+  87 008d ED AA 01                		mov.L	4[r10], r10
+  88 0090 EC AB                   		mov.L	[r10], r11
+  89 0092 CC BC                   		mov.B	[r11], r12
+  90 0094 5B CC                   		movu.B	r12, r12
+  91 0096 62 1B                   		add	#1, r11
+  92 0098 E3 AB                   		mov.L	r11, [r10]
+  93                             		.balign 2,3,1
+  94                             	.L6:
+  58:SOURCES/input.c **** 	while( ( c = getchar()) == EOF)
+  95                             		.loc 1 58 0 discriminator 3
+  96 009a E3 6C                   		mov.L	r12, [r6]
+  97 009c EC 6A                   		mov.L	[r6], r10
+  98 009e 75 0A FF                		cmp	#-1, r10
+  99 00a1 20 A6                   		beq	.L7
+  60:SOURCES/input.c **** 	keybeep();  // make the beeping sound
+ 100                             		.loc 1 60 0 is_stmt 1
+ 101 00a3 39 5D FF                		bsr	_keybeep
+  61:SOURCES/input.c **** 	return c;
+ 102                             		.loc 1 61 0
+ 103 00a6 EC 6A                   		mov.L	[r6], r10
+  62:SOURCES/input.c **** }
+ 104                             		.loc 1 62 0
+ 105 00a8 EF A1                   		mov.L	r10, r1
+ 106 00aa 3F 6C 08                		rtsd	#32, r6-r12
+ 107                             	.LFE2:
+ 110                             	_check_key_input:
+ 111                             	.LFB3:
+  63:SOURCES/input.c **** 
+  64:SOURCES/input.c **** //
+  65:SOURCES/input.c **** // Check if the pressed key is found in the list
+  66:SOURCES/input.c **** // made static so it won't show up in the map file
+  67:SOURCES/input.c **** static int check_key_input( int key, int num, va_list key_list )
+  68:SOURCES/input.c **** {
+ 112                             		.loc 1 68 0
+ 113 00ad 6E 6B                   		pushm	r6-r11
+ 114                             	.LCFI7:
+ 115 00af 71 06 F0                		add	#-16, r0, r6
+ 116                             	.LCFI8:
+ 117 00b2 EF 60                   		mov.L	r6, r0
+ 118                             	.LCFI9:
+ 119 00b4 A0 69                   		mov.L	r1, 4[r6]
+ 120 00b6 A0 E2                   		mov.L	r2, 8[r6]
+ 121 00b8 A0 EB                   		mov.L	r3, 12[r6]
+  69:SOURCES/input.c **** 	int count;
+  70:SOURCES/input.c **** 
+  71:SOURCES/input.c **** 	for( count = 0; count < num; count++ )
+ 122                             		.loc 1 71 0
+ 123 00ba 3E 60 00                		mov.L	#0, [r6]
+ 124 00bd 2E 23                   		bra	.L10
+ 125                             	.L13:
+  72:SOURCES/input.c **** 	{
+  73:SOURCES/input.c **** 		if( (int) va_arg( key_list, int ) == key )
+ 126                             		.loc 1 73 0
+ 127 00bf ED 6A 03                		mov.L	12[r6], r10
+ 128 00c2 62 3A                   		add	#3, r10
+ 129 00c4 75 2A FC                		and	#-4, r10
+ 130 00c7 71 AB 04                		add	#4, r10, r11
+ 131 00ca E7 6B 03                		mov.L	r11, 12[r6]
+ 132 00cd EC AB                   		mov.L	[r10], r11
+ 133 00cf ED 6A 01                		mov.L	4[r6], r10
+ 134 00d2 47 AB                   		cmp	r10, r11
+ 135 00d4 1D                      		bne	.L11
+  74:SOURCES/input.c **** 		{
+  75:SOURCES/input.c **** 			va_end( key_list ); // reset the argument ptr
+  76:SOURCES/input.c **** 			return( OK );
+ 136                             		.loc 1 76 0
+ 137 00d5 66 0A                   		mov.L	#0, r10
+ 138 00d7 2E 15                   		bra	.L12
+ 139                             	.L11:
+  71:SOURCES/input.c **** 	for( count = 0; count < num; count++ )
+ 140                             		.loc 1 71 0
+ 141 00d9 EC 6A                   		mov.L	[r6], r10
+ 142 00db 62 1A                   		add	#1, r10
+ 143 00dd E3 6A                   		mov.L	r10, [r6]
+ 144 00df 03                      		.balign 2,3,1
+ 145                             	.L10:
+  71:SOURCES/input.c **** 	for( count = 0; count < num; count++ )
+ 146                             		.loc 1 71 0 is_stmt 0 discriminator 1
+ 147 00e0 EC 6B                   		mov.L	[r6], r11
+ 148 00e2 ED 6A 02                		mov.L	8[r6], r10
+ 149 00e5 47 AB                   		cmp	r10, r11
+ 150 00e7 29 D8                   		blt	.L13
+  77:SOURCES/input.c **** 		}
+  78:SOURCES/input.c **** 	}
+  79:SOURCES/input.c **** 	va_end( key_list );
+  80:SOURCES/input.c **** 
+  81:SOURCES/input.c **** 	return( ERROR );
+ 151                             		.loc 1 81 0 is_stmt 1
+ 152 00e9 FB A6 FF                		mov.L	#-1, r10
+ 153                             		.balign 2,3,1
+ 154                             	.L12:
+  82:SOURCES/input.c **** }
+ 155                             		.loc 1 82 0
+ 156 00ec EF A1                   		mov.L	r10, r1
+ 157 00ee 3F 6B 0A                		rtsd	#40, r6-r11
+ 158                             	.LFE3:
+ 160                             		.global	_WaitForKeys
+ 162                             	_WaitForKeys:
+ 163                             	.LFB4:
+  83:SOURCES/input.c **** 
+  84:SOURCES/input.c **** //
+  85:SOURCES/input.c **** // Wait for one of the specific keys in the list
+  86:SOURCES/input.c **** // If key is found in the list return the key
+  87:SOURCES/input.c **** //
+  88:SOURCES/input.c **** int WaitForKeys( int num, ... )
+  89:SOURCES/input.c **** {
+ 164                             		.loc 1 89 0
+ 165 00f1 6E 6B                   		pushm	r6-r11
+ 166                             	.LCFI10:
+ 167 00f3 71 06 F4                		add	#-12, r0, r6
+ 168                             	.LCFI11:
+ 169 00f6 EF 60                   		mov.L	r6, r0
+ 170                             	.LCFI12:
+ 171 00f8 75 4A 28                		mov.L	#40, r10
+ 172 00fb 4B 6A                   		add	r6, r10
+  90:SOURCES/input.c **** 	va_list key_list;
+  91:SOURCES/input.c **** 	int key;
+  92:SOURCES/input.c **** 
+  93:SOURCES/input.c **** 	if( num <= 0 )
+ 173                             		.loc 1 93 0
+ 174 00fd EC AB                   		mov.L	[r10], r11
+ 175 00ff 61 0B                   		cmp	#0, r11
+ 176 0101 2A 07                   		bgt	.L15
+  94:SOURCES/input.c **** 		return( EOF ); // No keys in the list
+ 177                             		.loc 1 94 0
+ 178 0103 FB A6 FF                		mov.L	#-1, r10
+ 179 0106 2E 2A                   		bra	.L19
+ 180                             	.L15:
+  95:SOURCES/input.c **** 	va_start( key_list, num );
+ 181                             		.loc 1 95 0
+ 182 0108 71 AB 04                		add	#4, r10, r11
+ 183 010b E7 6B 01                		mov.L	r11, 4[r6]
+  96:SOURCES/input.c **** 	resetkey();
+ 184                             		.loc 1 96 0
+ 185 010e 05 00 00 00             		bsr	_resetkey
+ 186 0112 2E 04                   		bra	.L18
+ 187                             	.L20:
+  97:SOURCES/input.c **** 	for(;;)
+  98:SOURCES/input.c **** 	{
+  99:SOURCES/input.c **** 		key = WaitForKey(); // Wait for keyboard input
+ 100:SOURCES/input.c **** 		if( check_key_input( key, num, key_list ) == OK )
+ 101:SOURCES/input.c **** 		{
+ 102:SOURCES/input.c **** 			va_end( key_list );	// reset the argument ptr
+ 103:SOURCES/input.c **** 			return( key );
+ 104:SOURCES/input.c **** 		}
+ 105:SOURCES/input.c **** 	}
+ 188                             		.loc 1 105 0
+ 189 0114 03                      		nop
+ 190 0115 03                      		.balign 2,3,3
+ 191                             	.L18:
+  99:SOURCES/input.c **** 		key = WaitForKey(); // Wait for keyboard input
+ 192                             		.loc 1 99 0
+ 193 0116 05 00 00 00             		bsr	_WaitForKey
+ 194 011a E3 61                   		mov.L	r1, [r6]
+ 100:SOURCES/input.c **** 		if( check_key_input( key, num, key_list ) == OK )
+ 195                             		.loc 1 100 0
+ 196 011c ED 6B 01                		mov.L	4[r6], r11
+ 197 011f EC 61                   		mov.L	[r6], r1
+ 198 0121 EC A2                   		mov.L	[r10], r2
+ 199 0123 EF B3                   		mov.L	r11, r3
+ 200 0125 39 88 FF                		bsr	_check_key_input
+ 201 0128 EF 1B                   		mov.L	r1, r11
+ 202 012a 61 0B                   		cmp	#0, r11
+ 203 012c 21 E8                   		bne	.L20
+ 103:SOURCES/input.c **** 			return( key );
+ 204                             		.loc 1 103 0
+ 205 012e EC 6A                   		mov.L	[r6], r10
+ 206                             		.balign 2,3,1
+ 207                             	.L19:
+ 106:SOURCES/input.c **** }
+ 208                             		.loc 1 106 0
+ 209 0130 EF A1                   		mov.L	r10, r1
+ 210 0132 3F 6B 09                		rtsd	#36, r6-r11
+ 211                             	.LFE4:
+ 213                             		.global	_ScanBarcodeSymbol
+ 215                             	_ScanBarcodeSymbol:
+ 216                             	.LFB5:
+ 107:SOURCES/input.c **** 
+ 108:SOURCES/input.c **** int ScanBarcodeSymbol( char* string, int min_length, int max_length, int *nCodeId)
+ 109:SOURCES/input.c **** {
+ 217                             		.loc 1 109 0
+ 218 0135 6E 6C                   		pushm	r6-r12
+ 219                             	.LCFI13:
+ 220 0137 71 06 D8                		add	#-40, r0, r6
+ 221                             	.LCFI14:
+ 222 013a EF 60                   		mov.L	r6, r0
+ 223                             	.LCFI15:
+ 224 013c A1 E1                   		mov.L	r1, 24[r6]
+ 225 013e A1 EA                   		mov.L	r2, 28[r6]
+ 226 0140 A2 63                   		mov.L	r3, 32[r6]
+ 227 0142 A2 6C                   		mov.L	r4, 36[r6]
+ 110:SOURCES/input.c **** 	int key;
+ 111:SOURCES/input.c **** 	struct barcode code = {0};
+ 228                             		.loc 1 111 0
+ 229 0144 71 6A 04                		add	#4, r6, r10
+ 230 0147 EF A1                   		mov.L	r10, r1
+ 231 0149 75 43 14                		mov.L	#20, r3
+ 232 014c 66 02                   		mov	#0, r2
+ 233 014e 7F 88                   		sstr.b
+ 112:SOURCES/input.c **** 
+ 113:SOURCES/input.c **** 	(*nCodeId) = 0;
+ 234                             		.loc 1 113 0
+ 235 0150 ED 6A 09                		mov.L	36[r6], r10
+ 236 0153 F8 A6 00                		mov.L	#0, [r10]
+ 114:SOURCES/input.c **** 	resetkey();
+ 237                             		.loc 1 114 0
+ 238 0156 05 00 00 00             		bsr	_resetkey
+ 115:SOURCES/input.c **** 	code.min = min_length;
+ 239                             		.loc 1 115 0
+ 240 015a ED 6A 07                		mov.L	28[r6], r10
+ 241 015d E7 6A 04                		mov.L	r10, 16[r6]
+ 116:SOURCES/input.c **** 	code.max = max_length;
+ 242                             		.loc 1 116 0
+ 243 0160 ED 6A 08                		mov.L	32[r6], r10
+ 244 0163 E7 6A 05                		mov.L	r10, 20[r6]
+ 117:SOURCES/input.c **** 	code.text = string;
+ 245                             		.loc 1 117 0
+ 246 0166 ED 6A 06                		mov.L	24[r6], r10
+ 247 0169 E7 6A 01                		mov.L	r10, 4[r6]
+ 118:SOURCES/input.c **** 	scannerpower( SINGLE, 300 );
+ 248                             		.loc 1 118 0
+ 249 016c 66 31                   		mov.L	#3, r1
+ 250 016e FB 2A 2C 01             		mov.L	#0x12c, r2
+ 251 0172 05 00 00 00             		bsr	_scannerpower
+ 119:SOURCES/input.c **** #if PX25
+ 120:SOURCES/input.c **** 	for(;;)
+ 121:SOURCES/input.c **** 	{
+ 122:SOURCES/input.c **** 		if ( !scanneroff () )
+ 123:SOURCES/input.c **** 		{
+ 124:SOURCES/input.c **** 			if ( readbarcode ( &code ) == OK)
+ 125:SOURCES/input.c **** 				break;
+ 126:SOURCES/input.c **** 		}
+ 127:SOURCES/input.c **** 		else
+ 128:SOURCES/input.c **** 		{
+ 129:SOURCES/input.c **** 			if( kbhit() )
+ 130:SOURCES/input.c **** 			{
+ 131:SOURCES/input.c **** 				if(( key = getchar() ) != TRIGGER_KEY )
+ 132:SOURCES/input.c **** 				{
+ 133:SOURCES/input.c **** 				// put the character back in the input buffer
+ 134:SOURCES/input.c **** 				// so it can be handled by another function
+ 135:SOURCES/input.c **** 					ungetc( key, stdin);
+ 136:SOURCES/input.c **** 					scannerpower( OFF, 0);
+ 137:SOURCES/input.c **** 					return( ERROR );
+ 138:SOURCES/input.c **** 				}
+ 139:SOURCES/input.c **** 			}
+ 140:SOURCES/input.c **** 		}
+ 141:SOURCES/input.c **** 	}
+ 142:SOURCES/input.c **** #else
+ 143:SOURCES/input.c **** 	while( readbarcode( &code ) != OK )
+ 252                             		.loc 1 143 0
+ 253 0176 38 94 00                		bra	.L22
+ 254                             	.L28:
+ 144:SOURCES/input.c **** 	{
+ 145:SOURCES/input.c **** 		if( kbhit() )
+ 255                             		.loc 1 145 0
+ 256 0179 05 00 00 00             		bsr	_kbhit
+ 257 017d EF 1A                   		mov.L	r1, r10
+ 258 017f 61 0A                   		cmp	#0, r10
+ 259 0181 3A 85 00                		beq	.L23
+ 146:SOURCES/input.c **** 		{
+ 147:SOURCES/input.c **** 			if(( key = getchar() ) != TRIGGER_KEY )
+ 260                             		.loc 1 147 0
+ 261 0184 FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+ 262 018a EC AA                   		mov.L	[r10], r10
+ 263 018c ED AA 01                		mov.L	4[r10], r10
+ 264 018f ED AB 01                		mov.L	4[r10], r11
+ 265 0192 60 1B                   		sub	#1, r11
+ 266 0194 E7 AB 01                		mov.L	r11, 4[r10]
+ 267 0197 ED AA 01                		mov.L	4[r10], r10
+ 268 019a 61 0A                   		cmp	#0, r10
+ 269 019c 28 21                   		bge	.L24
+ 270                             		.loc 1 147 0 is_stmt 0 discriminator 1
+ 271 019e FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+ 272 01a4 EC AB                   		mov.L	[r10], r11
+ 273 01a6 FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+ 274 01ac EC AA                   		mov.L	[r10], r10
+ 275 01ae ED AA 01                		mov.L	4[r10], r10
+ 276 01b1 EF B1                   		mov.L	r11, r1
+ 277 01b3 EF A2                   		mov.L	r10, r2
+ 278 01b5 05 00 00 00             		bsr	___srget_r
+ 279 01b9 EF 1C                   		mov.L	r1, r12
+ 280 01bb 2E 17                   		bra	.L25
+ 281                             	.L24:
+ 282                             		.loc 1 147 0 discriminator 2
+ 283 01bd FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+ 284 01c3 EC AA                   		mov.L	[r10], r10
+ 285 01c5 ED AA 01                		mov.L	4[r10], r10
+ 286 01c8 EC AB                   		mov.L	[r10], r11
+ 287 01ca CC BC                   		mov.B	[r11], r12
+ 288 01cc 5B CC                   		movu.B	r12, r12
+ 289 01ce 62 1B                   		add	#1, r11
+ 290 01d0 E3 AB                   		mov.L	r11, [r10]
+ 291                             		.balign 2,3,1
+ 292                             	.L25:
+ 293                             		.loc 1 147 0 discriminator 3
+ 294 01d2 E3 6C                   		mov.L	r12, [r6]
+ 295 01d4 EC 6A                   		mov.L	[r6], r10
+ 296 01d6 75 5A 80                		cmp	#0x80, r10
+ 297 01d9 20 22                   		beq	.L26
+ 148:SOURCES/input.c **** 			{
+ 149:SOURCES/input.c **** 				// put the character back in the input buffer
+ 150:SOURCES/input.c **** 				// so it can be handled by another function
+ 151:SOURCES/input.c **** 				ungetc( key, stdin);
+ 298                             		.loc 1 151 0 is_stmt 1
+ 299 01db FB A2 00 00 00 00       		mov.L	#__impure_ptr, r10
+ 300 01e1 EC AA                   		mov.L	[r10], r10
+ 301 01e3 ED AA 01                		mov.L	4[r10], r10
+ 302 01e6 EC 61                   		mov.L	[r6], r1
+ 303 01e8 EF A2                   		mov.L	r10, r2
+ 304 01ea 05 00 00 00             		bsr	_ungetc
+ 152:SOURCES/input.c **** 				scannerpower( OFF, 0);
+ 305                             		.loc 1 152 0
+ 306 01ee 66 01                   		mov.L	#0, r1
+ 307 01f0 66 02                   		mov.L	#0, r2
+ 308 01f2 05 00 00 00             		bsr	_scannerpower
+ 153:SOURCES/input.c **** 				return( ERROR );
+ 309                             		.loc 1 153 0
+ 310 01f6 FB A6 FF                		mov.L	#-1, r10
+ 311 01f9 2E 3F                   		bra	.L29
+ 312                             	.L26:
+ 154:SOURCES/input.c **** 			}
+ 155:SOURCES/input.c **** 			scannerpower( SINGLE, 300 );
+ 313                             		.loc 1 155 0
+ 314 01fb 66 31                   		mov.L	#3, r1
+ 315 01fd FB 2A 2C 01             		mov.L	#0x12c, r2
+ 316 0201 05 00 00 00             		bsr	_scannerpower
+ 317 0205 03                      		.balign 2,3,3
+ 318                             	.L23:
+ 156:SOURCES/input.c **** 		}
+ 157:SOURCES/input.c **** 		idle();
+ 319                             		.loc 1 157 0
+ 320 0206 05 00 00 00             		bsr	_idle
+ 321                             		.balign 2,3,2
+ 322                             	.L22:
+ 143:SOURCES/input.c **** 	while( readbarcode( &code ) != OK )
+ 323                             		.loc 1 143 0 discriminator 1
+ 324 020a 71 6A 04                		add	#4, r6, r10
+ 325 020d EF A1                   		mov.L	r10, r1
+ 326 020f 05 00 00 00             		bsr	_readbarcode
+ 327 0213 EF 1A                   		mov.L	r1, r10
+ 328 0215 61 0A                   		cmp	#0, r10
+ 329 0217 3B 62 FF                		bne	.L28
+ 158:SOURCES/input.c **** 	}
+ 159:SOURCES/input.c **** #endif
+ 160:SOURCES/input.c ****     // Copy the code ID
+ 161:SOURCES/input.c ****     (*nCodeId) = code.id;
+ 330                             		.loc 1 161 0
+ 331 021a ED 6B 03                		mov.L	12[r6], r11
+ 332 021d ED 6A 09                		mov.L	36[r6], r10
+ 333 0220 E3 AB                   		mov.L	r11, [r10]
+ 162:SOURCES/input.c **** 	goodreadled( GREEN, 10 );
+ 334                             		.loc 1 162 0
+ 335 0222 66 21                   		mov.L	#2, r1
+ 336 0224 66 A2                   		mov.L	#10, r2
+ 337 0226 05 00 00 00             		bsr	_goodreadled
+ 163:SOURCES/input.c **** 	scannerpower( OFF, 0);
+ 338                             		.loc 1 163 0
+ 339 022a 66 01                   		mov.L	#0, r1
+ 340 022c 66 02                   		mov.L	#0, r2
+ 341 022e 05 00 00 00             		bsr	_scannerpower
+ 164:SOURCES/input.c **** 	okbeep();
+ 342                             		.loc 1 164 0
+ 343 0232 39 E8 FD                		bsr	_okbeep
+ 165:SOURCES/input.c **** 
+ 166:SOURCES/input.c **** 	return( OK );
+ 344                             		.loc 1 166 0
+ 345 0235 66 0A                   		mov.L	#0, r10
+ 346 0237 03                      		.balign 2,3,1
+ 347                             	.L29:
+ 167:SOURCES/input.c **** }
+ 348                             		.loc 1 167 0
+ 349 0238 EF A1                   		mov.L	r10, r1
+ 350 023a 3F 6C 11                		rtsd	#68, r6-r12
+ 351                             	.LFE5:
+ 353                             		.global	_ScanBarcode
+ 355                             	_ScanBarcode:
+ 356                             	.LFB6:
+ 168:SOURCES/input.c **** 
+ 169:SOURCES/input.c **** int ScanBarcode( char* string, int min_length, int max_length)
+ 170:SOURCES/input.c **** {
+ 357                             		.loc 1 170 0
+ 358 023d 7E AA                   		push.l	r10
+ 359                             	.LCFI16:
+ 360 023f 7E A6                   		push.l	r6
+ 361                             	.LCFI17:
+ 362 0241 71 06 F0                		add	#-16, r0, r6
+ 363                             	.LCFI18:
+ 364 0244 EF 60                   		mov.L	r6, r0
+ 365                             	.LCFI19:
+ 366 0246 A0 69                   		mov.L	r1, 4[r6]
+ 367 0248 A0 E2                   		mov.L	r2, 8[r6]
+ 368 024a A0 EB                   		mov.L	r3, 12[r6]
+ 171:SOURCES/input.c **** 	int nCodeId = 0;
+ 369                             		.loc 1 171 0
+ 370 024c 3E 60 00                		mov.L	#0, [r6]
+ 172:SOURCES/input.c **** 	
+ 173:SOURCES/input.c **** 	return ScanBarcodeSymbol( string, min_length, max_length, &nCodeId);
+ 371                             		.loc 1 173 0
+ 372 024f A8 69                   		mov.L	4[r6], r1
+ 373 0251 A8 E2                   		mov.L	8[r6], r2
+ 374 0253 A8 EB                   		mov.L	12[r6], r3
+ 375 0255 EF 64                   		mov.L	r6, r4
+ 376 0257 05 00 00 00             		bsr	_ScanBarcodeSymbol
+ 377 025b EF 1A                   		mov.L	r1, r10
+ 174:SOURCES/input.c **** }
+ 378                             		.loc 1 174 0
+ 379 025d EF A1                   		mov.L	r10, r1
+ 380 025f 71 00 10                		add	#16, r0
+ 381 0262 7E B6                   		pop	r6
+ 382 0264 7E BA                   		pop	r10
+ 383 0266 02                      		rts
+ 384                             	.LFE6:
+ 387                             	_remove_key_from_buffer:
+ 388                             	.LFB7:
+ 175:SOURCES/input.c **** 
+ 176:SOURCES/input.c **** static void remove_key_from_buffer( char* string )
+ 177:SOURCES/input.c **** {
+ 389                             		.loc 1 177 0
+ 390 0267 6E 6B                   		pushm	r6-r11
+ 391                             	.LCFI20:
+ 392 0269 71 06 FC                		add	#-4, r0, r6
+ 393                             	.LCFI21:
+ 394 026c EF 60                   		mov.L	r6, r0
+ 395                             	.LCFI22:
+ 396 026e E3 61                   		mov.L	r1, [r6]
+ 178:SOURCES/input.c **** 	if( strlen( string ) > 0 )
+ 397                             		.loc 1 178 0
+ 398 0270 EC 6A                   		mov.L	[r6], r10
+ 399 0272 CC AA                   		mov.B	[r10], r10
+ 400 0274 5B AA                   		movu.B	r10, r10
+ 401 0276 61 0A                   		cmp	#0, r10
+ 402 0278 20 14                   		beq	.L32
+ 179:SOURCES/input.c **** 		string[ strlen( string ) - 1 ] = '\0';
+ 403                             		.loc 1 179 0
+ 404 027a EC 61                   		mov.L	[r6], r1
+ 405 027c 05 00 00 00             		bsr	_strlen
+ 406 0280 EF 1A                   		mov.L	r1, r10
+ 407 0282 60 1A                   		sub	#1, r10
+ 408 0284 EC 6B                   		mov.L	[r6], r11
+ 409 0286 4B BA                   		add	r11, r10
+ 410 0288 F8 A4 00                		mov.B	#0, [r10]
+ 411 028b 03                      		.balign 2,3,2
+ 412                             	.L32:
+ 180:SOURCES/input.c **** }
+ 413                             		.loc 1 180 0
+ 414 028c 3F 6B 07                		rtsd	#28, r6-r11
+ 415                             	.LFE7:
+ 417                             		.section C,"a",@progbits
+ 418                             		.p2align 2
+ 419                             	.LC0:
+ 420 0000 25 2D 2A 2E 2A 73 20 00 		.string	"%-*.*s "
+ 421                             	.LC1:
+ 422 0008 25 2D 2A 2E 2A 73 00    		.string	"%-*.*s"
+ 423                             		.section P,"ax"
+ 425                             	_display_input:
+ 426                             	.LFB8:
+ 181:SOURCES/input.c **** 
+ 182:SOURCES/input.c **** 
+ 183:SOURCES/input.c **** static void display_input( char* string, int x, int y, int display_length, int max_length )
+ 184:SOURCES/input.c **** {
+ 427                             		.loc 1 184 0
+ 428 028f 6E 6D                   		pushm	r6-r13
+ 429                             	.LCFI23:
+ 430 0291 71 06 E4                		add	#-28, r0, r6
+ 431                             	.LCFI24:
+ 432 0294 71 60 F0                		add	#-16, r6, r0
+ 433                             	.LCFI25:
+ 434 0297 75 4A 40                		mov.L	#64, r10
+ 435 029a 4B 6A                   		add	r6, r10
+ 436 029c A0 E1                   		mov.L	r1, 8[r6]
+ 437 029e A0 EA                   		mov.L	r2, 12[r6]
+ 438 02a0 A1 63                   		mov.L	r3, 16[r6]
+ 439 02a2 A1 6C                   		mov.L	r4, 20[r6]
+ 185:SOURCES/input.c **** 	int length;
+ 186:SOURCES/input.c **** 	int output;
+ 187:SOURCES/input.c **** 
+ 188:SOURCES/input.c **** 	if( x < 0 || y < 0 )
+ 440                             		.loc 1 188 0
+ 441 02a4 ED 6B 03                		mov.L	12[r6], r11
+ 442 02a7 61 0B                   		cmp	#0, r11
+ 443 02a9 28 05 38 B1 00          		blt	.L44
+ 444                             		.loc 1 188 0 is_stmt 0 discriminator 1
+ 445 02ae ED 6B 04                		mov.L	16[r6], r11
+ 446 02b1 61 0B                   		cmp	#0, r11
+ 447 02b3 28 05 38 A7 00          		blt	.L44
+ 448                             		.balign 2,3,1
+ 449                             	.L36:
+ 189:SOURCES/input.c **** 		return;
+ 190:SOURCES/input.c **** 	length = strlen( string );
+ 450                             		.loc 1 190 0 is_stmt 1
+ 451 02b8 A8 E1                   		mov.L	8[r6], r1
+ 452 02ba 05 00 00 00             		bsr	_strlen
+ 453 02be EF 1B                   		mov.L	r1, r11
+ 454 02c0 E3 6B                   		mov.L	r11, [r6]
+ 191:SOURCES/input.c **** 	gotoxy( x, y);
+ 455                             		.loc 1 191 0
+ 456 02c2 A8 E9                   		mov.L	12[r6], r1
+ 457 02c4 A9 62                   		mov.L	16[r6], r2
+ 458 02c6 05 00 00 00             		bsr	_gotoxy
+ 192:SOURCES/input.c **** 	if( length < max_length ) 
+ 459                             		.loc 1 192 0
+ 460 02ca EC 6B                   		mov.L	[r6], r11
+ 461 02cc EC AA                   		mov.L	[r10], r10
+ 462 02ce 47 AB                   		cmp	r10, r11
+ 463 02d0 28 3E                   		bge	.L38
+ 193:SOURCES/input.c **** 		printf("%-*.*s ", display_length-1, display_length-1, string + ((length<display_length)?0:(length
+ 464                             		.loc 1 193 0
+ 465 02d2 ED 6A 05                		mov.L	20[r6], r10
+ 466 02d5 71 AC FF                		add	#-1, r10, r12
+ 467 02d8 ED 6A 05                		mov.L	20[r6], r10
+ 468 02db 71 AB FF                		add	#-1, r10, r11
+ 469 02de EC 6D                   		mov.L	[r6], r13
+ 470 02e0 ED 6A 05                		mov.L	20[r6], r10
+ 471 02e3 47 AD                   		cmp	r10, r13
+ 472 02e5 29 0D                   		blt	.L39
+ 473                             		.loc 1 193 0 is_stmt 0 discriminator 1
+ 474 02e7 EC 6D                   		mov.L	[r6], r13
+ 475 02e9 ED 6A 05                		mov.L	20[r6], r10
+ 476 02ec FF 0A AD                		sub	r10, r13, r10
+ 477 02ef 62 1A                   		add	#1, r10
+ 478 02f1 0B                      		bra	.L40
+ 479                             	.L39:
+ 480                             		.loc 1 193 0 discriminator 2
+ 481 02f2 66 0A                   		mov.L	#0, r10
+ 482                             		.balign 2,3,1
+ 483                             	.L40:
+ 484                             		.loc 1 193 0 discriminator 3
+ 485 02f4 ED 6D 02                		mov.L	8[r6], r13
+ 486 02f7 4B DA                   		add	r13, r10
+ 487 02f9 F8 02 00 00 00 00       		mov.L	#.LC0, [r0]
+ 488 02ff E7 0C 01                		mov.L	r12, 4[r0]
+ 489 0302 E7 0B 02                		mov.L	r11, 8[r0]
+ 490 0305 E7 0A 03                		mov.L	r10, 12[r0]
+ 491 0308 05 00 00 00             		bsr	_printf
+ 492 030c 2E 28                   		bra	.L41
+ 493                             	.L38:
+ 194:SOURCES/input.c **** 	else 
+ 195:SOURCES/input.c **** 		printf("%-*.*s", display_length, display_length, string + ( length - display_length )); 
+ 494                             		.loc 1 195 0 is_stmt 1
+ 495 030e EC 6B                   		mov.L	[r6], r11
+ 496 0310 ED 6A 05                		mov.L	20[r6], r10
+ 497 0313 FF 0A AB                		sub	r10, r11, r10
+ 498 0316 ED 6B 02                		mov.L	8[r6], r11
+ 499 0319 4B BA                   		add	r11, r10
+ 500 031b F8 02 08 00 00 00       		mov.L	#.LC1, [r0]
+ 501 0321 ED 6B 05                		mov.L	20[r6], r11
+ 502 0324 E7 0B 01                		mov.L	r11, 4[r0]
+ 503 0327 ED 6B 05                		mov.L	20[r6], r11
+ 504 032a E7 0B 02                		mov.L	r11, 8[r0]
+ 505 032d E7 0A 03                		mov.L	r10, 12[r0]
+ 506 0330 05 00 00 00             		bsr	_printf
+ 507                             		.balign 2,3,1
+ 508                             	.L41:
+ 196:SOURCES/input.c **** 
+ 197:SOURCES/input.c **** 	output = (length < display_length)?(length+1):display_length;
+ 509                             		.loc 1 197 0
+ 510 0334 EC 6B                   		mov.L	[r6], r11
+ 511 0336 ED 6A 05                		mov.L	20[r6], r10
+ 512 0339 47 AB                   		cmp	r10, r11
+ 513 033b 28 07                   		bge	.L42
+ 514                             		.loc 1 197 0 is_stmt 0 discriminator 1
+ 515 033d EC 6A                   		mov.L	[r6], r10
+ 516 033f 62 1A                   		add	#1, r10
+ 517 0341 0D                      		bra	.L43
+ 518                             	.L42:
+ 519                             		.loc 1 197 0 discriminator 2
+ 520 0342 ED 6A 05                		mov.L	20[r6], r10
+ 521 0345 03                      		.balign 2,3,5
+ 522                             	.L43:
+ 523                             		.loc 1 197 0 discriminator 3
+ 524 0346 E7 6A 01                		mov.L	r10, 4[r6]
+ 198:SOURCES/input.c **** 	gotoxy( x + output -1, y ); // set cursor to the correct position 
+ 525                             		.loc 1 198 0 is_stmt 1 discriminator 3
+ 526 0349 ED 6A 03                		mov.L	12[r6], r10
+ 527 034c 06 89 6A 01             		add	4[r6].L, r10
+ 528 0350 60 1A                   		sub	#1, r10
+ 529 0352 EF A1                   		mov.L	r10, r1
+ 530 0354 A9 62                   		mov.L	16[r6], r2
+ 531 0356 05 00 00 00             		bsr	_gotoxy
+ 532 035a 2E 04                   		bra	.L34
+ 533                             	.L44:
+ 189:SOURCES/input.c **** 		return;
+ 534                             		.loc 1 189 0
+ 535 035c 03                      		nop
+ 536 035d 03                      		.balign 2,3,2
+ 537                             	.L34:
+ 199:SOURCES/input.c **** }
+ 538                             		.loc 1 199 0
+ 539 035e 3F 6D 13                		rtsd	#76, r6-r13
+ 540                             	.LFE8:
+ 543                             	_store_key_in_string:
+ 544                             	.LFB9:
+ 200:SOURCES/input.c **** 
+ 201:SOURCES/input.c **** 
+ 202:SOURCES/input.c **** static void store_key_in_string( int key, char* string, int max_len, int typ )
+ 203:SOURCES/input.c **** {
+ 545                             		.loc 1 203 0
+ 546 0361 6E 6B                   		pushm	r6-r11
+ 547                             	.LCFI26:
+ 548 0363 71 06 E8                		add	#-24, r0, r6
+ 549                             	.LCFI27:
+ 550 0366 EF 60                   		mov.L	r6, r0
+ 551                             	.LCFI28:
+ 552 0368 A0 E1                   		mov.L	r1, 8[r6]
+ 553 036a A0 EA                   		mov.L	r2, 12[r6]
+ 554 036c A1 63                   		mov.L	r3, 16[r6]
+ 555 036e A1 6C                   		mov.L	r4, 20[r6]
+ 204:SOURCES/input.c **** 	int length, ok;
+ 205:SOURCES/input.c **** 
+ 206:SOURCES/input.c **** 	length = strlen( string );
+ 556                             		.loc 1 206 0
+ 557 0370 A8 E9                   		mov.L	12[r6], r1
+ 558 0372 05 00 00 00             		bsr	_strlen
+ 559 0376 EF 1A                   		mov.L	r1, r10
+ 560 0378 E7 6A 01                		mov.L	r10, 4[r6]
+ 207:SOURCES/input.c **** 	if( length >= max_len )
+ 561                             		.loc 1 207 0
+ 562 037b ED 6B 01                		mov.L	4[r6], r11
+ 563 037e ED 6A 04                		mov.L	16[r6], r10
+ 564 0381 47 AB                   		cmp	r10, r11
+ 565 0383 29 05 38 1B 01          		bge	.L59
+ 566                             		.balign 2,3,4
+ 567                             	.L46:
+ 208:SOURCES/input.c **** 		return;
+ 209:SOURCES/input.c **** 
+ 210:SOURCES/input.c **** 	ok = 0;
+ 568                             		.loc 1 210 0
+ 569 0388 3E 60 00                		mov.L	#0, [r6]
+ 211:SOURCES/input.c **** 	if( typ & INPUT_FLOAT )
+ 570                             		.loc 1 211 0
+ 571 038b ED 6A 05                		mov.L	20[r6], r10
+ 572 038e 64 1A                   		and	#1, r10
+ 573 0390 61 0A                   		cmp	#0, r10
+ 574 0392 20 3A                   		beq	.L48
+ 212:SOURCES/input.c **** 		ok = ( isdigit( key ) || ((strchr( string, '.') == NULL) && ( key == '.' )));
+ 575                             		.loc 1 212 0
+ 576 0394 FB A2 00 00 00 00       		mov.L	#___ctype_ptr__, r10
+ 577 039a EC AB                   		mov.L	[r10], r11
+ 578 039c ED 6A 02                		mov.L	8[r6], r10
+ 579 039f 62 1A                   		add	#1, r10
+ 580 03a1 4B BA                   		add	r11, r10
+ 581 03a3 CC AA                   		mov.B	[r10], r10
+ 582 03a5 5B AA                   		movu.B	r10, r10
+ 583 03a7 64 4A                   		and	#4, r10
+ 584 03a9 61 0A                   		cmp	#0, r10
+ 585 03ab 21 19                   		bne	.L49
+ 586                             		.loc 1 212 0 is_stmt 0 discriminator 2
+ 587 03ad A8 E9                   		mov.L	12[r6], r1
+ 588 03af 75 42 2E                		mov.L	#46, r2
+ 589 03b2 05 00 00 00             		bsr	_strchr
+ 590 03b6 EF 1A                   		mov.L	r1, r10
+ 591 03b8 61 0A                   		cmp	#0, r10
+ 592 03ba 21 0E                   		bne	.L50
+ 593                             		.loc 1 212 0 discriminator 3
+ 594 03bc ED 6A 02                		mov.L	8[r6], r10
+ 595 03bf 75 5A 2E                		cmp	#46, r10
+ 596 03c2 1E                      		bne	.L50
+ 597 03c3 03                      		.balign 2,3,1
+ 598                             	.L49:
+ 599                             		.loc 1 212 0 discriminator 1
+ 600 03c4 66 1A                   		mov.L	#1, r10
+ 601 03c6 2E 04                   		bra	.L51
+ 602                             	.L50:
+ 603                             		.loc 1 212 0 discriminator 4
+ 604 03c8 66 0A                   		mov.L	#0, r10
+ 605                             		.balign 2,3,1
+ 606                             	.L51:
+ 607                             		.loc 1 212 0 discriminator 5
+ 608 03ca E3 6A                   		mov.L	r10, [r6]
+ 609                             		.balign 2,3,1
+ 610                             	.L48:
+ 213:SOURCES/input.c **** 	if( !ok && ( typ & INPUT_NUM ))
+ 611                             		.loc 1 213 0 is_stmt 1
+ 612 03cc EC 6A                   		mov.L	[r6], r10
+ 613 03ce 61 0A                   		cmp	#0, r10
+ 614 03d0 21 22                   		bne	.L52
+ 615                             		.loc 1 213 0 is_stmt 0 discriminator 1
+ 616 03d2 ED 6A 05                		mov.L	20[r6], r10
+ 617 03d5 64 2A                   		and	#2, r10
+ 618 03d7 61 0A                   		cmp	#0, r10
+ 619 03d9 20 19                   		beq	.L52
+ 214:SOURCES/input.c **** 		ok = isdigit( key );
+ 620                             		.loc 1 214 0 is_stmt 1
+ 621 03db FB A2 00 00 00 00       		mov.L	#___ctype_ptr__, r10
+ 622 03e1 EC AB                   		mov.L	[r10], r11
+ 623 03e3 ED 6A 02                		mov.L	8[r6], r10
+ 624 03e6 62 1A                   		add	#1, r10
+ 625 03e8 4B BA                   		add	r11, r10
+ 626 03ea CC AA                   		mov.B	[r10], r10
+ 627 03ec 5B AA                   		movu.B	r10, r10
+ 628 03ee 64 4A                   		and	#4, r10
+ 629 03f0 E3 6A                   		mov.L	r10, [r6]
+ 630                             		.balign 2,3,1
+ 631                             	.L52:
+ 215:SOURCES/input.c **** 	if( !ok && ( typ & INPUT_ALPHA ))
+ 632                             		.loc 1 215 0
+ 633 03f2 EC 6A                   		mov.L	[r6], r10
+ 634 03f4 61 0A                   		cmp	#0, r10
+ 635 03f6 21 34                   		bne	.L53
+ 636                             		.loc 1 215 0 is_stmt 0 discriminator 1
+ 637 03f8 ED 6A 05                		mov.L	20[r6], r10
+ 638 03fb 64 4A                   		and	#4, r10
+ 639 03fd 61 0A                   		cmp	#0, r10
+ 640 03ff 20 2B                   		beq	.L53
+ 216:SOURCES/input.c **** 		ok = ( isalpha(	key ) || ( key == ' ' ));
+ 641                             		.loc 1 216 0 is_stmt 1
+ 642 0401 FB A2 00 00 00 00       		mov.L	#___ctype_ptr__, r10
+ 643 0407 EC AB                   		mov.L	[r10], r11
+ 644 0409 ED 6A 02                		mov.L	8[r6], r10
+ 645 040c 62 1A                   		add	#1, r10
+ 646 040e 4B BA                   		add	r11, r10
+ 647 0410 CC AA                   		mov.B	[r10], r10
+ 648 0412 5B AA                   		movu.B	r10, r10
+ 649 0414 64 3A                   		and	#3, r10
+ 650 0416 61 0A                   		cmp	#0, r10
+ 651 0418 1A                      		bne	.L54
+ 652                             		.loc 1 216 0 is_stmt 0 discriminator 2
+ 653 0419 ED 6A 02                		mov.L	8[r6], r10
+ 654 041c 75 5A 20                		cmp	#32, r10
+ 655 041f 21 07                   		bne	.L55
+ 656 0421 03                      		.balign 2,3,1
+ 657                             	.L54:
+ 658                             		.loc 1 216 0 discriminator 1
+ 659 0422 66 1A                   		mov.L	#1, r10
+ 660 0424 2E 04                   		bra	.L56
+ 661                             	.L55:
+ 662                             		.loc 1 216 0 discriminator 3
+ 663 0426 66 0A                   		mov.L	#0, r10
+ 664                             		.balign 2,3,1
+ 665                             	.L56:
+ 666                             		.loc 1 216 0 discriminator 4
+ 667 0428 E3 6A                   		mov.L	r10, [r6]
+ 668                             		.balign 2,3,1
+ 669                             	.L53:
+ 217:SOURCES/input.c **** 	if( !ok && ( typ & INPUT_NEGATIVE ) && ( length == 0 ))
+ 670                             		.loc 1 217 0 is_stmt 1
+ 671 042a EC 6A                   		mov.L	[r6], r10
+ 672 042c 61 0A                   		cmp	#0, r10
+ 673 042e 21 20                   		bne	.L57
+ 674                             		.loc 1 217 0 is_stmt 0 discriminator 1
+ 675 0430 ED 6A 05                		mov.L	20[r6], r10
+ 676 0433 64 8A                   		and	#8, r10
+ 677 0435 61 0A                   		cmp	#0, r10
+ 678 0437 20 17                   		beq	.L57
+ 679 0439 ED 6A 01                		mov.L	4[r6], r10
+ 680 043c 61 0A                   		cmp	#0, r10
+ 681 043e 21 10                   		bne	.L57
+ 218:SOURCES/input.c **** 		ok = ( key == '-' );
+ 682                             		.loc 1 218 0 is_stmt 1
+ 683 0440 ED 6A 02                		mov.L	8[r6], r10
+ 684 0443 75 5A 2D                		cmp	#45, r10
+ 685 0446 FC DB A0                		sceq.L	r10
+ 686 0449 5B AA                   		movu.B	r10, r10
+ 687 044b E3 6A                   		mov.L	r10, [r6]
+ 688 044d 03                      		.balign 2,3,1
+ 689                             	.L57:
+ 219:SOURCES/input.c **** 	if( !ok && ( typ & INPUT_PRINT ))
+ 690                             		.loc 1 219 0
+ 691 044e EC 6A                   		mov.L	[r6], r10
+ 692 0450 61 0A                   		cmp	#0, r10
+ 693 0452 21 26                   		bne	.L58
+ 694                             		.loc 1 219 0 is_stmt 0 discriminator 1
+ 695 0454 ED 6A 05                		mov.L	20[r6], r10
+ 696 0457 75 2A 10                		and	#16, r10
+ 697 045a 61 0A                   		cmp	#0, r10
+ 698 045c 20 1C                   		beq	.L58
+ 220:SOURCES/input.c **** 		ok = isprint( key );
+ 699                             		.loc 1 220 0 is_stmt 1
+ 700 045e FB A2 00 00 00 00       		mov.L	#___ctype_ptr__, r10
+ 701 0464 EC AB                   		mov.L	[r10], r11
+ 702 0466 ED 6A 02                		mov.L	8[r6], r10
+ 703 0469 62 1A                   		add	#1, r10
+ 704 046b 4B BA                   		add	r11, r10
+ 705 046d CC AA                   		mov.B	[r10], r10
+ 706 046f 5B AA                   		movu.B	r10, r10
+ 707 0471 76 2A 97 00             		and	#0x97, r10
+ 708 0475 E3 6A                   		mov.L	r10, [r6]
+ 709 0477 03                      		.balign 2,3,1
+ 710                             	.L58:
+ 221:SOURCES/input.c **** 
+ 222:SOURCES/input.c **** 	if( ok )
+ 711                             		.loc 1 222 0
+ 712 0478 EC 6A                   		mov.L	[r6], r10
+ 713 047a 61 0A                   		cmp	#0, r10
+ 714 047c 20 26                   		beq	.L45
+ 223:SOURCES/input.c **** 	{
+ 224:SOURCES/input.c **** 		string[ length++ ] = (char)key;
+ 715                             		.loc 1 224 0
+ 716 047e ED 6A 01                		mov.L	4[r6], r10
+ 717 0481 ED 6B 03                		mov.L	12[r6], r11
+ 718 0484 4B BA                   		add	r11, r10
+ 719 0486 ED 6B 02                		mov.L	8[r6], r11
+ 720 0489 C3 AB                   		mov.B	r11, [r10]
+ 721 048b ED 6A 01                		mov.L	4[r6], r10
+ 722 048e 62 1A                   		add	#1, r10
+ 723 0490 E7 6A 01                		mov.L	r10, 4[r6]
+ 225:SOURCES/input.c **** 		string[ length ] ='\0';
+ 724                             		.loc 1 225 0
+ 725 0493 ED 6A 01                		mov.L	4[r6], r10
+ 726 0496 ED 6B 03                		mov.L	12[r6], r11
+ 727 0499 4B BA                   		add	r11, r10
+ 728 049b F8 A4 00                		mov.B	#0, [r10]
+ 729 049e 2E 04                   		bra	.L45
+ 730                             	.L59:
+ 208:SOURCES/input.c **** 		return;
+ 731                             		.loc 1 208 0
+ 732 04a0 03                      		nop
+ 733 04a1 03                      		.balign 2,3,2
+ 734                             	.L45:
+ 226:SOURCES/input.c **** 	}
+ 227:SOURCES/input.c **** }
+ 735                             		.loc 1 227 0
+ 736 04a2 3F 6B 0C                		rtsd	#48, r6-r11
+ 737                             	.LFE9:
+ 739                             		.global	_KeyboardInput
+ 741                             	_KeyboardInput:
+ 742                             	.LFB10:
+ 228:SOURCES/input.c **** 
+ 229:SOURCES/input.c **** 
+ 230:SOURCES/input.c **** int KeyboardInput( char* string, int min_length, int max_length, int typ, int x, int y, int display
+ 231:SOURCES/input.c **** {
+ 743                             		.loc 1 231 0
+ 744 04a5 6E 6C                   		pushm	r6-r12
+ 745                             	.LCFI29:
+ 746 04a7 71 06 D8                		add	#-40, r0, r6
+ 747                             	.LCFI30:
+ 748 04aa 71 60 FC                		add	#-4, r6, r0
+ 749                             	.LCFI31:
+ 750 04ad 75 4A 48                		mov.L	#0x48, r10
+ 751 04b0 4B 6A                   		add	r6, r10
+ 752 04b2 A0 E1                   		mov.L	r1, 8[r6]
+ 753 04b4 A0 EA                   		mov.L	r2, 12[r6]
+ 754 04b6 A1 63                   		mov.L	r3, 16[r6]
+ 755 04b8 A1 6C                   		mov.L	r4, 20[r6]
+ 232:SOURCES/input.c **** 	va_list key_list;
+ 233:SOURCES/input.c **** 	int key;
+ 234:SOURCES/input.c **** 
+ 235:SOURCES/input.c **** 	if( num <= 0 )
+ 756                             		.loc 1 235 0
+ 757 04ba ED AB 03                		mov.L	12[r10], r11
+ 758 04bd 61 0B                   		cmp	#0, r11
+ 759 04bf 2A 08                   		bgt	.L61
+ 236:SOURCES/input.c **** 		return( EOF );
+ 760                             		.loc 1 236 0
+ 761 04c1 FB A6 FF                		mov.L	#-1, r10
+ 762 04c4 38 AE 00                		bra	.L69
+ 763                             	.L61:
+ 237:SOURCES/input.c **** #if (PHL|PHL1000|PHL2700)
+ 238:SOURCES/input.c **** 	if( typ & INPUT_ALPHA || typ & INPUT_PRINT)
+ 239:SOURCES/input.c **** 		setecho( ON );
+ 240:SOURCES/input.c **** #endif
+ 241:SOURCES/input.c **** 	if( display_length > max_length )
+ 764                             		.loc 1 241 0
+ 765 04c7 ED AC 02                		mov.L	8[r10], r12
+ 766 04ca ED 6B 04                		mov.L	16[r6], r11
+ 767 04cd 47 BC                   		cmp	r11, r12
+ 768 04cf 2B 09                   		ble	.L63
+ 242:SOURCES/input.c **** 		display_length = max_length;
+ 769                             		.loc 1 242 0
+ 770 04d1 ED 6B 04                		mov.L	16[r6], r11
+ 771 04d4 E7 AB 02                		mov.L	r11, 8[r10]
+ 772 04d7 03                      		.balign 2,3,1
+ 773                             	.L63:
+ 243:SOURCES/input.c **** 	display_input(string, x, y, display_length, max_length );
+ 774                             		.loc 1 243 0
+ 775 04d8 ED 6B 04                		mov.L	16[r6], r11
+ 776 04db E3 0B                   		mov.L	r11, [r0]
+ 777 04dd A8 E1                   		mov.L	8[r6], r1
+ 778 04df EC A2                   		mov.L	[r10], r2
+ 779 04e1 ED A3 01                		mov.L	4[r10], r3
+ 780 04e4 ED A4 02                		mov.L	8[r10], r4
+ 781 04e7 39 A8 FD                		bsr	_display_input
+ 244:SOURCES/input.c **** 
+ 245:SOURCES/input.c **** 	cursor( ON );
+ 782                             		.loc 1 245 0
+ 783 04ea 66 11                   		mov.L	#1, r1
+ 784 04ec 05 00 00 00             		bsr	_cursor
+ 785                             		.balign 2,3,2
+ 786                             	.L68:
+ 246:SOURCES/input.c **** 	for(;;)
+ 247:SOURCES/input.c **** 	{
+ 248:SOURCES/input.c **** 		va_start( key_list, num );
+ 787                             		.loc 1 248 0
+ 788 04f0 71 AB 10                		add	#16, r10, r11
+ 789 04f3 E7 6B 01                		mov.L	r11, 4[r6]
+ 249:SOURCES/input.c **** 
+ 250:SOURCES/input.c **** 		if( ((key = WaitForKey()) == ENT_KEY ) && (strlen( string ) < min_length ))
+ 790                             		.loc 1 250 0
+ 791 04f6 05 00 00 00             		bsr	_WaitForKey
+ 792 04fa E3 61                   		mov.L	r1, [r6]
+ 793 04fc EC 6B                   		mov.L	[r6], r11
+ 794 04fe 75 5B 85                		cmp	#0x85, r11
+ 795 0501 21 11                   		bne	.L64
+ 796                             		.loc 1 250 0 is_stmt 0 discriminator 1
+ 797 0503 A8 E1                   		mov.L	8[r6], r1
+ 798 0505 05 00 00 00             		bsr	_strlen
+ 799 0509 EF 1C                   		mov.L	r1, r12
+ 800 050b ED 6B 03                		mov.L	12[r6], r11
+ 801 050e 47 BC                   		cmp	r11, r12
+ 802 0510 23 5E                   		bltu	.L70
+ 803                             		.balign 2,3,1
+ 804                             	.L64:
+ 251:SOURCES/input.c **** 			continue;
+ 252:SOURCES/input.c **** 
+ 253:SOURCES/input.c **** 		if( check_key_input( key, num, key_list ) == OK )
+ 805                             		.loc 1 253 0 is_stmt 1
+ 806 0512 ED 6B 01                		mov.L	4[r6], r11
+ 807 0515 EC 61                   		mov.L	[r6], r1
+ 808 0517 ED A2 03                		mov.L	12[r10], r2
+ 809 051a EF B3                   		mov.L	r11, r3
+ 810 051c 39 91 FB                		bsr	_check_key_input
+ 811 051f EF 1B                   		mov.L	r1, r11
+ 812 0521 61 0B                   		cmp	#0, r11
+ 813 0523 21 0C                   		bne	.L66
+ 254:SOURCES/input.c **** 		{
+ 255:SOURCES/input.c **** 			va_end( key_list );	
+ 256:SOURCES/input.c **** #if (PHL|PHL1000|PHL2700)
+ 257:SOURCES/input.c **** 			if( typ & INPUT_ALPHA || typ & INPUT_PRINT)
+ 258:SOURCES/input.c **** 				setecho( OFF );
+ 259:SOURCES/input.c **** #endif
+ 260:SOURCES/input.c **** 			cursor( OFF );
+ 814                             		.loc 1 260 0
+ 815 0525 66 01                   		mov.L	#0, r1
+ 816 0527 05 00 00 00             		bsr	_cursor
+ 261:SOURCES/input.c **** 			return( key );
+ 817                             		.loc 1 261 0
+ 818 052b EC 6A                   		mov.L	[r6], r10
+ 819 052d 2E 45                   		bra	.L69
+ 820                             	.L66:
+ 262:SOURCES/input.c **** 		}
+ 263:SOURCES/input.c **** 		va_end( key_list );
+ 264:SOURCES/input.c **** 
+ 265:SOURCES/input.c **** 		if( key == BS_KEY )
+ 821                             		.loc 1 265 0
+ 822 052f EC 6B                   		mov.L	[r6], r11
+ 823 0531 75 5B 87                		cmp	#0x87, r11
+ 824 0534 21 1B                   		bne	.L67
+ 266:SOURCES/input.c **** 		{
+ 267:SOURCES/input.c **** 			remove_key_from_buffer( string );
+ 825                             		.loc 1 267 0
+ 826 0536 A8 E1                   		mov.L	8[r6], r1
+ 827 0538 39 2F FD                		bsr	_remove_key_from_buffer
+ 268:SOURCES/input.c **** 			display_input( string, x, y, display_length, max_length );
+ 828                             		.loc 1 268 0
+ 829 053b ED 6B 04                		mov.L	16[r6], r11
+ 830 053e E3 0B                   		mov.L	r11, [r0]
+ 831 0540 A8 E1                   		mov.L	8[r6], r1
+ 832 0542 EC A2                   		mov.L	[r10], r2
+ 833 0544 ED A3 01                		mov.L	4[r10], r3
+ 834 0547 ED A4 02                		mov.L	8[r10], r4
+ 835 054a 39 45 FD                		bsr	_display_input
+ 269:SOURCES/input.c **** 			continue;
+ 836                             		.loc 1 269 0
+ 837 054d 2E 23                   		bra	.L65
+ 838                             	.L67:
+ 270:SOURCES/input.c **** 		}
+ 271:SOURCES/input.c **** 
+ 272:SOURCES/input.c **** 		store_key_in_string( key,  string, max_length, typ );
+ 839                             		.loc 1 272 0
+ 840 054f EC 61                   		mov.L	[r6], r1
+ 841 0551 A8 E2                   		mov.L	8[r6], r2
+ 842 0553 A9 63                   		mov.L	16[r6], r3
+ 843 0555 A9 6C                   		mov.L	20[r6], r4
+ 844 0557 39 0A FE                		bsr	_store_key_in_string
+ 273:SOURCES/input.c **** 		display_input(string, x, y, display_length, max_length );
+ 845                             		.loc 1 273 0
+ 846 055a ED 6B 04                		mov.L	16[r6], r11
+ 847 055d E3 0B                   		mov.L	r11, [r0]
+ 848 055f A8 E1                   		mov.L	8[r6], r1
+ 849 0561 EC A2                   		mov.L	[r10], r2
+ 850 0563 ED A3 01                		mov.L	4[r10], r3
+ 851 0566 ED A4 02                		mov.L	8[r10], r4
+ 852 0569 39 26 FD                		bsr	_display_input
+ 274:SOURCES/input.c **** 	}
+ 853                             		.loc 1 274 0
+ 854 056c 2E 84                   		bra	.L68
+ 855                             	.L70:
+ 251:SOURCES/input.c **** 			continue;
+ 856                             		.loc 1 251 0
+ 857 056e 03                      		nop
+ 858 056f 03                      		.balign 2,3,3
+ 859                             	.L65:
+ 860                             		.loc 1 274 0
+ 861 0570 2E 80                   		bra	.L68
+ 862                             	.L69:
+ 275:SOURCES/input.c **** }
+ 863                             		.loc 1 275 0
+ 864 0572 EF A1                   		mov.L	r10, r1
+ 865 0574 3F 6C 12                		rtsd	#72, r6-r12
+ 866                             	.LFE10:
+ 868                             		.global	_ScanOrKeyboardInput
+ 870                             	_ScanOrKeyboardInput:
+ 871                             	.LFB11:
+ 276:SOURCES/input.c **** 
+ 277:SOURCES/input.c **** 
+ 278:SOURCES/input.c **** 
+ 279:SOURCES/input.c **** int ScanOrKeyboardInput( char* string, int min_length, int max_length, int typ, int x, int y, int d
+ 280:SOURCES/input.c **** {
+ 872                             		.loc 1 280 0
+ 873 0577 6E 6D                   		pushm	r6-r13
+ 874                             	.LCFI32:
+ 875 0579 71 06 CC                		add	#-52, r0, r6
+ 876                             	.LCFI33:
+ 877 057c 71 60 E0                		add	#-32, r6, r0
+ 878                             	.LCFI34:
+ 879 057f 75 4A 58                		mov.L	#0x58, r10
+ 880 0582 4B 6A                   		add	r6, r10
+ 881 0584 A1 69                   		mov.L	r1, 20[r6]
+ 882 0586 A1 E2                   		mov.L	r2, 24[r6]
+ 883 0588 A1 EB                   		mov.L	r3, 28[r6]
+ 884 058a A2 64                   		mov.L	r4, 32[r6]
+ 281:SOURCES/input.c **** 	int	key;
+ 282:SOURCES/input.c **** 	int i, j;
+ 283:SOURCES/input.c **** 	int index = 0;
+ 885                             		.loc 1 283 0
+ 886 058c 3E 62 00                		mov.L	#0, 8[r6]
+ 887 058f 03                      		.balign 2,3,1
+ 888                             	.L97:
+ 284:SOURCES/input.c **** 
+ 285:SOURCES/input.c **** 	for(;;)
+ 286:SOURCES/input.c **** 	{
+ 287:SOURCES/input.c **** 		string[0] = '\0';
+ 889                             		.loc 1 287 0
+ 890 0590 ED 6B 05                		mov.L	20[r6], r11
+ 891 0593 F8 B4 00                		mov.B	#0, [r11]
+ 288:SOURCES/input.c **** 		if( ScanBarcode( string, min_length, max_length ) == OK )
+ 892                             		.loc 1 288 0
+ 893 0596 A9 69                   		mov.L	20[r6], r1
+ 894 0598 A9 E2                   		mov.L	24[r6], r2
+ 895 059a A9 EB                   		mov.L	28[r6], r3
+ 896 059c 05 00 00 00             		bsr	_ScanBarcode
+ 897 05a0 EF 1B                   		mov.L	r1, r11
+ 898 05a2 61 0B                   		cmp	#0, r11
+ 899 05a4 3B 45 02                		bne	.L72
+ 900                             	.LBB2:
+ 289:SOURCES/input.c **** 		{
+ 290:SOURCES/input.c **** 			int length;
+ 291:SOURCES/input.c **** //			int output;
+ 292:SOURCES/input.c **** 
+ 293:SOURCES/input.c **** 			length = strlen( string );
+ 901                             		.loc 1 293 0
+ 902 05a7 A9 69                   		mov.L	20[r6], r1
+ 903 05a9 05 00 00 00             		bsr	_strlen
+ 904 05ad EF 1B                   		mov.L	r1, r11
+ 905 05af E7 6B 03                		mov.L	r11, 12[r6]
+ 294:SOURCES/input.c **** 			gotoxy( x, y);
+ 906                             		.loc 1 294 0
+ 907 05b2 EC A1                   		mov.L	[r10], r1
+ 908 05b4 ED A2 01                		mov.L	4[r10], r2
+ 909 05b7 05 00 00 00             		bsr	_gotoxy
+ 295:SOURCES/input.c **** //			if( length < max_length ) 
+ 296:SOURCES/input.c **** //			{
+ 297:SOURCES/input.c **** 				for (j=0; j<display_height; j++)
+ 910                             		.loc 1 297 0
+ 911 05bb 3E 61 00                		mov.L	#0, 4[r6]
+ 912 05be 38 18 02                		bra	.L73
+ 913                             	.L90:
+ 298:SOURCES/input.c **** 				{
+ 299:SOURCES/input.c **** 					for (i=0; i<display_length; i++)
+ 914                             		.loc 1 299 0
+ 915 05c1 3E 60 00                		mov.L	#0, [r6]
+ 916 05c4 38 2A 01                		bra	.L74
+ 917                             	.L83:
+ 300:SOURCES/input.c **** 						if (index < length)
+ 918                             		.loc 1 300 0
+ 919 05c7 ED 6C 02                		mov.L	8[r6], r12
+ 920 05ca ED 6B 03                		mov.L	12[r6], r11
+ 921 05cd 47 BC                   		cmp	r11, r12
+ 922 05cf 29 05 38 10 01          		bge	.L75
+ 301:SOURCES/input.c **** 							putchar(string[index++]);
+ 923                             		.loc 1 301 0
+ 924 05d4 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 925 05da EC BB                   		mov.L	[r11], r11
+ 926 05dc ED BB 02                		mov.L	8[r11], r11
+ 927 05df ED BC 02                		mov.L	8[r11], r12
+ 928 05e2 60 1C                   		sub	#1, r12
+ 929 05e4 E7 BC 02                		mov.L	r12, 8[r11]
+ 930 05e7 ED BB 02                		mov.L	8[r11], r11
+ 931 05ea 61 0B                   		cmp	#0, r11
+ 932 05ec 29 05 38 BF 00          		bge	.L76
+ 933                             		.loc 1 301 0 is_stmt 0 discriminator 1
+ 934 05f1 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 935 05f7 EC BB                   		mov.L	[r11], r11
+ 936 05f9 ED BB 02                		mov.L	8[r11], r11
+ 937 05fc ED BC 02                		mov.L	8[r11], r12
+ 938 05ff FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 939 0605 EC BB                   		mov.L	[r11], r11
+ 940 0607 ED BB 02                		mov.L	8[r11], r11
+ 941 060a ED BB 06                		mov.L	24[r11], r11
+ 942 060d 47 BC                   		cmp	r11, r12
+ 943 060f 29 6B                   		blt	.L77
+ 944                             		.loc 1 301 0 discriminator 3
+ 945 0611 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 946 0617 EC BB                   		mov.L	[r11], r11
+ 947 0619 ED BB 02                		mov.L	8[r11], r11
+ 948 061c EC BB                   		mov.L	[r11], r11
+ 949 061e ED 6C 02                		mov.L	8[r6], r12
+ 950 0621 ED 6D 05                		mov.L	20[r6], r13
+ 951 0624 4B DC                   		add	r13, r12
+ 952 0626 CC CC                   		mov.B	[r12], r12
+ 953 0628 C3 BC                   		mov.B	r12, [r11]
+ 954 062a ED 6B 02                		mov.L	8[r6], r11
+ 955 062d 62 1B                   		add	#1, r11
+ 956 062f E7 6B 02                		mov.L	r11, 8[r6]
+ 957 0632 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 958 0638 EC BB                   		mov.L	[r11], r11
+ 959 063a ED BB 02                		mov.L	8[r11], r11
+ 960 063d EC BB                   		mov.L	[r11], r11
+ 961 063f CC BB                   		mov.B	[r11], r11
+ 962 0641 5B BB                   		movu.B	r11, r11
+ 963 0643 61 AB                   		cmp	#10, r11
+ 964 0645 20 16                   		beq	.L78
+ 965                             		.loc 1 301 0 discriminator 5
+ 966 0647 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 967 064d EC BB                   		mov.L	[r11], r11
+ 968 064f ED BB 02                		mov.L	8[r11], r11
+ 969 0652 EC BC                   		mov.L	[r11], r12
+ 970 0654 62 1C                   		add	#1, r12
+ 971 0656 E3 BC                   		mov.L	r12, [r11]
+ 972 0658 38 90 00                		bra	.L81
+ 973                             	.L78:
+ 974                             		.loc 1 301 0 discriminator 6
+ 975 065b FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 976 0661 EC BC                   		mov.L	[r11], r12
+ 977 0663 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 978 0669 EC BB                   		mov.L	[r11], r11
+ 979 066b ED BB 02                		mov.L	8[r11], r11
+ 980 066e EF C1                   		mov.L	r12, r1
+ 981 0670 66 A2                   		mov.L	#10, r2
+ 982 0672 EF B3                   		mov.L	r11, r3
+ 983 0674 05 00 00 00             		bsr	___swbuf_r
+ 984 0678 2E 70                   		bra	.L81
+ 985                             	.L77:
+ 986                             		.loc 1 301 0 discriminator 4
+ 987 067a FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 988 0680 EC BD                   		mov.L	[r11], r13
+ 989 0682 ED 6B 02                		mov.L	8[r6], r11
+ 990 0685 ED 6C 05                		mov.L	20[r6], r12
+ 991 0688 4B CB                   		add	r12, r11
+ 992 068a CC BB                   		mov.B	[r11], r11
+ 993 068c 5B BC                   		movu.B	r11, r12
+ 994 068e ED 6B 02                		mov.L	8[r6], r11
+ 995 0691 62 1B                   		add	#1, r11
+ 996 0693 E7 6B 02                		mov.L	r11, 8[r6]
+ 997 0696 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 998 069c EC BB                   		mov.L	[r11], r11
+ 999 069e ED BB 02                		mov.L	8[r11], r11
+ 1000 06a1 EF D1                   		mov.L	r13, r1
+ 1001 06a3 EF C2                   		mov.L	r12, r2
+ 1002 06a5 EF B3                   		mov.L	r11, r3
+ 1003 06a7 05 00 00 00             		bsr	___swbuf_r
+ 1004 06ab 2E 3D                   		bra	.L81
+ 1005                             	.L76:
+ 1006                             		.loc 1 301 0 discriminator 2
+ 1007 06ad FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1008 06b3 EC BB                   		mov.L	[r11], r11
+ 1009 06b5 ED BB 02                		mov.L	8[r11], r11
+ 1010 06b8 EC BB                   		mov.L	[r11], r11
+ 1011 06ba ED 6C 02                		mov.L	8[r6], r12
+ 1012 06bd ED 6D 05                		mov.L	20[r6], r13
+ 1013 06c0 4B DC                   		add	r13, r12
+ 1014 06c2 CC CC                   		mov.B	[r12], r12
+ 1015 06c4 C3 BC                   		mov.B	r12, [r11]
+ 1016 06c6 ED 6B 02                		mov.L	8[r6], r11
+ 1017 06c9 62 1B                   		add	#1, r11
+ 1018 06cb E7 6B 02                		mov.L	r11, 8[r6]
+ 1019 06ce FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1020 06d4 EC BB                   		mov.L	[r11], r11
+ 1021 06d6 ED BB 02                		mov.L	8[r11], r11
+ 1022 06d9 EC BC                   		mov.L	[r11], r12
+ 1023 06db 62 1C                   		add	#1, r12
+ 1024 06dd E3 BC                   		mov.L	r12, [r11]
+ 1025 06df 2E 09                   		bra	.L81
+ 1026                             	.L75:
+ 302:SOURCES/input.c **** 						else
+ 303:SOURCES/input.c **** 							return (SCANNED); // Input by scanning
+ 1027                             		.loc 1 303 0 is_stmt 1
+ 1028 06e1 FB AA 00 08             		mov.L	#0x800, r10
+ 1029 06e5 38 72 01                		bra	.L82
+ 1030                             	.L81:
+ 299:SOURCES/input.c **** 					for (i=0; i<display_length; i++)
+ 1031                             		.loc 1 299 0
+ 1032 06e8 EC 6B                   		mov.L	[r6], r11
+ 1033 06ea 62 1B                   		add	#1, r11
+ 1034 06ec E3 6B                   		mov.L	r11, [r6]
+ 1035                             		.balign 2,3,1
+ 1036                             	.L74:
+ 299:SOURCES/input.c **** 					for (i=0; i<display_length; i++)
+ 1037                             		.loc 1 299 0 is_stmt 0 discriminator 1
+ 1038 06ee EC 6C                   		mov.L	[r6], r12
+ 1039 06f0 ED AB 02                		mov.L	8[r10], r11
+ 1040 06f3 47 BC                   		cmp	r11, r12
+ 1041 06f5 28 05 38 D0 FE          		blt	.L83
+ 304:SOURCES/input.c **** 					putchar('\n');
+ 1042                             		.loc 1 304 0 is_stmt 1
+ 1043 06fa FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1044 0700 EC BB                   		mov.L	[r11], r11
+ 1045 0702 ED BB 02                		mov.L	8[r11], r11
+ 1046 0705 ED BC 02                		mov.L	8[r11], r12
+ 1047 0708 60 1C                   		sub	#1, r12
+ 1048 070a E7 BC 02                		mov.L	r12, 8[r11]
+ 1049 070d ED BB 02                		mov.L	8[r11], r11
+ 1050 0710 61 0B                   		cmp	#0, r11
+ 1051 0712 29 05 38 99 00          		bge	.L84
+ 1052                             		.loc 1 304 0 is_stmt 0 discriminator 1
+ 1053 0717 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1054 071d EC BB                   		mov.L	[r11], r11
+ 1055 071f ED BB 02                		mov.L	8[r11], r11
+ 1056 0722 ED BC 02                		mov.L	8[r11], r12
+ 1057 0725 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1058 072b EC BB                   		mov.L	[r11], r11
+ 1059 072d ED BB 02                		mov.L	8[r11], r11
+ 1060 0730 ED BB 06                		mov.L	24[r11], r11
+ 1061 0733 47 BC                   		cmp	r11, r12
+ 1062 0735 29 59                   		blt	.L85
+ 1063                             		.loc 1 304 0 discriminator 3
+ 1064 0737 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1065 073d EC BB                   		mov.L	[r11], r11
+ 1066 073f ED BB 02                		mov.L	8[r11], r11
+ 1067 0742 EC BB                   		mov.L	[r11], r11
+ 1068 0744 F8 B4 0A                		mov.B	#10, [r11]
+ 1069 0747 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1070 074d EC BB                   		mov.L	[r11], r11
+ 1071 074f ED BB 02                		mov.L	8[r11], r11
+ 1072 0752 EC BB                   		mov.L	[r11], r11
+ 1073 0754 CC BB                   		mov.B	[r11], r11
+ 1074 0756 5B BB                   		movu.B	r11, r11
+ 1075 0758 61 AB                   		cmp	#10, r11
+ 1076 075a 20 15                   		beq	.L86
+ 1077                             		.loc 1 304 0 discriminator 5
+ 1078 075c FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1079 0762 EC BB                   		mov.L	[r11], r11
+ 1080 0764 ED BB 02                		mov.L	8[r11], r11
+ 1081 0767 EC BC                   		mov.L	[r11], r12
+ 1082 0769 62 1C                   		add	#1, r12
+ 1083 076b E3 BC                   		mov.L	r12, [r11]
+ 1084 076d 2E 61                   		bra	.L89
+ 1085                             	.L86:
+ 1086                             		.loc 1 304 0 discriminator 6
+ 1087 076f FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1088 0775 EC BC                   		mov.L	[r11], r12
+ 1089 0777 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1090 077d EC BB                   		mov.L	[r11], r11
+ 1091 077f ED BB 02                		mov.L	8[r11], r11
+ 1092 0782 EF C1                   		mov.L	r12, r1
+ 1093 0784 66 A2                   		mov.L	#10, r2
+ 1094 0786 EF B3                   		mov.L	r11, r3
+ 1095 0788 05 00 00 00             		bsr	___swbuf_r
+ 1096 078c 2E 42                   		bra	.L89
+ 1097                             	.L85:
+ 1098                             		.loc 1 304 0 discriminator 4
+ 1099 078e FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1100 0794 EC BC                   		mov.L	[r11], r12
+ 1101 0796 FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1102 079c EC BB                   		mov.L	[r11], r11
+ 1103 079e ED BB 02                		mov.L	8[r11], r11
+ 1104 07a1 EF C1                   		mov.L	r12, r1
+ 1105 07a3 66 A2                   		mov.L	#10, r2
+ 1106 07a5 EF B3                   		mov.L	r11, r3
+ 1107 07a7 05 00 00 00             		bsr	___swbuf_r
+ 1108 07ab 2E 23                   		bra	.L89
+ 1109                             	.L84:
+ 1110                             		.loc 1 304 0 discriminator 2
+ 1111 07ad FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1112 07b3 EC BB                   		mov.L	[r11], r11
+ 1113 07b5 ED BB 02                		mov.L	8[r11], r11
+ 1114 07b8 EC BB                   		mov.L	[r11], r11
+ 1115 07ba F8 B4 0A                		mov.B	#10, [r11]
+ 1116 07bd FB B2 00 00 00 00       		mov.L	#__impure_ptr, r11
+ 1117 07c3 EC BB                   		mov.L	[r11], r11
+ 1118 07c5 ED BB 02                		mov.L	8[r11], r11
+ 1119 07c8 EC BC                   		mov.L	[r11], r12
+ 1120 07ca 62 1C                   		add	#1, r12
+ 1121 07cc E3 BC                   		mov.L	r12, [r11]
+ 1122                             		.balign 2,3,1
+ 1123                             	.L89:
+ 297:SOURCES/input.c **** 				for (j=0; j<display_height; j++)
+ 1124                             		.loc 1 297 0 is_stmt 1
+ 1125 07ce ED 6B 01                		mov.L	4[r6], r11
+ 1126 07d1 62 1B                   		add	#1, r11
+ 1127 07d3 E7 6B 01                		mov.L	r11, 4[r6]
+ 1128                             		.balign 2,3,1
+ 1129                             	.L73:
+ 297:SOURCES/input.c **** 				for (j=0; j<display_height; j++)
+ 1130                             		.loc 1 297 0 is_stmt 0 discriminator 1
+ 1131 07d6 ED 6C 01                		mov.L	4[r6], r12
+ 1132 07d9 ED AB 03                		mov.L	12[r10], r11
+ 1133 07dc 47 BC                   		cmp	r11, r12
+ 1134 07de 28 05 38 E1 FD          		blt	.L90
+ 305:SOURCES/input.c **** 				}
+ 306:SOURCES/input.c **** //			}
+ 307:SOURCES/input.c **** //			else 
+ 308:SOURCES/input.c **** //				printf("%-*.*s", display_length, display_length, string + ( length - display_length )); 
+ 309:SOURCES/input.c **** 
+ 310:SOURCES/input.c **** 			return( SCANNED ); // Input by scanning
+ 1135                             		.loc 1 310 0 is_stmt 1
+ 1136 07e3 FB AA 00 08             		mov.L	#0x800, r10
+ 1137 07e7 2E 70                   		bra	.L82
+ 1138                             	.L72:
+ 1139                             	.LBE2:
+ 311:SOURCES/input.c **** 		}
+ 312:SOURCES/input.c **** 
+ 313:SOURCES/input.c **** 		key = KeyboardInput( string, min_length, max_length, typ, x, y, display_length, 4, TRIGGER_KEY, C
+ 1140                             		.loc 1 313 0
+ 1141 07e9 EC AB                   		mov.L	[r10], r11
+ 1142 07eb E3 0B                   		mov.L	r11, [r0]
+ 1143 07ed ED AB 01                		mov.L	4[r10], r11
+ 1144 07f0 E7 0B 01                		mov.L	r11, 4[r0]
+ 1145 07f3 ED AB 02                		mov.L	8[r10], r11
+ 1146 07f6 E7 0B 02                		mov.L	r11, 8[r0]
+ 1147 07f9 3E 03 04                		mov.L	#4, 12[r0]
+ 1148 07fc 3E 04 80                		mov.L	#0x80, 16[r0]
+ 1149 07ff 3E 05 86                		mov.L	#0x86, 20[r0]
+ 1150 0802 3E 06 1B                		mov.L	#27, 24[r0]
+ 1151 0805 3E 07 85                		mov.L	#0x85, 28[r0]
+ 1152 0808 A9 69                   		mov.L	20[r6], r1
+ 1153 080a A9 E2                   		mov.L	24[r6], r2
+ 1154 080c A9 EB                   		mov.L	28[r6], r3
+ 1155 080e AA 64                   		mov.L	32[r6], r4
+ 1156 0810 05 00 00 00             		bsr	_KeyboardInput
+ 1157 0814 A1 61                   		mov.L	r1, 16[r6]
+ 314:SOURCES/input.c **** 		switch( key )
+ 1158                             		.loc 1 314 0
+ 1159 0816 ED 6B 04                		mov.L	16[r6], r11
+ 1160 0819 75 5B 80                		cmp	#0x80, r11
+ 1161 081c 20 20                   		beq	.L93
+ 1162 081e 75 5B 80                		cmp	#0x80, r11
+ 1163 0821 2A 09                   		bgt	.L95
+ 1164 0823 75 5B 1B                		cmp	#27, r11
+ 1165 0826 20 1C                   		beq	.L92
+ 1166 0828 2E 26                   		bra	.L91
+ 1167                             	.L95:
+ 1168 082a 75 5B 85                		cmp	#0x85, r11
+ 1169 082d 20 09                   		beq	.L94
+ 1170 082f 75 5B 86                		cmp	#0x86, r11
+ 1171 0832 20 10                   		beq	.L92
+ 1172 0834 2E 1A                   		bra	.L91
+ 1173                             	.L94:
+ 315:SOURCES/input.c **** 		{
+ 316:SOURCES/input.c **** 			case ENT_KEY:
+ 317:SOURCES/input.c **** 				return( KEYBOARD );	// Keyboard input
+ 1174                             		.loc 1 317 0
+ 1175 0836 FB AA 00 04             		mov.L	#0x400, r10
+ 1176 083a 2E 1D                   		bra	.L82
+ 1177                             	.L93:
+ 318:SOURCES/input.c **** 			case TRIGGER_KEY:
+ 319:SOURCES/input.c **** 				return( KEYBOARD );	// Keyboard input 
+ 1178                             		.loc 1 319 0
+ 1179 083c FB AA 00 04             		mov.L	#0x400, r10
+ 1180 0840 2E 17                   		bra	.L82
+ 1181                             	.L92:
+ 320:SOURCES/input.c **** 
+ 321:SOURCES/input.c **** 			case CLR_KEY:
+ 322:SOURCES/input.c **** 			case ESC_KEY:
+ 323:SOURCES/input.c **** 				if( strlen( string ) != 0)
+ 1182                             		.loc 1 323 0
+ 1183 0842 ED 6B 05                		mov.L	20[r6], r11
+ 1184 0845 CC BB                   		mov.B	[r11], r11
+ 1185 0847 5B BB                   		movu.B	r11, r11
+ 1186 0849 61 0B                   		cmp	#0, r11
+ 1187 084b 21 08                   		bne	.L99
+ 1188 084d 03                      		.balign 2,3,1
+ 1189                             	.L91:
+ 324:SOURCES/input.c **** 				{
+ 325:SOURCES/input.c **** 					break;
+ 326:SOURCES/input.c **** 				} // fall through
+ 327:SOURCES/input.c **** 			default:
+ 328:SOURCES/input.c **** 				return( key );
+ 1190                             		.loc 1 328 0
+ 1191 084e ED 6A 04                		mov.L	16[r6], r10
+ 1192 0851 2E 06                   		bra	.L82
+ 1193                             	.L99:
+ 325:SOURCES/input.c **** 					break;
+ 1194                             		.loc 1 325 0
+ 1195 0853 03                      		nop
+ 1196                             		.balign 2,3,3
+ 1197                             	.L98:
+ 329:SOURCES/input.c **** 		}
+ 330:SOURCES/input.c **** 	}
+ 1198                             		.loc 1 330 0
+ 1199 0854 38 3C FD                		bra	.L97
+ 1200                             	.L82:
+ 331:SOURCES/input.c **** }
+ 1201                             		.loc 1 331 0
+ 1202 0857 EF A1                   		mov.L	r10, r1
+ 1203 0859 3F 6D 1D                		rtsd	#116, r6-r13
+ 1204                             	.LFE11:
+ 1206                             		.global	_ScanOrKeyboardInputSymbol
+ 1208                             	_ScanOrKeyboardInputSymbol:
+ 1209                             	.LFB12:
+ 332:SOURCES/input.c **** 
+ 333:SOURCES/input.c **** 
+ 334:SOURCES/input.c **** int ScanOrKeyboardInputSymbol( char* string, int min_length, int max_length, int typ, int x, int y,
+ 335:SOURCES/input.c **** {
+ 1210                             		.loc 1 335 0
+ 1211 085c 6E 6B                   		pushm	r6-r11
+ 1212                             	.LCFI35:
+ 1213 085e 71 06 DC                		add	#-36, r0, r6
+ 1214                             	.LCFI36:
+ 1215 0861 71 60 E0                		add	#-32, r6, r0
+ 1216                             	.LCFI37:
+ 1217 0864 75 4A 40                		mov.L	#64, r10
+ 1218 0867 4B 6A                   		add	r6, r10
+ 1219 0869 A0 69                   		mov.L	r1, 4[r6]
+ 1220 086b A0 E2                   		mov.L	r2, 8[r6]
+ 1221 086d A0 EB                   		mov.L	r3, 12[r6]
+ 1222 086f A1 64                   		mov.L	r4, 16[r6]
+ 1223 0871 03                      		.balign 2,3,1
+ 1224                             	.L109:
+ 336:SOURCES/input.c **** 	int	key;
+ 337:SOURCES/input.c **** 	
+ 338:SOURCES/input.c **** 	for(;;)
+ 339:SOURCES/input.c **** 	{
+ 340:SOURCES/input.c **** 		string[0] = '\0';
+ 1225                             		.loc 1 340 0
+ 1226 0872 ED 6B 01                		mov.L	4[r6], r11
+ 1227 0875 F8 B4 00                		mov.B	#0, [r11]
+ 341:SOURCES/input.c **** 		display_input( string, x, y, display_length, max_length );
+ 1228                             		.loc 1 341 0
+ 1229 0878 ED 6B 03                		mov.L	12[r6], r11
+ 1230 087b E3 0B                   		mov.L	r11, [r0]
+ 1231 087d A8 69                   		mov.L	4[r6], r1
+ 1232 087f EC A2                   		mov.L	[r10], r2
+ 1233 0881 ED A3 01                		mov.L	4[r10], r3
+ 1234 0884 ED A4 02                		mov.L	8[r10], r4
+ 1235 0887 39 08 FA                		bsr	_display_input
+ 342:SOURCES/input.c **** 		if( ScanBarcodeSymbol( string, min_length, max_length, nCodeId ) == OK )
+ 1236                             		.loc 1 342 0
+ 1237 088a A8 69                   		mov.L	4[r6], r1
+ 1238 088c A8 E2                   		mov.L	8[r6], r2
+ 1239 088e A8 EB                   		mov.L	12[r6], r3
+ 1240 0890 ED A4 03                		mov.L	12[r10], r4
+ 1241 0893 05 00 00 00             		bsr	_ScanBarcodeSymbol
+ 1242 0897 EF 1B                   		mov.L	r1, r11
+ 1243 0899 61 0B                   		cmp	#0, r11
+ 1244 089b 21 1A                   		bne	.L101
+ 343:SOURCES/input.c **** 		{
+ 344:SOURCES/input.c **** 			display_input( string, x, y, display_length, max_length );
+ 1245                             		.loc 1 344 0
+ 1246 089d ED 6B 03                		mov.L	12[r6], r11
+ 1247 08a0 E3 0B                   		mov.L	r11, [r0]
+ 1248 08a2 A8 69                   		mov.L	4[r6], r1
+ 1249 08a4 EC A2                   		mov.L	[r10], r2
+ 1250 08a6 ED A3 01                		mov.L	4[r10], r3
+ 1251 08a9 ED A4 02                		mov.L	8[r10], r4
+ 1252 08ac 39 E3 F9                		bsr	_display_input
+ 345:SOURCES/input.c **** 			return( SCANNED ); // Input by scanning
+ 1253                             		.loc 1 345 0
+ 1254 08af FB AA 00 08             		mov.L	#0x800, r10
+ 1255 08b3 2E 6E                   		bra	.L102
+ 1256                             	.L101:
+ 346:SOURCES/input.c **** 		}
+ 347:SOURCES/input.c **** 
+ 348:SOURCES/input.c **** 		key = KeyboardInput( string, min_length, max_length, typ, x, y, display_length, 4, TRIGGER_KEY, C
+ 1257                             		.loc 1 348 0
+ 1258 08b5 EC AB                   		mov.L	[r10], r11
+ 1259 08b7 E3 0B                   		mov.L	r11, [r0]
+ 1260 08b9 ED AB 01                		mov.L	4[r10], r11
+ 1261 08bc E7 0B 01                		mov.L	r11, 4[r0]
+ 1262 08bf ED AB 02                		mov.L	8[r10], r11
+ 1263 08c2 E7 0B 02                		mov.L	r11, 8[r0]
+ 1264 08c5 3E 03 04                		mov.L	#4, 12[r0]
+ 1265 08c8 3E 04 80                		mov.L	#0x80, 16[r0]
+ 1266 08cb 3E 05 86                		mov.L	#0x86, 20[r0]
+ 1267 08ce 3E 06 1B                		mov.L	#27, 24[r0]
+ 1268 08d1 3E 07 85                		mov.L	#0x85, 28[r0]
+ 1269 08d4 A8 69                   		mov.L	4[r6], r1
+ 1270 08d6 A8 E2                   		mov.L	8[r6], r2
+ 1271 08d8 A8 EB                   		mov.L	12[r6], r3
+ 1272 08da A9 64                   		mov.L	16[r6], r4
+ 1273 08dc 05 00 00 00             		bsr	_KeyboardInput
+ 1274 08e0 E3 61                   		mov.L	r1, [r6]
+ 349:SOURCES/input.c **** 		switch( key )
+ 1275                             		.loc 1 349 0
+ 1276 08e2 EC 6B                   		mov.L	[r6], r11
+ 1277 08e4 75 5B 80                		cmp	#0x80, r11
+ 1278 08e7 20 20                   		beq	.L105
+ 1279 08e9 75 5B 80                		cmp	#0x80, r11
+ 1280 08ec 2A 09                   		bgt	.L107
+ 1281 08ee 75 5B 1B                		cmp	#27, r11
+ 1282 08f1 20 1C                   		beq	.L104
+ 1283 08f3 2E 25                   		bra	.L103
+ 1284                             	.L107:
+ 1285 08f5 75 5B 85                		cmp	#0x85, r11
+ 1286 08f8 20 09                   		beq	.L106
+ 1287 08fa 75 5B 86                		cmp	#0x86, r11
+ 1288 08fd 20 10                   		beq	.L104
+ 1289 08ff 2E 19                   		bra	.L103
+ 1290                             	.L106:
+ 350:SOURCES/input.c **** 		{
+ 351:SOURCES/input.c **** 			case ENT_KEY:
+ 352:SOURCES/input.c **** 				return( KEYBOARD );	// Keyboard input
+ 1291                             		.loc 1 352 0
+ 1292 0901 FB AA 00 04             		mov.L	#0x400, r10
+ 1293 0905 2E 1C                   		bra	.L102
+ 1294                             	.L105:
+ 353:SOURCES/input.c **** 			case TRIGGER_KEY:
+ 354:SOURCES/input.c **** 				return( KEYBOARD );	// Keyboard input  
+ 1295                             		.loc 1 354 0
+ 1296 0907 FB AA 00 04             		mov.L	#0x400, r10
+ 1297 090b 2E 16                   		bra	.L102
+ 1298                             	.L104:
+ 355:SOURCES/input.c **** 
+ 356:SOURCES/input.c **** 			case CLR_KEY:
+ 357:SOURCES/input.c **** 			case ESC_KEY:
+ 358:SOURCES/input.c **** 				if( strlen( string ) != 0)
+ 1299                             		.loc 1 358 0
+ 1300 090d ED 6B 01                		mov.L	4[r6], r11
+ 1301 0910 CC BB                   		mov.B	[r11], r11
+ 1302 0912 5B BB                   		movu.B	r11, r11
+ 1303 0914 61 0B                   		cmp	#0, r11
+ 1304 0916 21 06                   		bne	.L111
+ 1305                             		.balign 2,3,1
+ 1306                             	.L103:
+ 359:SOURCES/input.c **** 				{
+ 360:SOURCES/input.c **** 					break;
+ 361:SOURCES/input.c **** 				} // fall through
+ 362:SOURCES/input.c **** 			default:
+ 363:SOURCES/input.c **** 				return( key );
+ 1307                             		.loc 1 363 0
+ 1308 0918 EC 6A                   		mov.L	[r6], r10
+ 1309 091a 2E 07                   		bra	.L102
+ 1310                             	.L111:
+ 360:SOURCES/input.c **** 					break;
+ 1311                             		.loc 1 360 0
+ 1312 091c 03                      		nop
+ 1313 091d 03                      		.balign 2,3,3
+ 1314                             	.L110:
+ 364:SOURCES/input.c **** 		}
+ 365:SOURCES/input.c **** 	}
+ 1315                             		.loc 1 365 0
+ 1316 091e 38 54 FF                		bra	.L109
+ 1317                             	.L102:
+ 366:SOURCES/input.c **** }
+ 1318                             		.loc 1 366 0
+ 1319 0921 EF A1                   		mov.L	r10, r1
+ 1320 0923 3F 6B 17                		rtsd	#92, r6-r11
+ 1321                             	.LFE12:
+ 1324                             	_store_char_in_string_numeric:
+ 1325                             	.LFB13:
+ 367:SOURCES/input.c **** 
+ 368:SOURCES/input.c **** // ----------------------------------------------------------------------------
+ 369:SOURCES/input.c **** // Special numeric input below
+ 370:SOURCES/input.c **** // ----------------------------------------------------------------------------
+ 371:SOURCES/input.c **** 
+ 372:SOURCES/input.c **** static void store_char_in_string_numeric( int key, int max_len, char *string, int typ, int defaul )
+ 373:SOURCES/input.c **** {
+ 1326                             		.loc 1 373 0
+ 1327 0926 6E 6C                   		pushm	r6-r12
+ 1328                             	.LCFI38:
+ 1329 0928 71 06 E4                		add	#-28, r0, r6
+ 1330                             	.LCFI39:
+ 1331 092b EF 60                   		mov.L	r6, r0
+ 1332                             	.LCFI40:
+ 1333 092d 75 4A 3C                		mov.L	#60, r10
+ 1334 0930 4B 6A                   		add	r6, r10
+ 1335 0932 A0 E1                   		mov.L	r1, 8[r6]
+ 1336 0934 A0 EA                   		mov.L	r2, 12[r6]
+ 1337 0936 A1 63                   		mov.L	r3, 16[r6]
+ 1338 0938 A1 6C                   		mov.L	r4, 20[r6]
+ 374:SOURCES/input.c **** 	int i, ok;
+ 375:SOURCES/input.c **** 	static char tmp[INPUT_BCR_MAX+1];
+ 376:SOURCES/input.c **** 	
+ 377:SOURCES/input.c **** 	max_len += ((typ & INPUT_NEGATIVE)&&(string[0]=='-'))?1:0;
+ 1339                             		.loc 1 377 0
+ 1340 093a ED 6B 05                		mov.L	20[r6], r11
+ 1341 093d 64 8B                   		and	#8, r11
+ 1342 093f 61 0B                   		cmp	#0, r11
+ 1343 0941 20 12                   		beq	.L113
+ 1344                             		.loc 1 377 0 is_stmt 0 discriminator 1
+ 1345 0943 ED 6B 04                		mov.L	16[r6], r11
+ 1346 0946 CC BB                   		mov.B	[r11], r11
+ 1347 0948 5B BB                   		movu.B	r11, r11
+ 1348 094a 75 5B 2D                		cmp	#45, r11
+ 1349 094d 21 06                   		bne	.L113
+ 1350                             		.loc 1 377 0 discriminator 3
+ 1351 094f 66 1B                   		mov.L	#1, r11
+ 1352 0951 2E 05                   		bra	.L114
+ 1353                             	.L113:
+ 1354                             		.loc 1 377 0 discriminator 2
+ 1355 0953 66 0B                   		mov.L	#0, r11
+ 1356 0955 03                      		.balign 2,3,1
+ 1357                             	.L114:
+ 1358                             		.loc 1 377 0 discriminator 4
+ 1359 0956 ED 6C 03                		mov.L	12[r6], r12
+ 1360 0959 4B CB                   		add	r12, r11
+ 1361 095b E7 6B 03                		mov.L	r11, 12[r6]
+ 378:SOURCES/input.c **** 	i = strlen( string );
+ 1362                             		.loc 1 378 0 is_stmt 1 discriminator 4
+ 1363 095e A9 61                   		mov.L	16[r6], r1
+ 1364 0960 05 00 00 00             		bsr	_strlen
+ 1365 0964 EF 1B                   		mov.L	r1, r11
+ 1366 0966 E7 6B 01                		mov.L	r11, 4[r6]
+ 379:SOURCES/input.c **** 
+ 380:SOURCES/input.c **** 	if(( i >= max_len ) && (key != '-') && !defaul)
+ 1367                             		.loc 1 380 0 discriminator 4
+ 1368 0969 ED 6C 01                		mov.L	4[r6], r12
+ 1369 096c ED 6B 03                		mov.L	12[r6], r11
+ 1370 096f 47 BC                   		cmp	r11, r12
+ 1371 0971 29 11                   		blt	.L115
+ 1372                             		.loc 1 380 0 is_stmt 0 discriminator 1
+ 1373 0973 ED 6B 02                		mov.L	8[r6], r11
+ 1374 0976 75 5B 2D                		cmp	#45, r11
+ 1375 0979 20 09                   		beq	.L115
+ 1376 097b EC AB                   		mov.L	[r10], r11
+ 1377 097d 61 0B                   		cmp	#0, r11
+ 1378 097f 3A F3 00                		beq	.L123
+ 1379                             		.balign 2,3,4
+ 1380                             	.L115:
+ 381:SOURCES/input.c **** 		return;
+ 382:SOURCES/input.c **** 
+ 383:SOURCES/input.c **** 	ok = 0;
+ 1381                             		.loc 1 383 0 is_stmt 1
+ 1382 0982 3E 60 00                		mov.L	#0, [r6]
+ 384:SOURCES/input.c **** 
+ 385:SOURCES/input.c **** 	if( typ & INPUT_NUM )
+ 1383                             		.loc 1 385 0
+ 1384 0985 ED 6B 05                		mov.L	20[r6], r11
+ 1385 0988 64 2B                   		and	#2, r11
+ 1386 098a 61 0B                   		cmp	#0, r11
+ 1387 098c 20 1A                   		beq	.L117
+ 386:SOURCES/input.c **** 		ok = isdigit( key );
+ 1388                             		.loc 1 386 0
+ 1389 098e FB B2 00 00 00 00       		mov.L	#___ctype_ptr__, r11
+ 1390 0994 EC BC                   		mov.L	[r11], r12
+ 1391 0996 ED 6B 02                		mov.L	8[r6], r11
+ 1392 0999 62 1B                   		add	#1, r11
+ 1393 099b 4B CB                   		add	r12, r11
+ 1394 099d CC BB                   		mov.B	[r11], r11
+ 1395 099f 5B BB                   		movu.B	r11, r11
+ 1396 09a1 64 4B                   		and	#4, r11
+ 1397 09a3 E3 6B                   		mov.L	r11, [r6]
+ 1398 09a5 03                      		.balign 2,3,1
+ 1399                             	.L117:
+ 387:SOURCES/input.c **** 	if( !ok && ( typ & INPUT_NEGATIVE ))
+ 1400                             		.loc 1 387 0
+ 1401 09a6 EC 6B                   		mov.L	[r6], r11
+ 1402 09a8 61 0B                   		cmp	#0, r11
+ 1403 09aa 21 18                   		bne	.L118
+ 1404                             		.loc 1 387 0 is_stmt 0 discriminator 1
+ 1405 09ac ED 6B 05                		mov.L	20[r6], r11
+ 1406 09af 64 8B                   		and	#8, r11
+ 1407 09b1 61 0B                   		cmp	#0, r11
+ 1408 09b3 20 0F                   		beq	.L118
+ 388:SOURCES/input.c **** 		ok = ( key == '-');
+ 1409                             		.loc 1 388 0 is_stmt 1
+ 1410 09b5 ED 6B 02                		mov.L	8[r6], r11
+ 1411 09b8 75 5B 2D                		cmp	#45, r11
+ 1412 09bb FC DB B0                		sceq.L	r11
+ 1413 09be 5B BB                   		movu.B	r11, r11
+ 1414 09c0 E3 6B                   		mov.L	r11, [r6]
+ 1415                             		.balign 2,3,1
+ 1416                             	.L118:
+ 389:SOURCES/input.c **** 	if( ok )
+ 1417                             		.loc 1 389 0
+ 1418 09c2 EC 6B                   		mov.L	[r6], r11
+ 1419 09c4 61 0B                   		cmp	#0, r11
+ 1420 09c6 3A AE 00                		beq	.L112
+ 390:SOURCES/input.c **** 	{
+ 391:SOURCES/input.c **** 		if( defaul )
+ 1421                             		.loc 1 391 0
+ 1422 09c9 EC AA                   		mov.L	[r10], r10
+ 1423 09cb 61 0A                   		cmp	#0, r10
+ 1424 09cd 20 17                   		beq	.L119
+ 392:SOURCES/input.c **** 		{
+ 393:SOURCES/input.c **** 			string[0] = (char)key;
+ 1425                             		.loc 1 393 0
+ 1426 09cf ED 6A 02                		mov.L	8[r6], r10
+ 1427 09d2 CF AB                   		mov.B	r10, r11
+ 1428 09d4 ED 6A 04                		mov.L	16[r6], r10
+ 1429 09d7 C3 AB                   		mov.B	r11, [r10]
+ 394:SOURCES/input.c **** 			string[1] = '\0';
+ 1430                             		.loc 1 394 0
+ 1431 09d9 ED 6A 04                		mov.L	16[r6], r10
+ 1432 09dc 62 1A                   		add	#1, r10
+ 1433 09de F8 A4 00                		mov.B	#0, [r10]
+ 1434 09e1 38 93 00                		bra	.L112
+ 1435                             	.L119:
+ 395:SOURCES/input.c **** 		}
+ 396:SOURCES/input.c **** 		else
+ 397:SOURCES/input.c **** 		{
+ 398:SOURCES/input.c **** 			if( key == '-')
+ 1436                             		.loc 1 398 0
+ 1437 09e4 ED 6A 02                		mov.L	8[r6], r10
+ 1438 09e7 75 5A 2D                		cmp	#45, r10
+ 1439 09ea 21 66                   		bne	.L120
+ 399:SOURCES/input.c **** 			{
+ 400:SOURCES/input.c **** 				if( string[0] == '-' )
+ 1440                             		.loc 1 400 0
+ 1441 09ec ED 6A 04                		mov.L	16[r6], r10
+ 1442 09ef CC AA                   		mov.B	[r10], r10
+ 1443 09f1 5B AA                   		movu.B	r10, r10
+ 1444 09f3 75 5A 2D                		cmp	#45, r10
+ 1445 09f6 21 15                   		bne	.L121
+ 401:SOURCES/input.c **** 					strcpy( tmp, string+1 );					
+ 1446                             		.loc 1 401 0
+ 1447 09f8 ED 6A 04                		mov.L	16[r6], r10
+ 1448 09fb 62 1A                   		add	#1, r10
+ 1449 09fd FB 12 00 00 00 00       		mov.L	#_tmp.3715, r1
+ 1450 0a03 EF A2                   		mov.L	r10, r2
+ 1451 0a05 05 00 00 00             		bsr	_strcpy
+ 1452 0a09 2E 39                   		bra	.L122
+ 1453                             	.L121:
+ 402:SOURCES/input.c **** 				else
+ 403:SOURCES/input.c **** 				{
+ 404:SOURCES/input.c **** 					strcpy( tmp, "-" );
+ 1454                             		.loc 1 404 0
+ 1455 0a0b FB A2 00 00 00 00       		mov.L	#_tmp.3715, r10
+ 1456 0a11 F8 A5 2D                		mov.W	#45, [r10]
+ 405:SOURCES/input.c **** 					strcat(tmp, string );
+ 1457                             		.loc 1 405 0
+ 1458 0a14 FB 12 00 00 00 00       		mov.L	#_tmp.3715, r1
+ 1459 0a1a 05 00 00 00             		bsr	_strlen
+ 1460 0a1e EF 1A                   		mov.L	r1, r10
+ 1461 0a20 70 AB 00 00 00 00       		add	#_tmp.3715, r10, r11
+ 1462 0a26 ED 6A 04                		mov.L	16[r6], r10
+ 1463 0a29 FB 36 FF                		mov.L	#-1, r3
+ 1464 0a2c EF B1                   		mov.L	r11, r1
+ 1465 0a2e EF A2                   		mov.L	r10, r2
+ 1466 0a30 EF 1A                   		mov.L	r1, r10
+ 1467 0a32 7F 87                   		smovu
+ 1468 0a34 FB 36 FF                		mov.L	#-1, r3
+ 1469 0a37 EF A1                   		mov	r10, r1
+ 1470 0a39 66 02                   		mov	#0, r2
+ 1471 0a3b 7F 80                   		suntil.b
+ 1472 0a3d EF 1A                   		mov	r1, r10
+ 1473 0a3f 60 1A                   		sub	#1, r10
+ 1474 0a41 03                      		.balign 2,3,1
+ 1475                             	.L122:
+ 406:SOURCES/input.c **** 				}
+ 407:SOURCES/input.c **** 				strcpy( string, tmp );
+ 1476                             		.loc 1 407 0
+ 1477 0a42 A9 61                   		mov.L	16[r6], r1
+ 1478 0a44 FB 22 00 00 00 00       		mov.L	#_tmp.3715, r2
+ 1479 0a4a 05 00 00 00             		bsr	_strcpy
+ 1480 0a4e 2E 26                   		bra	.L112
+ 1481                             	.L120:
+ 408:SOURCES/input.c **** 			}
+ 409:SOURCES/input.c **** 			else
+ 410:SOURCES/input.c **** 			{
+ 411:SOURCES/input.c **** 				string[ i++ ] = (char)key;
+ 1482                             		.loc 1 411 0
+ 1483 0a50 ED 6A 01                		mov.L	4[r6], r10
+ 1484 0a53 ED 6B 04                		mov.L	16[r6], r11
+ 1485 0a56 4B BA                   		add	r11, r10
+ 1486 0a58 ED 6B 02                		mov.L	8[r6], r11
+ 1487 0a5b C3 AB                   		mov.B	r11, [r10]
+ 1488 0a5d ED 6A 01                		mov.L	4[r6], r10
+ 1489 0a60 62 1A                   		add	#1, r10
+ 1490 0a62 E7 6A 01                		mov.L	r10, 4[r6]
+ 412:SOURCES/input.c **** 				string[i] = '\0';	
+ 1491                             		.loc 1 412 0
+ 1492 0a65 ED 6A 01                		mov.L	4[r6], r10
+ 1493 0a68 ED 6B 04                		mov.L	16[r6], r11
+ 1494 0a6b 4B BA                   		add	r11, r10
+ 1495 0a6d F8 A4 00                		mov.B	#0, [r10]
+ 1496 0a70 2E 04                   		bra	.L112
+ 1497                             	.L123:
+ 381:SOURCES/input.c **** 		return;
+ 1498                             		.loc 1 381 0
+ 1499 0a72 03                      		nop
+ 1500 0a73 03                      		.balign 2,3,2
+ 1501                             	.L112:
+ 413:SOURCES/input.c **** 			}
+ 414:SOURCES/input.c **** 		}
+ 415:SOURCES/input.c **** 	}
+ 416:SOURCES/input.c **** }
+ 1502                             		.loc 1 416 0
+ 1503 0a74 3F 6C 0E                		rtsd	#56, r6-r12
+ 1504                             	.LFE13:
+ 1506                             		.section C,"a",@progbits
+ 1507 000f 00                      		.p2align 2
+ 1508                             	.LC2:
+ 1509 0010 25 2A 2E 2A 73 00       		.string	"%*.*s"
+ 1510 0016 00 00                   		.section P,"ax"
+ 1512                             	_display_input_numeric:
+ 1513                             	.LFB14:
+ 417:SOURCES/input.c **** 
+ 418:SOURCES/input.c **** static void display_input_numeric( char* string, int x, int y, int max_x )
+ 419:SOURCES/input.c **** {
+ 1514                             		.loc 1 419 0
+ 1515 0a77 6E 6B                   		pushm	r6-r11
+ 1516                             	.LCFI41:
+ 1517 0a79 71 06 EC                		add	#-20, r0, r6
+ 1518                             	.LCFI42:
+ 1519 0a7c 71 60 F0                		add	#-16, r6, r0
+ 1520                             	.LCFI43:
+ 1521 0a7f A0 69                   		mov.L	r1, 4[r6]
+ 1522 0a81 A0 E2                   		mov.L	r2, 8[r6]
+ 1523 0a83 A0 EB                   		mov.L	r3, 12[r6]
+ 1524 0a85 A1 64                   		mov.L	r4, 16[r6]
+ 420:SOURCES/input.c **** 	int length;
+ 421:SOURCES/input.c **** 
+ 422:SOURCES/input.c **** 	if( x < 0 || y < 0 )
+ 1525                             		.loc 1 422 0
+ 1526 0a87 ED 6A 02                		mov.L	8[r6], r10
+ 1527 0a8a 61 0A                   		cmp	#0, r10
+ 1528 0a8c 28 05 38 81 00          		blt	.L130
+ 1529                             		.loc 1 422 0 is_stmt 0 discriminator 1
+ 1530 0a91 ED 6A 03                		mov.L	12[r6], r10
+ 1531 0a94 61 0A                   		cmp	#0, r10
+ 1532 0a96 29 79                   		blt	.L130
+ 1533                             		.balign 2,3,1
+ 1534                             	.L126:
+ 423:SOURCES/input.c **** 		return;
+ 424:SOURCES/input.c **** 
+ 425:SOURCES/input.c **** 	length = strlen( string );
+ 1535                             		.loc 1 425 0 is_stmt 1
+ 1536 0a98 A8 69                   		mov.L	4[r6], r1
+ 1537 0a9a 05 00 00 00             		bsr	_strlen
+ 1538 0a9e EF 1A                   		mov.L	r1, r10
+ 1539 0aa0 E3 6A                   		mov.L	r10, [r6]
+ 426:SOURCES/input.c **** 
+ 427:SOURCES/input.c **** 	gotoxy(x,y);
+ 1540                             		.loc 1 427 0
+ 1541 0aa2 A8 E1                   		mov.L	8[r6], r1
+ 1542 0aa4 A8 EA                   		mov.L	12[r6], r2
+ 1543 0aa6 05 00 00 00             		bsr	_gotoxy
+ 428:SOURCES/input.c **** 	if( length > max_x )
+ 1544                             		.loc 1 428 0
+ 1545 0aaa EC 6B                   		mov.L	[r6], r11
+ 1546 0aac ED 6A 04                		mov.L	16[r6], r10
+ 1547 0aaf 47 AB                   		cmp	r10, r11
+ 1548 0ab1 2B 2E                   		ble	.L128
+ 429:SOURCES/input.c **** 	{
+ 430:SOURCES/input.c **** 		length -= max_x; 
+ 1549                             		.loc 1 430 0
+ 1550 0ab3 EC 6B                   		mov.L	[r6], r11
+ 1551 0ab5 ED 6A 04                		mov.L	16[r6], r10
+ 1552 0ab8 FF 0A AB                		sub	r10, r11, r10
+ 1553 0abb E3 6A                   		mov.L	r10, [r6]
+ 431:SOURCES/input.c **** 		printf("%*.*s", max_x, max_x, string+length );
+ 1554                             		.loc 1 431 0
+ 1555 0abd EC 6A                   		mov.L	[r6], r10
+ 1556 0abf ED 6B 01                		mov.L	4[r6], r11
+ 1557 0ac2 4B BA                   		add	r11, r10
+ 1558 0ac4 F8 02 10 00 00 00       		mov.L	#.LC2, [r0]
+ 1559 0aca ED 6B 04                		mov.L	16[r6], r11
+ 1560 0acd E7 0B 01                		mov.L	r11, 4[r0]
+ 1561 0ad0 ED 6B 04                		mov.L	16[r6], r11
+ 1562 0ad3 E7 0B 02                		mov.L	r11, 8[r0]
+ 1563 0ad6 E7 0A 03                		mov.L	r10, 12[r0]
+ 1564 0ad9 05 00 00 00             		bsr	_printf
+ 1565 0add 2E 1F                   		bra	.L129
+ 1566                             	.L128:
+ 432:SOURCES/input.c **** 	}
+ 433:SOURCES/input.c **** 	else
+ 434:SOURCES/input.c **** 		printf("%*.*s", max_x, max_x, string );
+ 1567                             		.loc 1 434 0
+ 1568 0adf F8 02 10 00 00 00       		mov.L	#.LC2, [r0]
+ 1569 0ae5 ED 6A 04                		mov.L	16[r6], r10
+ 1570 0ae8 E7 0A 01                		mov.L	r10, 4[r0]
+ 1571 0aeb ED 6A 04                		mov.L	16[r6], r10
+ 1572 0aee E7 0A 02                		mov.L	r10, 8[r0]
+ 1573 0af1 ED 6A 01                		mov.L	4[r6], r10
+ 1574 0af4 E7 0A 03                		mov.L	r10, 12[r0]
+ 1575 0af7 05 00 00 00             		bsr	_printf
+ 1576 0afb 03                      		.balign 2,3,1
+ 1577                             	.L129:
+ 435:SOURCES/input.c **** 
+ 436:SOURCES/input.c **** 	gotoxy( x+max_x-1, y); // set the cursor to the correct position 
+ 1578                             		.loc 1 436 0
+ 1579 0afc ED 6A 02                		mov.L	8[r6], r10
+ 1580 0aff 06 89 6A 04             		add	16[r6].L, r10
+ 1581 0b03 60 1A                   		sub	#1, r10
+ 1582 0b05 EF A1                   		mov.L	r10, r1
+ 1583 0b07 A8 EA                   		mov.L	12[r6], r2
+ 1584 0b09 05 00 00 00             		bsr	_gotoxy
+ 1585 0b0d 2E 03                   		bra	.L124
+ 1586                             	.L130:
+ 423:SOURCES/input.c **** 		return;
+ 1587                             		.loc 1 423 0
+ 1588 0b0f 03                      		nop
+ 1589                             		.balign 2,3,2
+ 1590                             	.L124:
+ 437:SOURCES/input.c **** }
+ 1591                             		.loc 1 437 0
+ 1592 0b10 3F 6B 0F                		rtsd	#60, r6-r11
+ 1593                             	.LFE14:
+ 1595                             		.global	_KeyboardNumeric
+ 1597                             	_KeyboardNumeric:
+ 1598                             	.LFB15:
+ 438:SOURCES/input.c **** 
+ 439:SOURCES/input.c **** //
+ 440:SOURCES/input.c **** // Special input function for numeric input
+ 441:SOURCES/input.c **** // Alignment is done from right to left
+ 442:SOURCES/input.c **** //
+ 443:SOURCES/input.c **** // max_length is the maximum length without the minus sign (-) if type also has INPUT_NEGATIVE 
+ 444:SOURCES/input.c **** // then max length is increase by 1
+ 445:SOURCES/input.c **** //
+ 446:SOURCES/input.c **** int KeyboardNumeric( char* string, int max_length, int typ, int x, int y, int display_length, int n
+ 447:SOURCES/input.c **** {
+ 1599                             		.loc 1 447 0
+ 1600 0b13 6E 6B                   		pushm	r6-r11
+ 1601                             	.LCFI44:
+ 1602 0b15 71 06 D8                		add	#-40, r0, r6
+ 1603                             	.LCFI45:
+ 1604 0b18 71 60 FC                		add	#-4, r6, r0
+ 1605                             	.LCFI46:
+ 1606 0b1b 75 4A 44                		mov.L	#0x44, r10
+ 1607 0b1e 4B 6A                   		add	r6, r10
+ 1608 0b20 A0 E9                   		mov.L	r1, 12[r6]
+ 1609 0b22 A1 62                   		mov.L	r2, 16[r6]
+ 1610 0b24 A1 6B                   		mov.L	r3, 20[r6]
+ 1611 0b26 A1 E4                   		mov.L	r4, 24[r6]
+ 448:SOURCES/input.c **** 	va_list key_list;
+ 449:SOURCES/input.c **** 	int key;
+ 450:SOURCES/input.c **** 	int defaul;
+ 451:SOURCES/input.c **** 
+ 452:SOURCES/input.c **** 	if( num <= 0 )
+ 1612                             		.loc 1 452 0
+ 1613 0b28 ED AB 02                		mov.L	8[r10], r11
+ 1614 0b2b 61 0B                   		cmp	#0, r11
+ 1615 0b2d 2A 08                   		bgt	.L132
+ 453:SOURCES/input.c **** 		return( EOF );
+ 1616                             		.loc 1 453 0
+ 1617 0b2f FB A6 FF                		mov.L	#-1, r10
+ 1618 0b32 38 9D 00                		bra	.L142
+ 1619                             	.L132:
+ 454:SOURCES/input.c **** 
+ 455:SOURCES/input.c **** 	if( typ & ~(INPUT_NEGATIVE|INPUT_NUM|INPUT_SHOW_DEFAULT))
+ 1620                             		.loc 1 455 0
+ 1621 0b35 ED 6B 05                		mov.L	20[r6], r11
+ 1622 0b38 76 2B 75 FF             		and	#0xffffff75, r11
+ 1623 0b3c 61 0B                   		cmp	#0, r11
+ 1624 0b3e 20 08                   		beq	.L134
+ 456:SOURCES/input.c **** 		return( EOF ); // Only INPUT_NEGATIVE and INPUT_NUM are allowed
+ 1625                             		.loc 1 456 0
+ 1626 0b40 FB A6 FF                		mov.L	#-1, r10
+ 1627 0b43 38 8C 00                		bra	.L142
+ 1628                             	.L134:
+ 457:SOURCES/input.c **** 
+ 458:SOURCES/input.c **** 	if( typ & INPUT_SHOW_DEFAULT )
+ 1629                             		.loc 1 458 0
+ 1630 0b46 ED 6B 05                		mov.L	20[r6], r11
+ 1631 0b49 76 2B 80 00             		and	#0x80, r11
+ 1632 0b4d 61 0B                   		cmp	#0, r11
+ 1633 0b4f 20 07                   		beq	.L135
+ 459:SOURCES/input.c **** 		defaul = TRUE;
+ 1634                             		.loc 1 459 0
+ 1635 0b51 3E 60 01                		mov.L	#1, [r6]
+ 1636 0b54 2E 0C                   		bra	.L136
+ 1637                             	.L135:
+ 460:SOURCES/input.c **** 	else
+ 461:SOURCES/input.c **** 	{
+ 462:SOURCES/input.c **** 		string[0] = '\0';
+ 1638                             		.loc 1 462 0
+ 1639 0b56 ED 6B 03                		mov.L	12[r6], r11
+ 1640 0b59 F8 B4 00                		mov.B	#0, [r11]
+ 463:SOURCES/input.c **** 		defaul = FALSE;
+ 1641                             		.loc 1 463 0
+ 1642 0b5c 3E 60 00                		mov.L	#0, [r6]
+ 1643 0b5f 03                      		.balign 2,3,1
+ 1644                             	.L136:
+ 464:SOURCES/input.c **** 	}
+ 465:SOURCES/input.c **** 	cursor( ON );
+ 1645                             		.loc 1 465 0
+ 1646 0b60 66 11                   		mov.L	#1, r1
+ 1647 0b62 05 00 00 00             		bsr	_cursor
+ 1648                             		.balign 2,3,2
+ 1649                             	.L141:
+ 466:SOURCES/input.c **** 	for(;;)
+ 467:SOURCES/input.c **** 	{
+ 468:SOURCES/input.c **** 		va_start( key_list, num );
+ 1650                             		.loc 1 468 0
+ 1651 0b66 71 AB 0C                		add	#12, r10, r11
+ 1652 0b69 E7 6B 02                		mov.L	r11, 8[r6]
+ 469:SOURCES/input.c **** 
+ 470:SOURCES/input.c **** 		display_input_numeric(string, x, y, display_length ); 
+ 1653                             		.loc 1 470 0
+ 1654 0b6c A8 E9                   		mov.L	12[r6], r1
+ 1655 0b6e A9 E2                   		mov.L	24[r6], r2
+ 1656 0b70 EC A3                   		mov.L	[r10], r3
+ 1657 0b72 ED A4 01                		mov.L	4[r10], r4
+ 1658 0b75 39 02 FF                		bsr	_display_input_numeric
+ 471:SOURCES/input.c **** 
+ 472:SOURCES/input.c **** 		key = WaitForKey(); 
+ 1659                             		.loc 1 472 0
+ 1660 0b78 05 00 00 00             		bsr	_WaitForKey
+ 1661 0b7c A0 69                   		mov.L	r1, 4[r6]
+ 473:SOURCES/input.c **** 
+ 474:SOURCES/input.c **** 		if( check_key_input( key, num, key_list ) == OK )
+ 1662                             		.loc 1 474 0
+ 1663 0b7e ED 6B 02                		mov.L	8[r6], r11
+ 1664 0b81 A8 69                   		mov.L	4[r6], r1
+ 1665 0b83 ED A2 02                		mov.L	8[r10], r2
+ 1666 0b86 EF B3                   		mov.L	r11, r3
+ 1667 0b88 39 25 F5                		bsr	_check_key_input
+ 1668 0b8b EF 1B                   		mov.L	r1, r11
+ 1669 0b8d 61 0B                   		cmp	#0, r11
+ 1670 0b8f 21 0D                   		bne	.L137
+ 475:SOURCES/input.c **** 		{
+ 476:SOURCES/input.c **** 			va_end( key_list );
+ 477:SOURCES/input.c **** 			
+ 478:SOURCES/input.c **** 			cursor( OFF );
+ 1671                             		.loc 1 478 0
+ 1672 0b91 66 01                   		mov.L	#0, r1
+ 1673 0b93 05 00 00 00             		bsr	_cursor
+ 479:SOURCES/input.c **** 			return( key  );
+ 1674                             		.loc 1 479 0
+ 1675 0b97 ED 6A 01                		mov.L	4[r6], r10
+ 1676 0b9a 2E 35                   		bra	.L142
+ 1677                             	.L137:
+ 480:SOURCES/input.c **** 		}
+ 481:SOURCES/input.c **** 		va_end(key_list);
+ 482:SOURCES/input.c **** 
+ 483:SOURCES/input.c **** 		if( key == BS_KEY )
+ 1678                             		.loc 1 483 0
+ 1679 0b9c ED 6B 01                		mov.L	4[r6], r11
+ 1680 0b9f 75 5B 87                		cmp	#0x87, r11
+ 1681 0ba2 21 19                   		bne	.L138
+ 484:SOURCES/input.c **** 		{
+ 485:SOURCES/input.c **** 			if( defaul )
+ 1682                             		.loc 1 485 0
+ 1683 0ba4 EC 6B                   		mov.L	[r6], r11
+ 1684 0ba6 61 0B                   		cmp	#0, r11
+ 1685 0ba8 20 08                   		beq	.L139
+ 486:SOURCES/input.c **** 				string[0] = '\0';
+ 1686                             		.loc 1 486 0
+ 1687 0baa ED 6B 03                		mov.L	12[r6], r11
+ 1688 0bad F8 B4 00                		mov.B	#0, [r11]
+ 1689                             		.balign 2,3,1
+ 1690                             	.L139:
+ 487:SOURCES/input.c **** 			remove_key_from_buffer( string );
+ 1691                             		.loc 1 487 0
+ 1692 0bb0 A8 E9                   		mov.L	12[r6], r1
+ 1693 0bb2 39 B5 F6                		bsr	_remove_key_from_buffer
+ 488:SOURCES/input.c **** 			defaul = FALSE;	// default value is turned off
+ 1694                             		.loc 1 488 0
+ 1695 0bb5 3E 60 00                		mov.L	#0, [r6]
+ 489:SOURCES/input.c **** 			continue;
+ 1696                             		.loc 1 489 0
+ 1697 0bb8 03                      		nop
+ 490:SOURCES/input.c **** 		}
+ 491:SOURCES/input.c **** 
+ 492:SOURCES/input.c **** 		store_char_in_string_numeric( key,  max_length, string, typ, defaul );
+ 493:SOURCES/input.c **** 		defaul = FALSE;	// default value is turned off
+ 494:SOURCES/input.c **** 	}
+ 1698                             		.loc 1 494 0
+ 1699 0bb9 2E AD                   		bra	.L141
+ 1700                             	.L138:
+ 492:SOURCES/input.c **** 		store_char_in_string_numeric( key,  max_length, string, typ, defaul );
+ 1701                             		.loc 1 492 0
+ 1702 0bbb EC 6B                   		mov.L	[r6], r11
+ 1703 0bbd E3 0B                   		mov.L	r11, [r0]
+ 1704 0bbf A8 69                   		mov.L	4[r6], r1
+ 1705 0bc1 A9 62                   		mov.L	16[r6], r2
+ 1706 0bc3 A8 EB                   		mov.L	12[r6], r3
+ 1707 0bc5 A9 6C                   		mov.L	20[r6], r4
+ 1708 0bc7 39 5F FD                		bsr	_store_char_in_string_numeric
+ 493:SOURCES/input.c **** 		defaul = FALSE;	// default value is turned off
+ 1709                             		.loc 1 493 0
+ 1710 0bca 3E 60 00                		mov.L	#0, [r6]
+ 1711                             		.loc 1 494 0
+ 1712 0bcd 2E 99                   		bra	.L141
+ 1713                             	.L142:
+ 495:SOURCES/input.c **** }
+ 1714                             		.loc 1 495 0
+ 1715 0bcf EF A1                   		mov.L	r10, r1
+ 1716 0bd1 3F 6B 11                		rtsd	#68, r6-r11
+ 1717                             	.LFE15:
+ 1719                             		.local	_tmp.3715
+ 1720                             		.comm	_tmp.3715,51,1
+ 2255                             	.Letext0:
+ 2256                             		.file 2 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/include/stdarg.h"
+ 2257                             		.file 3 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/include/sys/l
+ 2258                             		.file 4 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/include/sys/_
+ 2259                             		.file 5 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/include/stddef.h"
+ 2260                             		.file 6 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/include/sys/r
+ 2261                             		.file 7 "./lib.h"
+ 2262                             		.file 8 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/include/ctype
+DEFINED SYMBOLS
+                            *ABS*:00000000 input.c
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:5      P:00000000 _keybeep
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:9      P:00000000 L0
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:25     P:0000001a _okbeep
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:47     P:0000003f _WaitForKey
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:110    P:000000ad _check_key_input
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:162    P:000000f1 _WaitForKeys
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:215    P:00000135 _ScanBarcodeSymbol
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:355    P:0000023d _ScanBarcode
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:387    P:00000267 _remove_key_from_buffer
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:425    P:0000028f _display_input
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:543    P:00000361 _store_key_in_string
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:741    P:000004a5 _KeyboardInput
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:870    P:00000577 _ScanOrKeyboardInput
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:1208   P:0000085c _ScanOrKeyboardInputSymbol
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:1324   P:00000926 _store_char_in_string_numeric
+                              B_1:00000000 _tmp.3715
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:1512   P:00000a77 _display_input_numeric
+C:\Users\willem\AppData\Local\Temp\cc7xzQpQ.s:1597   P:00000b13 _KeyboardNumeric
+                                C:00000000 .LC0
+                                C:00000008 .LC1
+                                C:00000010 .LC2
+                     .debug_frame:00000000 .Lframe0
+                                P:00000000 .LFB0
+                                P:0000001a .LFB1
+                                P:0000003f .LFB2
+                                P:000000ad .LFB3
+                                P:000000f1 .LFB4
+                                P:00000135 .LFB5
+                                P:0000023d .LFB6
+                                P:00000267 .LFB7
+                                P:0000028f .LFB8
+                                P:00000361 .LFB9
+                                P:000004a5 .LFB10
+                                P:00000577 .LFB11
+                                P:0000085c .LFB12
+                                P:00000926 .LFB13
+                                P:00000a77 .LFB14
+                                P:00000b13 .LFB15
+                    .debug_abbrev:00000000 .Ldebug_abbrev0
+                       .debug_str:000004e9 .LASF152
+                       .debug_str:0000002b .LASF153
+                       .debug_str:00000495 .LASF154
+                                P:00000000 .Ltext0
+                                P:00000bd4 .Letext0
+                      .debug_line:00000000 .Ldebug_line0
+                       .debug_str:0000021f .LASF0
+                       .debug_str:000002f0 .LASF8
+                       .debug_str:0000015f .LASF155
+                       .debug_str:000000fa .LASF1
+                       .debug_str:00000370 .LASF2
+                       .debug_str:000003cd .LASF3
+                       .debug_str:0000025d .LASF4
+                       .debug_str:000001fb .LASF5
+                       .debug_str:000000ec .LASF6
+                       .debug_str:000000a6 .LASF7
+                       .debug_str:0000035e .LASF9
+                       .debug_str:0000013f .LASF10
+                       .debug_str:0000048d .LASF11
+                       .debug_str:000002a0 .LASF12
+                       .debug_str:0000029a .LASF13
+                       .debug_str:00000208 .LASF14
+                       .debug_str:000002e7 .LASF15
+                       .debug_str:00000462 .LASF16
+                       .debug_str:0000046a .LASF17
+                       .debug_str:000003f5 .LASF18
+                       .debug_str:000001c7 .LASF19
+                       .debug_str:00000539 .LASF20
+                       .debug_str:000001d8 .LASF25
+                       .debug_str:0000050c .LASF21
+                       .debug_str:0000044d .LASF22
+                       .debug_str:000001c1 .LASF23
+                       .debug_str:000005c4 .LASF24
+                       .debug_str:000001f0 .LASF26
+                       .debug_str:000000e3 .LASF27
+                       .debug_str:000004e0 .LASF28
+                       .debug_str:00000112 .LASF29
+                       .debug_str:0000066d .LASF30
+                       .debug_str:0000031a .LASF31
+                       .debug_str:000002d6 .LASF32
+                       .debug_str:000005c9 .LASF33
+                       .debug_str:000003d7 .LASF34
+                       .debug_str:00000612 .LASF35
+                       .debug_str:00000121 .LASF36
+                       .debug_str:000001b4 .LASF37
+                       .debug_str:00000000 .LASF38
+                       .debug_str:0000051f .LASF39
+                       .debug_str:00000157 .LASF40
+                       .debug_str:00000323 .LASF41
+                       .debug_str:0000042e .LASF42
+                       .debug_str:000001bc .LASF43
+                       .debug_str:000003e1 .LASF44
+                       .debug_str:0000010c .LASF45
+                       .debug_str:00000012 .LASF46
+                       .debug_str:00000400 .LASF47
+                       .debug_str:00000150 .LASF48
+                       .debug_str:00000231 .LASF49
+                       .debug_str:000000bd .LASF50
+                       .debug_str:0000012f .LASF51
+                       .debug_str:000001e0 .LASF52
+                       .debug_str:000002cf .LASF53
+                       .debug_str:00000472 .LASF54
+                       .debug_str:0000062c .LASF55
+                       .debug_str:00000106 .LASF56
+                       .debug_str:00000604 .LASF57
+                       .debug_str:00000171 .LASF58
+                       .debug_str:0000018d .LASF59
+                       .debug_str:00000080 .LASF60
+                       .debug_str:000002a7 .LASF61
+                       .debug_str:00000408 .LASF62
+                       .debug_str:000002c7 .LASF63
+                       .debug_str:00000455 .LASF64
+                       .debug_str:000004cf .LASF65
+                       .debug_str:000005d9 .LASF66
+                       .debug_str:0000020f .LASF67
+                       .debug_str:000001d0 .LASF68
+                       .debug_str:00000429 .LASF69
+                       .debug_str:0000003b .LASF70
+                       .debug_str:00000576 .LASF71
+                       .debug_str:00000433 .LASF72
+                       .debug_str:0000032b .LASF73
+                       .debug_str:00000443 .LASF74
+                       .debug_str:00000292 .LASF75
+                       .debug_str:000001e6 .LASF76
+                       .debug_str:00000646 .LASF77
+                       .debug_str:00000354 .LASF78
+                       .debug_str:00000217 .LASF79
+                       .debug_str:00000185 .LASF80
+                       .debug_str:0000038e .LASF81
+                       .debug_str:00000270 .LASF82
+                       .debug_str:000005f3 .LASF83
+                       .debug_str:00000137 .LASF84
+                       .debug_str:0000011c .LASF85
+                       .debug_str:000004d6 .LASF86
+                       .debug_str:000003ee .LASF87
+                       .debug_str:000005d3 .LASF88
+                       .debug_str:0000023f .LASF89
+                       .debug_str:000003e8 .LASF90
+                       .debug_str:00000023 .LASF91
+                       .debug_str:0000045c .LASF92
+                       .debug_str:00000506 .LASF93
+                       .debug_str:00000534 .LASF94
+                       .debug_str:000005af .LASF95
+                       .debug_str:00000512 .LASF96
+                       .debug_str:00000285 .LASF97
+                       .debug_str:0000061d .LASF98
+                       .debug_str:00000336 .LASF99
+                       .debug_str:00000411 .LASF100
+                       .debug_str:00000633 .LASF101
+                       .debug_str:0000041c .LASF102
+                       .debug_str:00000638 .LASF103
+                       .debug_str:000000d5 .LASF104
+                       .debug_str:000005e9 .LASF105
+                       .debug_str:00000279 .LASF106
+                       .debug_str:00000541 .LASF107
+                       .debug_str:000001a6 .LASF108
+                       .debug_str:000000c6 .LASF109
+                       .debug_str:00000195 .LASF110
+                       .debug_str:00000086 .LASF111
+                       .debug_str:00000095 .LASF112
+                       .debug_str:000003c4 .LASF113
+                       .debug_str:000002ff .LASF114
+                       .debug_str:000005e0 .LASF115
+                       .debug_str:0000060a .LASF116
+                       .debug_str:00000078 .LASF117
+                       .debug_str:00000312 .LASF118
+                       .debug_str:000004db .LASF119
+                       .debug_str:000004c8 .LASF120
+                       .debug_str:00000148 .LASF121
+                                P:0000001a .LFE0
+                       .debug_loc:00000000 .LLST0
+                       .debug_str:000005fd .LASF122
+                                P:0000003f .LFE1
+                       .debug_loc:0000002c .LLST1
+                       .debug_str:0000017a .LASF125
+                                P:000000ad .LFE2
+                       .debug_loc:00000058 .LLST2
+                       .debug_str:0000065d .LASF156
+                                P:000000f1 .LFE3
+                       .debug_loc:00000090 .LLST3
+                       .debug_str:00000478 .LASF123
+                       .debug_str:0000000c .LASF124
+                       .debug_str:00000528 .LASF126
+                                P:00000135 .LFE4
+                       .debug_loc:000000c8 .LLST4
+                       .debug_str:00000564 .LASF127
+                                P:0000023d .LFE5
+                       .debug_loc:00000100 .LLST5
+                       .debug_str:00000063 .LASF128
+                       .debug_str:00000018 .LASF129
+                       .debug_str:0000064b .LASF130
+                       .debug_str:00000237 .LASF131
+                       .debug_str:0000059c .LASF132
+                       .debug_str:00000306 .LASF133
+                                P:00000267 .LFE6
+                       .debug_loc:0000013a .LLST6
+                       .debug_str:00000246 .LASF134
+                                P:0000028f .LFE7
+                       .debug_loc:0000017e .LLST7
+                       .debug_str:000003b6 .LASF135
+                                P:00000361 .LFE8
+                       .debug_loc:000001b6 .LLST8
+                       .debug_str:00000393 .LASF136
+                       .debug_str:000002e0 .LASF137
+                       .debug_str:000003a2 .LASF138
+                                P:000004a5 .LFE9
+                       .debug_loc:000001f0 .LLST9
+                       .debug_str:000005bc .LASF139
+                       .debug_str:000005a1 .LASF140
+                                P:00000577 .LFE10
+                       .debug_loc:00000228 .LLST10
+                       .debug_str:00000588 .LASF141
+                                P:0000085c .LFE11
+                       .debug_loc:00000262 .LLST11
+                       .debug_str:00000345 .LASF142
+                       .debug_str:00000500 .LASF143
+                                P:000005a7 .LBB2
+                                P:000007e9 .LBE2
+                       .debug_str:000002ad .LASF144
+                                P:00000926 .LFE12
+                       .debug_loc:0000029c .LLST12
+                       .debug_str:00000046 .LASF145
+                                P:00000a77 .LFE13
+                       .debug_loc:000002d6 .LLST13
+                       .debug_str:00000656 .LASF146
+                       .debug_str:0000054e .LASF147
+                                P:00000b13 .LFE14
+                       .debug_loc:0000030e .LLST14
+                       .debug_str:000001f5 .LASF148
+                       .debug_str:0000037e .LASF149
+                                P:00000bd4 .LFE15
+                       .debug_loc:00000347 .LLST15
+                       .debug_str:00000481 .LASF150
+                       .debug_str:0000006a .LASF151
+                      .debug_info:00000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+_sound
+_idle
+__impure_ptr
+___srget_r
+_resetkey
+_scannerpower
+_kbhit
+_ungetc
+_readbarcode
+_goodreadled
+_strlen
+_gotoxy
+_printf
+___ctype_ptr__
+_strchr
+_cursor
+___swbuf_r
+_strcpy
