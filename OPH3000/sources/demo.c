@@ -1,5 +1,5 @@
 //
-// IceRobotics
+// IceRobotics Ltd.
 // Scan labels, wearer and scroll database with menus
 // Transmit scanned data with NetO or plain ascii
 // OPH Compiler: GCC Open Source Compiler Version 4.1.2
@@ -359,7 +359,7 @@ static int GetMaxCharsYPos( void )
 	return (DISP_HEIGHT/ nHeight);
 }
 
-void diplay_input_data( db_record *db_rec )
+void display_input_data( db_record *db_rec )
 {
 	int nMaxX;
 
@@ -432,7 +432,7 @@ void store_input_data( db_record *db_rec, long lRecordNo )
 	}
 	if( lRecordNo != -1L )
 		GotoRecord( &dbFile, lRecordNo );
-
+	
 	if( !WriteRecord( &dbFile, record, ((lRecordNo==-1L)?WRITE_APPEND:WRITE_OVER)))
 	{
 		CloseDatabase( &dbFile );
@@ -461,7 +461,7 @@ void store_input_data( db_record *db_rec, long lRecordNo )
 	CloseDatabase( &dbFile );
 }
 
-long string_wearer_to_long( char* wearer, int* illegal )
+char string_wearer_to_char( char* wearer, int* illegal )
 {
 	// OLD static char tmp[SZ_SIGN+SZ_WEARER+1];
 	static char tmp[SZ_WEARER+1];
@@ -539,8 +539,8 @@ void ScanLabels( void )
 	int					key;
     // OLD long 				lTotal;
     // OLD long 				lAdd;
-    long 				lCurrentWearer;
-    long 				lNewWearer;	
+    long 				currentWearer;
+    long 				newWearer;
 
 	memset( device, '\0', sizeof( device ));
 	memset( &db_rec, '\0', sizeof( db_record ));
@@ -572,14 +572,14 @@ void ScanLabels( void )
 			memset( wearer, '\0', sizeof( wearer ));	// clear the whole wearer item
 			if( (lFoundRecord = FindBarcodeInDatabase( db_rec.device, wearer )) != -1L )
 				// OLD lTotal = string_wearer_to_long( wearer, &nIllegal );
-				lCurrentWearer = string_wearer_to_long( wearer, &nIllegal );
+				currentWearer = string_wearer_to_char( wearer, &nIllegal );
 			else
 				// OLD lTotal = 0;
-				lCurrentWearer = 0;
+				currentWearer = 0;
 
 			gotoxy( 0, GetMaxCharsYPos()-5);
 			// OLD printf("Cow ID\n   Current:\n %*ld\n   New:\n", SZ_SIGN+SZ_WEARER, lTotal);
-			printf("Cow ID\n   Current:\n %*ld\n   New:\n", SZ_WEARER, lCurrentWearer);
+			printf("Cow ID\n   Current:\n %*ld\n   New:\n", SZ_WEARER, currentWearer);
 
 			// Set the wearer to default value empty
 			strcpy( wearer, "");
@@ -590,15 +590,15 @@ void ScanLabels( void )
 				
 
 		// OLD	lAdd = string_wearer_to_long( wearer, &nIllegal );
-			lNewWearer =  string_wearer_to_long( wearer, &nIllegal );
+			newWearer =  string_wearer_to_char( wearer, &nIllegal );
 		// OLD	if( !nIllegal && lAdd == 0L )
 		// OLD		break; // wearer is empty or zero do nothing
 
-			if( !nIllegal && lNewWearer == 0L )
+			if( !nIllegal && newWearer == 0L )
 				break; // wearer is empty or zero do nothing
 
 		// OLD	lTotal += lAdd;
-			lCurrentWearer = lNewWearer;
+			currentWearer = newWearer;
 
 			// OLD if( nIllegal || lTotal < -999999L || lTotal > 9999999L )
 			if( nIllegal )
@@ -613,7 +613,7 @@ void ScanLabels( void )
 			}
 			// When ok fill the wearer of the db_record
 			// OLD sprintf( db_rec.wearer, "%*ld", SZ_SIGN+SZ_WEARER, lTotal);
-			sprintf( db_rec.wearer, "%*ld", SZ_WEARER, lCurrentWearer);
+			sprintf( db_rec.wearer, "%*ld", SZ_WEARER, currentWearer);
 
 	        gettime( &times );
 	        getdate( &dates );
@@ -635,7 +635,7 @@ void display_scroll_data( db_record *db_rec, long curr, long max )
 	gotoxy(0,0);
 	printf("\tr%-*.*s %04ld/%04ld\tr", nMaxX-10, nMaxX-10, "RECORD", curr+1, max);
 
-	diplay_input_data( db_rec );
+	display_input_data( db_rec );
 }
 
 int get_record( db_record *db_rec, long *rec_nr, long *max_rec )
