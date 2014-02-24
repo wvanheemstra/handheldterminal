@@ -51,7 +51,7 @@ LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02\libgcc.a
  APP_INFO       0x06000010       0x26 startup.o
                 0x06000036                __cs_end = .
 
-PROGRAM         0x06000036    0x27f26
+PROGRAM         0x06000036    0x27f2a
                 0x06000036                __text = .
  *(APP_START)
  APP_START      0x06000036      0x8c3 startup.o
@@ -495,7 +495,7 @@ PROGRAM         0x06000036    0x27f26
  *(.text.*)
  *(P)
  *fill*         0x060008f9        0x1 00
- P              0x060008fa     0x1482 obj/demo.o
+ P              0x060008fa     0x1484 obj/demo.o
                 0x060008fa                _set_stopbits
                 0x06000927                _set_databits
                 0x06000955                _set_parity
@@ -507,131 +507,131 @@ PROGRAM         0x06000036    0x27f26
                 0x06001007                _fill_record_struct
                 0x0600108e                _FindBarcodeInDatabase
                 0x06001110                _ScanLabels
-                0x0600134c                _display_scroll_data
-                0x0600139f                _get_record
-                0x06001473                _ScrollDatabase
-                0x06001613                _SelectPort
-                0x06001647                _SelectBaudrate
-                0x0600167f                _SelectParity
-                0x060016ae                _SelectDatabits
-                0x060016dd                _SelectStopbits
-                0x0600170c                _ComPortSettings
-                0x0600172f                _SelectProtocol
-                0x0600175a                _ChangeContrast
-                0x06001761                _SetBarcodes
-                0x06001792                _AvailableMemory
-                0x060017e9                __SystemMenu
-                0x0600180c                _DeleteDatabase
-                0x06001854                _OnOseComInfo
-                0x0600188e                _TransmitData
-                0x06001b4b                _ShowVersion
-                0x06001ba5                _ShowFonts
-                0x06001cee                _main
- P              0x06001d7c     0x129a obj/database.o
-                0x06001d7c                _GetDBErrorCode
-                0x06001dba                _OpenDatabase
-                0x06001e87                _CreateDatabase
-                0x06001eff                _CloseDatabase
-                0x06001f37                _GetCurrentRecord
-                0x06001f7f                _GetTotalRecords
-                0x06001fb1                _GotoRecord
-                0x06001ffb                _ReadCurrentRecord
-                0x06002085                _ReadFirstRecord
-                0x060020bf                _ReadLastRecord
-                0x0600210f                _ReadPreviousRecord
-                0x0600215f                _ReadNextRecord
-                0x060021af                _DeleteRecord
-                0x060022bb                _WriteRecord
-                0x060023c3                _InsertionSort
-                0x060026d9                _HeapSort
-                0x060028a5                _QuickSort
-                0x06002c1b                _BinarySearch
-                0x06002cd7                _LineairSearch
-                0x06002d6d                _CreateIndexFile
-                0x06002e93                _OpenIndexFile
-                0x06002ebc                _SearchIndexFile
-                0x06002f79                _AddNewSearchkeyToIndex
- P              0x06003016      0xbd4 obj/input.o
-                0x06003055                _WaitForKey
-                0x06003107                _WaitForKeys
-                0x0600314b                _ScanBarcodeSymbol
-                0x06003253                _ScanBarcode
-                0x060034bb                _KeyboardInput
-                0x0600358d                _ScanOrKeyboardInput
-                0x06003872                _ScanOrKeyboardInputSymbol
-                0x06003b29                _KeyboardNumeric
- P              0x06003bea     0x14c4 obj/menu.o
-                0x06003f93                _ShowTextMenu
-                0x060044f9                _ShowTextSelectionMenu
-                0x06004640                _InitGraphMenu
-                0x06004655                _GraphIncLayer
-                0x06004a0b                _ShowGraphMenu
-                0x06004f31                _ShowGraphSelectionMenu
- P              0x060050ae        0x0 obj/oph1005_pic.o
- P              0x060050ae        0x0 obj/app_version.o
- P              0x060050ae        0x0 startup.o
- P              0x060050ae        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
- P              0x060050ae        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                0x0600134e                _display_scroll_data
+                0x060013a1                _get_record
+                0x06001475                _ScrollDatabase
+                0x06001615                _SelectPort
+                0x06001649                _SelectBaudrate
+                0x06001681                _SelectParity
+                0x060016b0                _SelectDatabits
+                0x060016df                _SelectStopbits
+                0x0600170e                _ComPortSettings
+                0x06001731                _SelectProtocol
+                0x0600175c                _ChangeContrast
+                0x06001763                _SetBarcodes
+                0x06001794                _AvailableMemory
+                0x060017eb                __SystemMenu
+                0x0600180e                _DeleteDatabase
+                0x06001856                _OnOseComInfo
+                0x06001890                _TransmitData
+                0x06001b4d                _ShowVersion
+                0x06001ba7                _ShowFonts
+                0x06001cf0                _main
+ P              0x06001d7e     0x129a obj/database.o
+                0x06001d7e                _GetDBErrorCode
+                0x06001dbc                _OpenDatabase
+                0x06001e89                _CreateDatabase
+                0x06001f01                _CloseDatabase
+                0x06001f39                _GetCurrentRecord
+                0x06001f81                _GetTotalRecords
+                0x06001fb3                _GotoRecord
+                0x06001ffd                _ReadCurrentRecord
+                0x06002087                _ReadFirstRecord
+                0x060020c1                _ReadLastRecord
+                0x06002111                _ReadPreviousRecord
+                0x06002161                _ReadNextRecord
+                0x060021b1                _DeleteRecord
+                0x060022bd                _WriteRecord
+                0x060023c5                _InsertionSort
+                0x060026db                _HeapSort
+                0x060028a7                _QuickSort
+                0x06002c1d                _BinarySearch
+                0x06002cd9                _LineairSearch
+                0x06002d6f                _CreateIndexFile
+                0x06002e95                _OpenIndexFile
+                0x06002ebe                _SearchIndexFile
+                0x06002f7b                _AddNewSearchkeyToIndex
+ P              0x06003018      0xbd4 obj/input.o
+                0x06003057                _WaitForKey
+                0x06003109                _WaitForKeys
+                0x0600314d                _ScanBarcodeSymbol
+                0x06003255                _ScanBarcode
+                0x060034bd                _KeyboardInput
+                0x0600358f                _ScanOrKeyboardInput
+                0x06003874                _ScanOrKeyboardInputSymbol
+                0x06003b2b                _KeyboardNumeric
+ P              0x06003bec     0x14c4 obj/menu.o
+                0x06003f95                _ShowTextMenu
+                0x060044fb                _ShowTextSelectionMenu
+                0x06004642                _InitGraphMenu
+                0x06004657                _GraphIncLayer
+                0x06004a0d                _ShowGraphMenu
+                0x06004f33                _ShowGraphSelectionMenu
+ P              0x060050b0        0x0 obj/oph1005_pic.o
+ P              0x060050b0        0x0 obj/app_version.o
+ P              0x060050b0        0x0 startup.o
+ P              0x060050b0        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+ P              0x060050b0        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
  *(.rodata)
  *(.rodata.*)
  .rodata._ctype_
-                0x060050ae      0x101 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
-                0x060050ae                __ctype_
- *fill*         0x060051af        0x1 00
+                0x060050b0      0x101 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+                0x060050b0                __ctype_
+ *fill*         0x060051b1        0x3 00
  .rodata._global_impure_ptr
-                0x060051b0        0x4 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
-                0x060051b0                __global_impure_ptr
+                0x060051b4        0x4 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                0x060051b4                __global_impure_ptr
  .rodata.str1.1
-                0x060051b4        0x2 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                0x060051b8        0x2 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
  *(C_1)
  *(C_2)
  *(C)
- *fill*         0x060051b6        0x2 00
- C              0x060051b8     0x6b48 obj/demo.o
-                0x060051b8                __scan
-                0x060053ba                __scroll
-                0x060055bc                __tools
-                0x060057be                __trash
-                0x060059c0                __transmit
-                0x06005bc2                __version
-                0x06005dc4                __comp
-                0x06005fc6                __protocol
-                0x060061c8                __display
-                0x060063ca                __barcode
-                0x060065cc                __memory
-                0x060067ce                __flash
-                0x060069d0                __stop
-                0x06006bd2                __parity
-                0x06006dd4                __databits
-                0x06006fd6                __drive
-                0x060071d8                __comport
-                0x060073da                __fonts
-                0x060075dc                __vga_15_32
-                0x0600b1e0                _logo_pix
- C              0x0600bd00       0x18 obj/input.o
- C              0x0600bd18       0x80 obj/menu.o
- C              0x0600bd98    0x1c1c4 obj/oph1005_pic.o
-                0x0600bd98                __barcode_pic
-                0x0600e931                __folder_fonts_pic
-                0x06010b72                __info_pic
-                0x060125ee                __open_file_pic
-                0x06013ced                __recycle_pic
-                0x0601681b                __setting_pic
-                0x06017e77                __wireless_pic
-                0x06019cb7                __exit_pic
-                0x0601b370                __com_port_pic
-                0x0601c432                __memory_pic
-                0x0601dca1                __protocol_pic
-                0x0601f168                __checked
-                0x06020d3c                __uncheck
-                0x060225e9                __data_bits_pic
-                0x060237eb                __stop_bits_pic
-                0x06024ae7                __parity_pic
-                0x06025d4f                __baudrate_pic
-                0x06027f5c                __etext = .
-                0x06027f5c                . = ALIGN (0x4)
+ *fill*         0x060051ba        0x2 00
+ C              0x060051bc     0x6b48 obj/demo.o
+                0x060051bc                __scan
+                0x060053be                __scroll
+                0x060055c0                __tools
+                0x060057c2                __trash
+                0x060059c4                __transmit
+                0x06005bc6                __version
+                0x06005dc8                __comp
+                0x06005fca                __protocol
+                0x060061cc                __display
+                0x060063ce                __barcode
+                0x060065d0                __memory
+                0x060067d2                __flash
+                0x060069d4                __stop
+                0x06006bd6                __parity
+                0x06006dd8                __databits
+                0x06006fda                __drive
+                0x060071dc                __comport
+                0x060073de                __fonts
+                0x060075e0                __vga_15_32
+                0x0600b1e4                _logo_pix
+ C              0x0600bd04       0x18 obj/input.o
+ C              0x0600bd1c       0x80 obj/menu.o
+ C              0x0600bd9c    0x1c1c4 obj/oph1005_pic.o
+                0x0600bd9c                __barcode_pic
+                0x0600e935                __folder_fonts_pic
+                0x06010b76                __info_pic
+                0x060125f2                __open_file_pic
+                0x06013cf1                __recycle_pic
+                0x0601681f                __setting_pic
+                0x06017e7b                __wireless_pic
+                0x06019cbb                __exit_pic
+                0x0601b374                __com_port_pic
+                0x0601c436                __memory_pic
+                0x0601dca5                __protocol_pic
+                0x0601f16c                __checked
+                0x06020d40                __uncheck
+                0x060225ed                __data_bits_pic
+                0x060237ef                __stop_bits_pic
+                0x06024aeb                __parity_pic
+                0x06025d53                __baudrate_pic
+                0x06027f60                __etext = .
+                0x06027f60                . = ALIGN (0x4)
 
-.data           0x04000000      0x42c load address 0x06027f5c
+.data           0x04000000      0x42c load address 0x06027f60
                 0x04000000                __data = .
  *(.data)
  *(.data.*)
@@ -657,7 +657,7 @@ PROGRAM         0x06000036    0x27f26
  *(D_2)
                 0x0400042c                __edata = .
 
-.bss            0x0400042c      0x250 load address 0x06028388
+.bss            0x0400042c      0x250 load address 0x0602838c
                 0x0400042c                __bss = .
  *(.bss)
  *(.bss.*)
@@ -733,14 +733,14 @@ OUTPUT(XFP3092E.elf elf32-rx-le)
  .debug_aranges
                 0x000000b0       0x20 startup.o
 
-.debug_line     0x00000000     0x1280
- .debug_line    0x00000000      0x447 obj/demo.o
- .debug_line    0x00000447      0x32b obj/database.o
- .debug_line    0x00000772      0x3e0 obj/input.o
- .debug_line    0x00000b52      0x4c2 obj/menu.o
- .debug_line    0x00001014       0x36 obj/oph1005_pic.o
- .debug_line    0x0000104a       0x36 obj/app_version.o
- .debug_line    0x00001080      0x200 startup.o
+.debug_line     0x00000000     0x1282
+ .debug_line    0x00000000      0x449 obj/demo.o
+ .debug_line    0x00000449      0x32b obj/database.o
+ .debug_line    0x00000774      0x3e0 obj/input.o
+ .debug_line    0x00000b54      0x4c2 obj/menu.o
+ .debug_line    0x00001016       0x36 obj/oph1005_pic.o
+ .debug_line    0x0000104c       0x36 obj/app_version.o
+ .debug_line    0x00001082      0x200 startup.o
 
 .debug_str      0x00000000     0x1095
  .debug_str     0x00000000      0x964 obj/demo.o
@@ -822,8 +822,8 @@ InsertionSort                                     obj/database.o
 InstallHeartbeatHandler                           startup.o
 InstallReceiveCallBack                            startup.o
 KeyboardInput                                     obj/input.o
-KeyboardNumeric                                   obj/input.o
                                                   obj/demo.o
+KeyboardNumeric                                   obj/input.o
 LineairSearch                                     obj/database.o
 OnOseComInfo                                      obj/demo.o
 OpenDatabase                                      obj/database.o

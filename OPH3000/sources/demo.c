@@ -609,7 +609,19 @@ void ScanLabels( void )
 			strcpy( wearer, "");
 
 			//OLD key = KeyboardNumeric( quantity, 4, INPUT_NUM | INPUT_NEGATIVE | INPUT_SHOW_DEFAULT, 9, GetMaxCharsYPos()-1, 5, 4, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
-			key = KeyboardNumeric( wearer, 4, INPUT_NUM | INPUT_NEGATIVE | INPUT_SHOW_DEFAULT, 9, GetMaxCharsYPos()-1, 5, 4, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
+			
+			// KeyboardInput(param1, param2, param3, param4, param5, param6, param7, param8)
+			// where:
+			// param1 = char* string; wearer OK
+			// param2 = int min_length; 2
+			// param3 = int max_length; SZ_WEARER
+			// param4 = int typ; INPUT_ALL; allows for numeric and alphanumeric input OK
+			// param5 = int x; 6; six positions from left OK
+			// param6 = int y; GetMaxCharsYPos()-1; positions from top OK
+			// param7 = int display_length; 14
+			// param8 = int num; CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY			
+			
+			key = KeyboardInput( wearer, 1, SZ_WEARER, INPUT_ALL, 6, GetMaxCharsYPos()-1, 14, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
 			if( key == CLR_KEY || key == ESC_KEY )
 				break;
 				
@@ -624,7 +636,7 @@ void ScanLabels( void )
 			lCurrentWearer = lNewWearer;
 
 			//OLD if( nIllegal || lTotal < -999999L || lTotal > 9999999L )
-			if( nIllegal || lCurrentWearer < -999999L || lCurrentWearer > 9999999L )
+			if( nIllegal || lCurrentWearer < -99999999L || lCurrentWearer > 999999999L )
 			{
 #if OPH | OPH1004 | OPH1005
 					printf("\fError quantity\n\n\n\n\n\n\nPress any key");
