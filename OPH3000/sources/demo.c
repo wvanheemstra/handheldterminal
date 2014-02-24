@@ -7,7 +7,6 @@
 // PHL Compiler: Microtec C compiler for Melps 7700  Version 2.2
 //
 
-
 //************************************************************************
 // Include
 //************************************************************************
@@ -717,7 +716,6 @@ int get_record( db_record *db_rec, long *rec_nr, long *max_rec )
 	return TRUE;
 }
 
-
 void ScrollDatabase( void )
 {
 	long current;
@@ -1065,7 +1063,6 @@ void AvailableMemory( void )
 	WaitForKey();
 }
 
-
 #if OPH								// drive selection only available for the OPH-1000
 void SetDrive ( void )
 {
@@ -1296,7 +1293,6 @@ void ShowVersion( void )
 #endif
     WaitForKey();
 }
-
 
 void ShowFonts(void)
 {
