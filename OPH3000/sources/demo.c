@@ -368,7 +368,7 @@ void display_input_data( db_record *db_rec )
 
 	gotoxy(0,1);
 	//OLD printf("%-*.*s", nMaxX, nMaxX, db_rec->barcode );
-	printf("%-*.*s", nMaxX, nMaxX, db_rec->device );
+	printf("\nDevice ID:\n %-*.*s\n", nMaxX, nMaxX, db_rec->device );
 	//OLD printf("\nQuant: %-*.*s\n", SZ_SIGN+SZ_QUANTITY, SZ_SIGN+SZ_QUANTITY, db_rec->quantity);
 	printf("\nCow ID:\n %-*.*s\n", SZ_WEARER, SZ_WEARER, db_rec->wearer);
 #ifdef OPH1005
@@ -376,7 +376,7 @@ void display_input_data( db_record *db_rec )
 #else
 	setfont( SMALL_FONT, NULL);
 #endif
-	gotoxy(0,6);
+	gotoxy(0,11);
 	printf("%-*.*s\n", nMaxX, nMaxX, db_rec->date);
     printf("%-*.*s", nMaxX, nMaxX, db_rec->time);
 #ifdef OPH1005
@@ -558,11 +558,25 @@ void ScanLabels( void )
 
 	for(;;)
 	{
-		printf("\fScan or type...\n");
+		//OLD printf("\fScan or type...\n");
+		printf("\fDevice ID:\n");
+		gotoxy(0,2);
+		printf("\nPress Scan\n or type ...");
 
 		// Display some info first
 		//OLD key = ScanOrKeyboardInput( barcode, 1, SZ_BARCODE, INPUT_ALL, 0, 1, GetMaxCharsXPos(), GetMaxCharsYPos()-3);
-		key = ScanOrKeyboardInput( device, 1, SZ_DEVICE, INPUT_ALL, 0, 1, GetMaxCharsXPos(), GetMaxCharsYPos()-3);
+		
+		// ScanOrKeyboardInput(param1, param2, param3, param4, param5, param6, param7, param8)
+		// where:
+		// param1 = char* string; device OK
+		// param2 = int min_length; SZ_DEVICE
+		// param3 = int max_length; SZ_DEVICE
+		// param4 = int typ; INPUT_NUM; allows for numeric input only
+		// param5 = int x; 1; one position from left
+		// param6 = int y; 1; one position from top
+		// param7 = int display_length; 9
+		// param8 = int display_height; 1
+		key = ScanOrKeyboardInput( device, 1, SZ_DEVICE, INPUT_NUM, 1, 1, GetMaxCharsXPos(), GetMaxCharsYPos()-3);
 		if( key == CLR_KEY || key == ESC_KEY )
 			return;
 
