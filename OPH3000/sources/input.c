@@ -19,7 +19,7 @@
 // 08/06/2005: 	Added function ScanBarcodeSymbol(), ScanOrKeyboardInputSymbol(), 
 //				Added INPUT_PRINT define (all printable characters)
 //				Added Automatic cursor on when selecting Keyboard input
-//				Automatic setecho(ON) and setecho(OFF) keyboardinput with INPUT_ALPHA or NPUT_PRINT
+//				Automatic setecho(ON) and setecho(OFF) keyboardinput with INPUT_ALPHA or INPUT_PRINT
 //				Changed display_input function to indicate difference between full string and max display_length
 //
 // 20/06/2005: 	Added KeyboardNumeric function for input a whole numeric values displaying is done from

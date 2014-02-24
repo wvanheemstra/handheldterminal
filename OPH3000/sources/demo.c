@@ -1,6 +1,6 @@
 //
 // IceRobotics Ltd.
-// Scan labels, wearer and scroll database with menus
+// Scan labels, enter wearer and scroll database with menus
 // Transmit scanned data with NetO or plain ascii
 // OPH Compiler: GCC Open Source Compiler Version 4.1.2
 //			     available at http:/gcc.gnu.org/releases.html
@@ -43,14 +43,14 @@
 #define DBASE_NAME	   	"data.csv"  //"DATA.TXT"
 
 // Database record
-//#define SZ_BARCODE		100 // Now called DEVICE
-#define SZ_DEVICE		100
-// OLD #define SZ_SIGN			1
-//#define SZ_QUANTITY		6   // Now called WEARER
-#define SZ_WEARER		6
+// DEPRECATED #define SZ_BARCODE		100 // Now SZ_DEVICE
+#define SZ_DEVICE		8 // Storage for 8 characters
+// DEPRECATED #define SZ_SIGN			1
+// DEPRECATED #define SZ_QUANTITY		6 // Now SZ_WEARER
+#define SZ_WEARER		8 // Storage for 8 characters
 #define SZ_TIME			(2+1+2+1+2)
 #define SZ_DATE			(4+1+2+1+2)
-// OLD #define SZ_RECORD		(SZ_DEVICE+1+SZ_SIGN+SZ_WEARER+1+SZ_TIME+1+SZ_DATE+1+1)
+// OLD #define SZ_RECORD		(SZ_BARCODE+1+SZ_SIGN+SZ_QUANTITY+1+SZ_TIME+1+SZ_DATE+1+1)
 #define SZ_RECORD		(SZ_DEVICE+1+SZ_WEARER+1+SZ_TIME+1+SZ_DATE+1+1)
 
 // barcode menu defines
@@ -147,8 +147,9 @@
 // barcode record structure
 typedef struct
 {
+	// OLD char barcode[ SZ_BARCODE + 1 ];
 	char device[ SZ_DEVICE + 1 ];
-	// OLD char wearer[ SZ_SIGN + SZ_WEARER + 1 ];
+	//OLD char quantity[ SZ_SIGN + SZ_QUANTITY + 1 ];
 	char wearer[ SZ_WEARER + 1 ];
 	char time[ SZ_TIME + 1 ];
 	char date[ SZ_DATE + 1 ];
@@ -366,17 +367,16 @@ void display_input_data( db_record *db_rec )
 	nMaxX = GetMaxCharsXPos();
 
 	gotoxy(0,1);
-	// OLD printf("%-*.*s", nMaxX, nMaxX, db_rec->device );
-	printf("\nDevice ID:\n %-*.*s\n", nMaxX, nMaxX, db_rec->device );
-	// OLD printf("\nCow: %-*.*s\n", SZ_SIGN+SZ_WEARER, SZ_SIGN+SZ_WEARER, db_rec->wearer);
+	//OLD printf("%-*.*s", nMaxX, nMaxX, db_rec->barcode );
+	printf("%-*.*s", nMaxX, nMaxX, db_rec->device );
+	//OLD printf("\nQuant: %-*.*s\n", SZ_SIGN+SZ_QUANTITY, SZ_SIGN+SZ_QUANTITY, db_rec->quantity);
 	printf("\nCow ID:\n %-*.*s\n", SZ_WEARER, SZ_WEARER, db_rec->wearer);
-
 #ifdef OPH1005
 	setfont(LARGE_FONT,NULL);
 #else
 	setfont( SMALL_FONT, NULL);
 #endif
-	gotoxy(0,10);
+	gotoxy(0,6);
 	printf("%-*.*s\n", nMaxX, nMaxX, db_rec->date);
     printf("%-*.*s", nMaxX, nMaxX, db_rec->time);
 #ifdef OPH1005
@@ -405,17 +405,13 @@ void store_input_data( db_record *db_rec, long lRecordNo )
 		return;
 	}
 	// Make the record to store
-	// OLD sprintf(record, "%-*.*s,%-*.*s,%-*.*s,%-*.*s\r\n",
-	//			SZ_DEVICE, SZ_DEVICE, db_rec->device,
-	//			SZ_SIGN+SZ_WEARER, SZ_SIGN+SZ_WEARER, db_rec->wearer,
-	//			SZ_TIME, SZ_TIME, db_rec->time,
-	//			SZ_DATE, SZ_DATE, db_rec->date );
-				
 	sprintf(record, "%-*.*s,%-*.*s,%-*.*s,%-*.*s\r\n",
+				//OLD SZ_BARCODE, SZ_BARCODE, db_rec->barcode,
 				SZ_DEVICE, SZ_DEVICE, db_rec->device,
+				//OLD SZ_SIGN+SZ_QUANTITY, SZ_SIGN+SZ_QUANTITY, db_rec->quantity,
 				SZ_WEARER, SZ_WEARER, db_rec->wearer,
 				SZ_TIME, SZ_TIME, db_rec->time,
-				SZ_DATE, SZ_DATE, db_rec->date );			
+				SZ_DATE, SZ_DATE, db_rec->date );
 
 	if( !OpenDatabase( (char*)DBASE_NAME, SZ_RECORD, &dbFile ))
 	{
@@ -432,7 +428,7 @@ void store_input_data( db_record *db_rec, long lRecordNo )
 	}
 	if( lRecordNo != -1L )
 		GotoRecord( &dbFile, lRecordNo );
-	
+
 	if( !WriteRecord( &dbFile, record, ((lRecordNo==-1L)?WRITE_APPEND:WRITE_OVER)))
 	{
 		CloseDatabase( &dbFile );
@@ -448,6 +444,7 @@ void store_input_data( db_record *db_rec, long lRecordNo )
 	{
 		// Record was appended, now sort the database
 		// to be able to use BinarySearch next time to search the database
+		//OLD if( !QuickSort( &dbFile, 0, SZ_BARCODE ))
 		if( !QuickSort( &dbFile, 0, SZ_DEVICE ))
 		{
 #if OPH | OPH1004 | OPH1005
@@ -461,9 +458,10 @@ void store_input_data( db_record *db_rec, long lRecordNo )
 	CloseDatabase( &dbFile );
 }
 
-char string_wearer_to_char( char* wearer, int* illegal )
+//OLD long string_quantity_to_long( char* quantity, int* illegal )
+long string_wearer_to_long( char* wearer, int* illegal )
 {
-	// OLD static char tmp[SZ_SIGN+SZ_WEARER+1];
+	//OLD static char tmp[SZ_SIGN+SZ_QUANTITY+1];
 	static char tmp[SZ_WEARER+1];
 	char* ptr;
 	int pos;
@@ -472,16 +470,19 @@ char string_wearer_to_char( char* wearer, int* illegal )
 
 	memset( tmp, '\0', sizeof( tmp ));
 	ptr = tmp;
-	// OLD for( pos = 0; pos < (SZ_SIGN+SZ_WEARER); pos++ )
+	//OLD for( pos = 0; pos < (SZ_SIGN+SZ_QUANTITY); pos++ )
 	for( pos = 0; pos < (SZ_WEARER); pos++ )
 	{
+		//OLD if( quantity[pos] == '\0' )
 		if( wearer[pos] == '\0' )
 			break;
 
+		//if( quantity[pos] == ' ') // cut off all spaces
 		if( wearer[pos] == ' ') // cut off all spaces
 		 	continue;
 
-		 *ptr++ = wearer[pos];
+		//OLD  *ptr++ = quantity[pos];
+		 *ptr++ = wearer[pos]; 
 	}
 	if( atol( tmp ) == 0L && tmp[0] == '-' )
 		*illegal = TRUE; // illegal value a '-' or -0 are not legal values
@@ -493,20 +494,20 @@ void fill_record_struct( db_record *db_rec, char* record )
 	int offset;
 	memset( db_rec, '\0', sizeof( db_record ));
 	offset = 0;
+	//OLD memcpy( db_rec->barcode, record+offset, SZ_BARCODE );
+	//OLD offset+=SZ_BARCODE+1;
 	memcpy( db_rec->device, record+offset, SZ_DEVICE );
 	offset+=SZ_DEVICE+1;
-	
-	// OLD memcpy( db_rec->wearer, record+offset, SZ_SIGN+SZ_WEARER );
-	// OLD offset+= SZ_SIGN+SZ_WEARER+1;
-
+	//OLD memcpy( db_rec->quantity, record+offset, SZ_SIGN+SZ_QUANTITY );
+	//OLD offset+= SZ_SIGN+SZ_QUANTITY+1;
 	memcpy( db_rec->wearer, record+offset, SZ_WEARER );
-	offset+= SZ_WEARER+1;	
-	
+	offset+= SZ_WEARER+1;
 	memcpy( db_rec->time, record+offset, SZ_TIME );
 	offset+= SZ_TIME+1;
 	memcpy( db_rec->date, record+offset, SZ_DATE );
 }
 
+//long FindBarcodeInDatabase( char *device, char *quantity )
 long FindBarcodeInDatabase( char *device, char *wearer )
 {
 	static SDBFile dbFile;
@@ -515,11 +516,12 @@ long FindBarcodeInDatabase( char *device, char *wearer )
 	long lFound = -1L;
 	if( !OpenDatabase( (char*)DBASE_NAME, SZ_RECORD, &dbFile ))
 		return lFound;
+	//OLD if( (lFound = BinarySearch( &dbFile, record, barcode, SZ_BARCODE, 0 )) != -1L )
 	if( (lFound = BinarySearch( &dbFile, record, device, SZ_DEVICE, 0 )) != -1L )
 	{
-		// Barcode was found fill the wearer string
+		// Barcode was found fill the quantity string
 		fill_record_struct( &db_rec, record );
-		// OLD strncpy( wearer, db_rec.wearer, SZ_SIGN+SZ_WEARER );
+		//OLD strncpy( quantity, db_rec.quantity, SZ_SIGN+SZ_QUANTITY );
 		strncpy( wearer, db_rec.wearer, SZ_WEARER );
 	}
 	CloseDatabase( &dbFile );
@@ -528,8 +530,9 @@ long FindBarcodeInDatabase( char *device, char *wearer )
 
 void ScanLabels( void )
 {
-	static char 		device[ SZ_DEVICE + 1 ];
-	// OLD static char 		wearer[ SZ_SIGN + SZ_WEARER + 1 ];
+	//OLD static char 		barcode[ SZ_BARCODE + 1 ];
+	static char 		device[ SZ_DEVICE + 1 ];	
+	//OLD static char 		quantity[ SZ_SIGN + SZ_QUANTITY + 1 ];
 	static char 		wearer[ SZ_WEARER + 1 ];
 	static db_record	db_rec;
     struct date 		dates;
@@ -537,11 +540,12 @@ void ScanLabels( void )
     long   				lFoundRecord;
     int 				nIllegal;
 	int					key;
-    // OLD long 				lTotal;
-    // OLD long 				lAdd;
-    long 				currentWearer;
-    long 				newWearer;
+    //OLD long 				lTotal; // Now lCurrentWearer
+    //OLD long 				lAdd; // Now lNewWearer
+	long				lCurrentWearer;
+	long				lNewWearer;
 
+	//OLD memset( barcode, '\0', sizeof( barcode ));
 	memset( device, '\0', sizeof( device ));
 	memset( &db_rec, '\0', sizeof( db_record ));
 
@@ -554,66 +558,72 @@ void ScanLabels( void )
 
 	for(;;)
 	{
-		printf("\fDevice ID:\n");
+		printf("\fScan or type...\n");
 
 		// Display some info first
+		//OLD key = ScanOrKeyboardInput( barcode, 1, SZ_BARCODE, INPUT_ALL, 0, 1, GetMaxCharsXPos(), GetMaxCharsYPos()-3);
 		key = ScanOrKeyboardInput( device, 1, SZ_DEVICE, INPUT_ALL, 0, 1, GetMaxCharsXPos(), GetMaxCharsYPos()-3);
 		if( key == CLR_KEY || key == ESC_KEY )
 			return;
 
 		//
-		// A new for loop, so that wearer is cancelled
-		// the input continues with the device input
+		// A new for loop, so that quantity is cancelled
+		// the input continues with the barcode input
 		//
 		for(;;)
 		{
-			// fill the device into the record structure
+			// fill the barcode into the record structure
+			//OLD sprintf( db_rec.barcode, "%-*.*s", SZ_BARCODE, SZ_BARCODE, barcode );
 			sprintf( db_rec.device, "%-*.*s", SZ_DEVICE, SZ_DEVICE, device );
+			//OLD memset( quantity, '\0', sizeof( quantity ));	// clear the whole quantity item
 			memset( wearer, '\0', sizeof( wearer ));	// clear the whole wearer item
+			//OLD if( (lFoundRecord = FindBarcodeInDatabase( db_rec.barcode, quantity )) != -1L )
+			//OLD if( (lFoundRecord = FindBarcodeInDatabase( db_rec.device, quantity )) != -1L )
+			//OLD	lTotal = string_quantity_to_long( quantity, &nIllegal );
 			if( (lFoundRecord = FindBarcodeInDatabase( db_rec.device, wearer )) != -1L )
-				// OLD lTotal = string_wearer_to_long( wearer, &nIllegal );
-				currentWearer = string_wearer_to_char( wearer, &nIllegal );
+				lCurrentWearer = string_wearer_to_long( wearer, &nIllegal );	
 			else
-				// OLD lTotal = 0;
-				currentWearer = 0;
+				//OLD lTotal = 0;
+				lCurrentWearer = 0;
 
-			gotoxy( 0, GetMaxCharsYPos()-5);
-			// OLD printf("Cow ID\n   Current:\n %*ld\n   New:\n", SZ_SIGN+SZ_WEARER, lTotal);
-			printf("Cow ID\n   Current:\n %*ld\n   New:\n", SZ_WEARER, currentWearer);
+			gotoxy( 0, GetMaxCharsYPos()-2);
+			//OLD printf("Total: %*ld\nAdd:         ", SZ_SIGN+SZ_QUANTITY, lTotal);
+			printf("Current: %*ld\nNew:         ", SZ_WEARER, lCurrentWearer);
 
-			// Set the wearer to default value empty
-			strcpy( wearer, "");
+			// Set the quantity to default value
+			//OLD strcpy( quantity, "1");
+			strcpy( wearer, "1");
 
+			//OLD key = KeyboardNumeric( quantity, 4, INPUT_NUM | INPUT_NEGATIVE | INPUT_SHOW_DEFAULT, 9, GetMaxCharsYPos()-1, 5, 4, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
 			key = KeyboardNumeric( wearer, 4, INPUT_NUM | INPUT_NEGATIVE | INPUT_SHOW_DEFAULT, 9, GetMaxCharsYPos()-1, 5, 4, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
 			if( key == CLR_KEY || key == ESC_KEY )
 				break;
 				
 
-		// OLD	lAdd = string_wearer_to_long( wearer, &nIllegal );
-			newWearer =  string_wearer_to_char( wearer, &nIllegal );
-		// OLD	if( !nIllegal && lAdd == 0L )
-		// OLD		break; // wearer is empty or zero do nothing
-
-			if( !nIllegal && newWearer == 0L )
+			//OLD lAdd = string_quantity_to_long( quantity, &nIllegal );
+			lNewWearer = string_wearer_to_long( wearer, &nIllegal );
+			//OLD if( !nIllegal && lAdd == 0L )
+			if( !nIllegal && lNewWearer == 0L )
+				//OLD break; // quantity is empty or zero do nothing
 				break; // wearer is empty or zero do nothing
 
-		// OLD	lTotal += lAdd;
-			currentWearer = newWearer;
+			//OLD lTotal += lAdd;
+			lCurrentWearer = lNewWearer;
 
-			// OLD if( nIllegal || lTotal < -999999L || lTotal > 9999999L )
-			if( nIllegal )
+			//OLD if( nIllegal || lTotal < -999999L || lTotal > 9999999L )
+			if( nIllegal || lCurrentWearer < -999999L || lCurrentWearer > 9999999L )
 			{
 #if OPH | OPH1004 | OPH1005
-					printf("\fError wearer\n\n\n\n\n\n\nPress any key");
+					printf("\fError quantity\n\n\n\n\n\n\nPress any key");
 #else
-					printf("\fError wearer\n\n\nPress any key");
+					printf("\fError quantity\n\n\nPress any key");
 #endif
 				WaitForKey();
-				break; // continue with the device input
+				break; // continue with the barcode input
 			}
-			// When ok fill the wearer of the db_record
-			// OLD sprintf( db_rec.wearer, "%*ld", SZ_SIGN+SZ_WEARER, lTotal);
-			sprintf( db_rec.wearer, "%*ld", SZ_WEARER, currentWearer);
+			// When ok fill the quantity of the db_record
+			//OLD sprintf( db_rec.quantity, "%*ld", SZ_SIGN+SZ_QUANTITY, lTotal);
+			sprintf( db_rec.wearer, "%*ld", SZ_WEARER, lCurrentWearer);
 
 	        gettime( &times );
 	        getdate( &dates );
@@ -1101,9 +1111,9 @@ void DeleteDatabase( void )
 {
 	int key;
 	#if OPH | OPH1004
-		printf("\fDelete\nDatabase?\n\n\n\n\n[ENTER] = YES\n[ESC] = NO");
+		printf("\fDelete\nDatabase?\n\n\n\n\n[ENTER] = YES\n[CLEAR] = NO");
 	#else
-		printf("\fDelete Database\n\n[ENTER] = YES\n[ESC] = NO");
+		printf("\fDelete Database\n\n[ENT] = YES\n[CLR] = NO");
 	#endif
 	key = WaitForKeys( 4, ENT_KEY, TRIGGER_KEY, CLR_KEY, ESC_KEY );
 	if( key == ENT_KEY || key == TRIGGER_KEY )
@@ -1242,7 +1252,7 @@ void ShowVersion( void )
     os[1] = 'F';
 
 #if OPH | OPH1004 | OPH1005
-		printf("\f\tr    COWALERT    \tr\nSoftware\nVersion:");
+		printf("\f\tr    CowAlert    \tr\nSoftware\nVersion #");
 		printf("\n\n%s%s\n\n\nPress any key", os,VERSIONSUFFIX);
 #else
 		printf("\fSoftware Version");
@@ -1297,7 +1307,6 @@ void ShowFonts(void)
 	gotoxy(0,16);
 	printf("Small Font\n%d chars * %d lines",x,y);
 
-
 	setfont(TINY_FONT,NULL);
 	x=GetMaxCharsXPos();
 	y=GetMaxCharsYPos();
@@ -1335,7 +1344,6 @@ void ShowFonts(void)
 
 }
 
-
 void main( void )
 {
 
@@ -1347,11 +1355,9 @@ void main( void )
 		{"Transmit Data",  		_wireless_pic,		TransmitData},
 		{"Delete DBase",		_recycle_pic,		DeleteDatabase},
 		{"System Menu", 		_setting_pic,		_SystemMenu},
-		{"Show Fonts",          _folder_fonts_pic,	ShowFonts},
+		{"Show fonts",          _folder_fonts_pic,	ShowFonts},
 		{"Version",     		_info_pic,			ShowVersion}
 	};
-
-
 #elif OPH | OPH1004
 	sgraphMenu mnuMain[] =
 	{
@@ -1360,7 +1366,7 @@ void main( void )
 		{"Transmit Data",  		_transmit,	TransmitData},
 		{"Delete DBase",		_trash,		DeleteDatabase},
 		{"System Menu", 		_tools,		_SystemMenu},
-		{"Show Fonts",          _fonts,     ShowFonts},
+		{"Show fonts",          _fonts,     ShowFonts},
 		{"Version",     		_version,	ShowVersion}
 	};
 #else
@@ -1384,16 +1390,13 @@ void main( void )
 //	SetTextColor(0x0094da);
 #endif
 
-
 	// Set some default values
 	lPort = COM9; // USB port is used as default
 	lProtocol = ID_NETO_PROTOCOL;
 
-#if OPH | OPH1004 | PX25 | OPH1005
-	// lBarcodes = ID_CD39 | ID_EAN | ID_UPC | ID_I2O5 | ID_D2O5 | ID_NW7 | ID_CD93 | ID_CD128;// | ID_UPCE1;
-	// lBarcodes |= ID_MSI | ID_TELEPEN | ID_UK | ID_IATA | ID_SCODE | ID_PDF417 | ID_MICROPDF;
-	lBarcodes = ID_CD39; // Barcode type Code 39 is used as default
-	lBaudrate = ID_19200; // Baudrate 19200 is used as default
+#if OPH | OPH1004 | PX25 | OPH1005 | OPH3000
+	lBarcodes = ID_CD39;  // Code 39 is set as default barcode
+	lBaudrate = ID_19200; // 19200 is set as default baudrate
 #ifdef OPH
 	lDrive = DRIVE_A;
 #endif
@@ -1421,17 +1424,15 @@ void main( void )
 	set_drive();			// set the default drive
 #endif
 
-#if OPH1005
+#if OPH1005 | OPH3000
 	systemsetting("*Q");	// shift key handled by OS
 #endif
 	systemsetting("7G");	// Charging indication LED enabled
 
 	InitGraphMenu();
 
-
 	for(;;)
 	{
 		ShowGraphMenu( mnuMain, sizeof( mnuMain ) / sizeof( sgraphMenu ));
 	}
 }
-
