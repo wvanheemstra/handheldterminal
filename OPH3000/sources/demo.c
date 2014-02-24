@@ -595,14 +595,14 @@ void ScanLabels( void )
 			//OLD if( (lFoundRecord = FindBarcodeInDatabase( db_rec.device, quantity )) != -1L )
 			//OLD	lTotal = string_quantity_to_long( quantity, &nIllegal );
 			if( (lFoundRecord = FindBarcodeInDatabase( db_rec.device, wearer )) != -1L )
-				lCurrentWearer = string_wearer_to_long( wearer, &nIllegal );	
+				lCurrentWearer = string_wearer_to_long( wearer, &nIllegal );
 			else
 				//OLD lTotal = 0;
 				lCurrentWearer = 0;
 
 			gotoxy( 0, GetMaxCharsYPos()-7);
 			//OLD printf("Total: %*ld\nAdd:         ", SZ_SIGN+SZ_QUANTITY, lTotal);
-			printf("CowID     \n  Current:  \n%*ld\n\nPress Enter or\n type New:\n", SZ_WEARER, lCurrentWearer);
+			printf("Cow ID    \n  Current:  \n      %*ld\n\nPress Enter or\n type New:\n", SZ_WEARER, lCurrentWearer);
 
 			// Set the quantity to default value (empty)
 			//OLD strcpy( quantity, "1");
@@ -618,10 +618,9 @@ void ScanLabels( void )
 			// param4 = int typ; INPUT_ALL; allows for numeric and alphanumeric input OK
 			// param5 = int x; 6; six positions from left OK
 			// param6 = int y; GetMaxCharsYPos()-1; positions from top OK
-			// param7 = int display_length; 14
-			// param8 = int num; CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY			
-			
-			key = KeyboardInput( wearer, 1, SZ_WEARER, INPUT_ALL, 6, GetMaxCharsYPos()-1, 14, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
+			// param7 = int display_length; GetMaxCharsXPos()
+			// param8 = int num; CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY
+			key = KeyboardInput( wearer, 1, SZ_WEARER, INPUT_ALL, 6, GetMaxCharsYPos()-1, GetMaxCharsXPos(), CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
 			if( key == CLR_KEY || key == ESC_KEY )
 				break;
 				
