@@ -600,9 +600,9 @@ void ScanLabels( void )
 				//OLD lTotal = 0;
 				lCurrentWearer = 0;
 
-			gotoxy( 0, GetMaxCharsYPos()-2);
+			gotoxy( 0, GetMaxCharsYPos()-7);
 			//OLD printf("Total: %*ld\nAdd:         ", SZ_SIGN+SZ_QUANTITY, lTotal);
-			printf("Current: %*ld\nNew:         ", SZ_WEARER, lCurrentWearer);
+			printf("CowID     \n  Current:  \n%*ld\n\nPress Enter or\n type New:\n", SZ_WEARER, lCurrentWearer);
 
 			// Set the quantity to default value (empty)
 			//OLD strcpy( quantity, "1");
@@ -613,7 +613,6 @@ void ScanLabels( void )
 			if( key == CLR_KEY || key == ESC_KEY )
 				break;
 				
-
 			//OLD lAdd = string_quantity_to_long( quantity, &nIllegal );
 			lNewWearer = string_wearer_to_long( wearer, &nIllegal );
 			//OLD if( !nIllegal && lAdd == 0L )

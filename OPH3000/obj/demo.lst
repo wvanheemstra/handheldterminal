@@ -26395,25 +26395,26 @@
  25895      74 79 70 65 20 2E 2E 2E 
  25895      00 
  25896                             	.LC123:
- 25897 624d 43 75 72 72 65 6E 74 3A 		.string	"Current: %*ld\nNew:         "
- 25897      20 25 2A 6C 64 0A 4E 65 
- 25897      77 3A 20 20 20 20 20 20 
- 25897      20 20 20 00 
+ 25897 624d 43 6F 77 49 44 20 20 20 		.string	"CowID     \n  Current:  \n%*ld\n\nPress Enter or\n type New:\n"
+ 25897      20 20 0A 20 20 43 75 72 
+ 25897      72 65 6E 74 3A 20 20 0A 
+ 25897      25 2A 6C 64 0A 0A 50 72 
+ 25897      65 73 73 20 45 6E 74 65 
  25898                             	.LC124:
- 25899 6269 00                      		.string	""
+ 25899 6286 00                      		.string	""
  25900                             	.LC125:
- 25901 626a 0C 45 72 72 6F 72 20 71 		.string	"\fError quantity\n\n\n\n\n\n\nPress any key"
+ 25901 6287 0C 45 72 72 6F 72 20 71 		.string	"\fError quantity\n\n\n\n\n\n\nPress any key"
  25901      75 61 6E 74 69 74 79 0A 
  25901      0A 0A 0A 0A 0A 0A 50 72 
  25901      65 73 73 20 61 6E 79 20 
  25901      6B 65 79 00 
  25902                             	.LC126:
- 25903 628e 25 2A 6C 64 00          		.string	"%*ld"
+ 25903 62ab 25 2A 6C 64 00          		.string	"%*ld"
  25904                             	.LC127:
- 25905 6293 25 30 32 64 3A 25 30 32 		.string	"%02d:%02d:%02d"
+ 25905 62b0 25 30 32 64 3A 25 30 32 		.string	"%02d:%02d:%02d"
  25905      64 3A 25 30 32 64 00 
  25906                             	.LC128:
- 25907 62a2 25 30 32 64 2F 25 30 32 		.string	"%02d/%02d/%04d"
+ 25907 62bf 25 30 32 64 2F 25 30 32 		.string	"%02d/%02d/%04d"
  25907      64 2F 25 30 34 64 00 
  25908                             		.section P,"ax"
  25909                             		.global	_ScanLabels
@@ -26518,9 +26519,9 @@
  600:SOURCES/demo.c **** 				//OLD lTotal = 0;
  601:SOURCES/demo.c **** 				lCurrentWearer = 0;
  602:SOURCES/demo.c **** 
- 603:SOURCES/demo.c **** 			gotoxy( 0, GetMaxCharsYPos()-2);
+ 603:SOURCES/demo.c **** 			gotoxy( 0, GetMaxCharsYPos()-7);
  604:SOURCES/demo.c **** 			//OLD printf("Total: %*ld\nAdd:         ", SZ_SIGN+SZ_QUANTITY, lTotal);
- 605:SOURCES/demo.c **** 			printf("Current: %*ld\nNew:         ", SZ_WEARER, lCurrentWearer);
+ 605:SOURCES/demo.c **** 			printf("CowID     \n  Current:  \n%*ld\n\nPress Enter or\n type New:\n", SZ_WEARER, lCurrentWear
  606:SOURCES/demo.c **** 
  607:SOURCES/demo.c **** 			// Set the quantity to default value (empty)
  608:SOURCES/demo.c **** 			//OLD strcpy( quantity, "1");
@@ -26648,15 +26649,15 @@
  26006 08ff 3E 60 00                		mov.L	#0, [r6]
  26007                             		.balign 2,3,3
  26008                             	.L85:
- 603:SOURCES/demo.c **** 			gotoxy( 0, GetMaxCharsYPos()-2);
+ 603:SOURCES/demo.c **** 			gotoxy( 0, GetMaxCharsYPos()-7);
  26009                             		.loc 1 603 0
  26010 0902 39 3B FB                		bsr	_GetMaxCharsYPos
  26011 0905 EF 1A                   		mov.L	r1, r10
- 26012 0907 60 2A                   		sub	#2, r10
+ 26012 0907 60 7A                   		sub	#7, r10
  26013 0909 66 01                   		mov.L	#0, r1
  26014 090b EF A2                   		mov.L	r10, r2
  26015 090d 05 00 00 00             		bsr	_gotoxy
- 605:SOURCES/demo.c **** 			printf("Current: %*ld\nNew:         ", SZ_WEARER, lCurrentWearer);
+ 605:SOURCES/demo.c **** 			printf("CowID     \n  Current:  \n%*ld\n\nPress Enter or\n type New:\n", SZ_WEARER, lCurrentWear
  26016                             		.loc 1 605 0
  26017 0911 F8 02 4D 62 00 00       		mov.L	#.LC123, [r0]
  26018 0917 3E 01 08                		mov.L	#8, 4[r0]
@@ -26665,7 +26666,7 @@
  26021 091f 05 00 00 00             		bsr	_printf
  609:SOURCES/demo.c **** 			strcpy( wearer, "");
  26022                             		.loc 1 609 0
- 26023 0923 FB A2 69 62 00 00       		mov.L	#.LC124, r10
+ 26023 0923 FB A2 86 62 00 00       		mov.L	#.LC124, r10
  26024 0929 CC AB                   		mov.B	[r10], r11
  26025 092b FB A2 DB 00 00 00       		mov.L	#_wearer.3802, r10
  26026 0931 C3 AB                   		mov.B	r11, [r10]
@@ -26736,7 +26737,7 @@
  26082                             	.L88:
  631:SOURCES/demo.c **** 					printf("\fError quantity\n\n\n\n\n\n\nPress any key");
  26083                             		.loc 1 631 0 is_stmt 1
- 26084 09b1 F8 02 6A 62 00 00       		mov.L	#.LC125, [r0]
+ 26084 09b1 F8 02 87 62 00 00       		mov.L	#.LC125, [r0]
  26085 09b7 05 00 00 00             		bsr	_printf
  635:SOURCES/demo.c **** 				WaitForKey();
  26086                             		.loc 1 635 0
@@ -26747,7 +26748,7 @@
  26090                             	.L89:
  640:SOURCES/demo.c **** 			sprintf( db_rec.wearer, "%*ld", SZ_WEARER, lCurrentWearer);
  26091                             		.loc 1 640 0
- 26092 09c2 F8 02 8E 62 00 00       		mov.L	#.LC126, [r0]
+ 26092 09c2 F8 02 AB 62 00 00       		mov.L	#.LC126, [r0]
  26093 09c8 3E 01 08                		mov.L	#8, 4[r0]
  26094 09cb EC 6A                   		mov.L	[r6], r10
  26095 09cd E7 0A 02                		mov.L	r10, 8[r0]
@@ -26771,7 +26772,7 @@
  26110 09f4 5B AB                   		movu.B	r10, r11
  26111 09f6 CD 6A 16                		mov.B	22[r6], r10
  26112 09f9 5B AA                   		movu.B	r10, r10
- 26113 09fb F8 02 93 62 00 00       		mov.L	#.LC127, [r0]
+ 26113 09fb F8 02 B0 62 00 00       		mov.L	#.LC127, [r0]
  26114 0a01 E7 0C 01                		mov.L	r12, 4[r0]
  26115 0a04 E7 0B 02                		mov.L	r11, 8[r0]
  26116 0a07 E7 0A 03                		mov.L	r10, 12[r0]
@@ -26785,7 +26786,7 @@
  26123 0a1c 5B AB                   		movu.B	r10, r11
  26124 0a1e DD 6A 08                		mov.W	16[r6], r10
  26125 0a21 5F AA                   		movu.W	r10, r10
- 26126 0a23 F8 02 A2 62 00 00       		mov.L	#.LC128, [r0]
+ 26126 0a23 F8 02 BF 62 00 00       		mov.L	#.LC128, [r0]
  26127 0a29 E7 0C 01                		mov.L	r12, 4[r0]
  26128 0a2c E7 0B 02                		mov.L	r11, 8[r0]
  26129 0a2f E7 0A 03                		mov.L	r10, 12[r0]
@@ -26813,13 +26814,13 @@
  26147 0a4f 3F 6C 15                		rtsd	#84, r6-r12
  26148                             	.LFE12:
  26150                             		.section C,"a",@progbits
- 26151 62b1 00 00 00                		.p2align 2
+ 26151 62ce 00 00                   		.p2align 2
  26152                             	.LC129:
- 26153 62b4 09 72 25 2D 2A 2E 2A 73 		.string	"\tr%-*.*s %04ld/%04ld\tr"
+ 26153 62d0 09 72 25 2D 2A 2E 2A 73 		.string	"\tr%-*.*s %04ld/%04ld\tr"
  26153      20 25 30 34 6C 64 2F 25 
  26153      30 34 6C 64 09 72 00 
  26154                             	.LC130:
- 26155 62cb 52 45 43 4F 52 44 00    		.string	"RECORD"
+ 26155 62e7 52 45 43 4F 52 44 00    		.string	"RECORD"
  26156                             		.section P,"ax"
  26157                             		.global	_display_scroll_data
  26159                             	_display_scroll_data:
@@ -26856,10 +26857,10 @@
  26182 0a74 71 AB F6                		add	#-10, r10, r11
  26183 0a77 ED 6A 02                		mov.L	8[r6], r10
  26184 0a7a 62 1A                   		add	#1, r10
- 26185 0a7c F8 02 B4 62 00 00       		mov.L	#.LC129, [r0]
+ 26185 0a7c F8 02 D0 62 00 00       		mov.L	#.LC129, [r0]
  26186 0a82 E7 0C 01                		mov.L	r12, 4[r0]
  26187 0a85 E7 0B 02                		mov.L	r11, 8[r0]
- 26188 0a88 F9 02 03 CB 62 00 00    		mov.L	#.LC130, 12[r0]
+ 26188 0a88 F9 02 03 E7 62 00 00    		mov.L	#.LC130, 12[r0]
  26189 0a8f E7 0A 04                		mov.L	r10, 16[r0]
  26190 0a92 ED 6A 03                		mov.L	12[r6], r10
  26191 0a95 E7 0A 05                		mov.L	r10, 20[r0]
@@ -26874,21 +26875,21 @@
  26197 0aa2 3F 6C 11                		rtsd	#68, r6-r12
  26198                             	.LFE13:
  26200                             		.section C,"a",@progbits
- 26201 62d2 00 00                   		.p2align 2
+ 26201 62ee 00 00                   		.p2align 2
  26202                             	.LC131:
- 26203 62d4 0C 45 72 72 6F 72 20 6F 		.string	"\fError open\ndatabase.\nCode=%ld\n\n\n\n\nPress any key"
+ 26203 62f0 0C 45 72 72 6F 72 20 6F 		.string	"\fError open\ndatabase.\nCode=%ld\n\n\n\n\nPress any key"
  26203      70 65 6E 0A 64 61 74 61 
  26203      62 61 73 65 2E 0A 43 6F 
  26203      64 65 3D 25 6C 64 0A 0A 
  26203      0A 0A 0A 50 72 65 73 73 
  26204                             	.LC132:
- 26205 6305 0C 45 72 72 6F 72 20 67 		.string	"\fError goto\nrecord.\nCode=%ld\n\n\n\n\nPress any key"
+ 26205 6321 0C 45 72 72 6F 72 20 67 		.string	"\fError goto\nrecord.\nCode=%ld\n\n\n\n\nPress any key"
  26205      6F 74 6F 0A 72 65 63 6F 
  26205      72 64 2E 0A 43 6F 64 65 
  26205      3D 25 6C 64 0A 0A 0A 0A 
  26205      0A 50 72 65 73 73 20 61 
  26206                             	.LC133:
- 26207 6334 0C 45 72 72 6F 72 20 72 		.string	"\fError read\nrecord.\nCode=%ld\n\n\n\n\nPress any key"
+ 26207 6350 0C 45 72 72 6F 72 20 72 		.string	"\fError read\nrecord.\nCode=%ld\n\n\n\n\nPress any key"
  26207      65 61 64 0A 72 65 63 6F 
  26207      72 64 2E 0A 43 6F 64 65 
  26207      3D 25 6C 64 0A 0A 0A 0A 
@@ -26928,7 +26929,7 @@
  26231                             		.loc 1 673 0
  26232 0acc 05 00 00 00             		bsr	_GetDBErrorCode
  26233 0ad0 EF 1A                   		mov.L	r1, r10
- 26234 0ad2 F8 02 D4 62 00 00       		mov.L	#.LC131, [r0]
+ 26234 0ad2 F8 02 F0 62 00 00       		mov.L	#.LC131, [r0]
  26235 0ad8 E7 0A 01                		mov.L	r10, 4[r0]
  26236 0adb 05 00 00 00             		bsr	_printf
  674:SOURCES/demo.c **** #else
@@ -26968,7 +26969,7 @@
  26258                             		.loc 1 686 0
  26259 0b10 05 00 00 00             		bsr	_GetDBErrorCode
  26260 0b14 EF 1A                   		mov.L	r1, r10
- 26261 0b16 F8 02 05 63 00 00       		mov.L	#.LC132, [r0]
+ 26261 0b16 F8 02 21 63 00 00       		mov.L	#.LC132, [r0]
  26262 0b1c E7 0A 01                		mov.L	r10, 4[r0]
  26263 0b1f 05 00 00 00             		bsr	_printf
  687:SOURCES/demo.c **** #else
@@ -26998,7 +26999,7 @@
  26277                             		.loc 1 697 0
  26278 0b41 05 00 00 00             		bsr	_GetDBErrorCode
  26279 0b45 EF 1A                   		mov.L	r1, r10
- 26280 0b47 F8 02 34 63 00 00       		mov.L	#.LC133, [r0]
+ 26280 0b47 F8 02 50 63 00 00       		mov.L	#.LC133, [r0]
  26281 0b4d E7 0A 01                		mov.L	r10, 4[r0]
  26282 0b50 05 00 00 00             		bsr	_printf
  698:SOURCES/demo.c **** #else
@@ -27034,9 +27035,9 @@
  26302 0b76 3F 6B 0B                		rtsd	#44, r6-r11
  26303                             	.LFE14:
  26305                             		.section C,"a",@progbits
- 26306 6363 00                      		.p2align 2
+ 26306 637f 00                      		.p2align 2
  26307                             	.LC134:
- 26308 6364 0C 44 61 74 61 62 61 73 		.string	"\fDatabase\nnot available\n\n\n\n\n\nPress any key"
+ 26308 6380 0C 44 61 74 61 62 61 73 		.string	"\fDatabase\nnot available\n\n\n\n\n\nPress any key"
  26308      65 0A 6E 6F 74 20 61 76 
  26308      61 69 6C 61 62 6C 65 0A 
  26308      0A 0A 0A 0A 0A 50 72 65 
@@ -27073,7 +27074,7 @@
  719:SOURCES/demo.c **** #if OPH | OPH1004 | OPH1005
  720:SOURCES/demo.c **** 			printf("\fDatabase\nnot available\n\n\n\n\n\nPress any key");
  26329                             		.loc 1 720 0
- 26330 0b95 F8 02 64 63 00 00       		mov.L	#.LC134, [r0]
+ 26330 0b95 F8 02 80 63 00 00       		mov.L	#.LC134, [r0]
  26331 0b9b 05 00 00 00             		bsr	_printf
  721:SOURCES/demo.c **** #else
  722:SOURCES/demo.c **** 			printf("\fDatabase\nnot available\n\nPress any key");
@@ -27317,21 +27318,21 @@
  26506 0d16 3F 6B 09                		rtsd	#36, r6-r11
  26507                             	.LFE15:
  26509                             		.section C,"a",@progbits
- 26510 638f 00                      		.p2align 2
+ 26510 63ab 00                      		.p2align 2
  26511                             	.LC8:
- 26512 6390 45 78 69 74 00          		.string	"Exit"
+ 26512 63ac 45 78 69 74 00          		.string	"Exit"
  26513                             	.LC65:
- 26514 6395 49 72 44 41 00          		.string	"IrDA"
+ 26514 63b1 49 72 44 41 00          		.string	"IrDA"
  26515                             	.LC66:
- 26516 639a 55 53 42 00             		.string	"USB"
- 26517 639e 00 00                   		.balign 4
+ 26516 63b6 55 53 42 00             		.string	"USB"
+ 26517 63ba 00 00                   		.balign 4
  26518                             	.LC135:
- 26519 63a0 90 63 00 00             		.long	.LC8
- 26520 63a4 FF FF FF FF             		.long	-1
- 26521 63a8 95 63 00 00             		.long	.LC65
- 26522 63ac 00 00 00 00             		.long	0
- 26523 63b0 9A 63 00 00             		.long	.LC66
- 26524 63b4 09 00 00 00             		.long	9
+ 26519 63bc AC 63 00 00             		.long	.LC8
+ 26520 63c0 FF FF FF FF             		.long	-1
+ 26521 63c4 B1 63 00 00             		.long	.LC65
+ 26522 63c8 00 00 00 00             		.long	0
+ 26523 63cc B6 63 00 00             		.long	.LC66
+ 26524 63d0 09 00 00 00             		.long	9
  26525                             		.section P,"ax"
  26526                             		.global	_SelectPort
  26528                             	_SelectPort:
@@ -27350,7 +27351,7 @@
  779:SOURCES/demo.c **** 
  780:SOURCES/demo.c **** 	sSelMenu mnuSelPort[] =
  26537                             		.loc 1 780 0
- 26538 0d20 FB B2 A0 63 00 00       		mov.L	#.LC135, r11
+ 26538 0d20 FB B2 BC 63 00 00       		mov.L	#.LC135, r11
  26539 0d26 75 4A 18                		mov.L	#24, r10
  26540 0d29 71 6C 04                		add	#4, r6, r12
  26541 0d2c EF C1                   		mov.L	r12, r1
@@ -27391,37 +27392,37 @@
  26558                             		.section C,"a",@progbits
  26559                             		.p2align 2
  26560                             	.LC57:
- 26561 63b8 31 31 35 32 30 30 00    		.string	"115200"
+ 26561 63d4 31 31 35 32 30 30 00    		.string	"115200"
  26562                             	.LC58:
- 26563 63bf 35 37 36 30 30 00       		.string	"57600"
+ 26563 63db 35 37 36 30 30 00       		.string	"57600"
  26564                             	.LC59:
- 26565 63c5 33 38 34 30 30 00       		.string	"38400"
+ 26565 63e1 33 38 34 30 30 00       		.string	"38400"
  26566                             	.LC60:
- 26567 63cb 31 39 32 30 30 00       		.string	"19200"
+ 26567 63e7 31 39 32 30 30 00       		.string	"19200"
  26568                             	.LC61:
- 26569 63d1 39 36 30 30 00          		.string	"9600"
+ 26569 63ed 39 36 30 30 00          		.string	"9600"
  26570                             	.LC62:
- 26571 63d6 34 38 30 30 00          		.string	"4800"
+ 26571 63f2 34 38 30 30 00          		.string	"4800"
  26572                             	.LC63:
- 26573 63db 32 34 30 30 00          		.string	"2400"
+ 26573 63f7 32 34 30 30 00          		.string	"2400"
  26574                             		.balign 4
  26575                             	.LC136:
- 26576 63e0 90 63 00 00             		.long	.LC8
- 26577 63e4 FF FF FF FF             		.long	-1
- 26578 63e8 B8 63 00 00             		.long	.LC57
- 26579 63ec 01 00 00 00             		.long	1
- 26580 63f0 BF 63 00 00             		.long	.LC58
- 26581 63f4 02 00 00 00             		.long	2
- 26582 63f8 C5 63 00 00             		.long	.LC59
- 26583 63fc 03 00 00 00             		.long	3
- 26584 6400 CB 63 00 00             		.long	.LC60
- 26585 6404 04 00 00 00             		.long	4
- 26586 6408 D1 63 00 00             		.long	.LC61
- 26587 640c 05 00 00 00             		.long	5
- 26588 6410 D6 63 00 00             		.long	.LC62
- 26589 6414 06 00 00 00             		.long	6
- 26590 6418 DB 63 00 00             		.long	.LC63
- 26591 641c 07 00 00 00             		.long	7
+ 26576 63fc AC 63 00 00             		.long	.LC8
+ 26577 6400 FF FF FF FF             		.long	-1
+ 26578 6404 D4 63 00 00             		.long	.LC57
+ 26579 6408 01 00 00 00             		.long	1
+ 26580 640c DB 63 00 00             		.long	.LC58
+ 26581 6410 02 00 00 00             		.long	2
+ 26582 6414 E1 63 00 00             		.long	.LC59
+ 26583 6418 03 00 00 00             		.long	3
+ 26584 641c E7 63 00 00             		.long	.LC60
+ 26585 6420 04 00 00 00             		.long	4
+ 26586 6424 ED 63 00 00             		.long	.LC61
+ 26587 6428 05 00 00 00             		.long	5
+ 26588 642c F2 63 00 00             		.long	.LC62
+ 26589 6430 06 00 00 00             		.long	6
+ 26590 6434 F7 63 00 00             		.long	.LC63
+ 26591 6438 07 00 00 00             		.long	7
  26592                             		.section P,"ax"
  26593                             		.global	_SelectBaudrate
  26595                             	_SelectBaudrate:
@@ -27440,7 +27441,7 @@
  804:SOURCES/demo.c **** 
  805:SOURCES/demo.c **** 	sSelMenu mnuSelBaudrate[] =
  26604                             		.loc 1 805 0
- 26605 0d54 FB B2 E0 63 00 00       		mov.L	#.LC136, r11
+ 26605 0d54 FB B2 FC 63 00 00       		mov.L	#.LC136, r11
  26606 0d5a 75 4A 40                		mov.L	#64, r10
  26607 0d5d 71 6C 04                		add	#4, r6, r12
  26608 0d60 EF C1                   		mov.L	r12, r1
@@ -27484,21 +27485,21 @@
  26627                             		.section C,"a",@progbits
  26628                             		.p2align 2
  26629                             	.LC53:
- 26630 6420 4E 6F 6E 65 00          		.string	"None"
+ 26630 643c 4E 6F 6E 65 00          		.string	"None"
  26631                             	.LC54:
- 26632 6425 45 76 65 6E 00          		.string	"Even"
+ 26632 6441 45 76 65 6E 00          		.string	"Even"
  26633                             	.LC55:
- 26634 642a 4F 64 64 00             		.string	"Odd"
- 26635 642e 00 00                   		.balign 4
+ 26634 6446 4F 64 64 00             		.string	"Odd"
+ 26635 644a 00 00                   		.balign 4
  26636                             	.LC137:
- 26637 6430 90 63 00 00             		.long	.LC8
- 26638 6434 FF FF FF FF             		.long	-1
- 26639 6438 20 64 00 00             		.long	.LC53
- 26640 643c 01 00 00 00             		.long	1
- 26641 6440 25 64 00 00             		.long	.LC54
- 26642 6444 02 00 00 00             		.long	2
- 26643 6448 2A 64 00 00             		.long	.LC55
- 26644 644c 03 00 00 00             		.long	3
+ 26637 644c AC 63 00 00             		.long	.LC8
+ 26638 6450 FF FF FF FF             		.long	-1
+ 26639 6454 3C 64 00 00             		.long	.LC53
+ 26640 6458 01 00 00 00             		.long	1
+ 26641 645c 41 64 00 00             		.long	.LC54
+ 26642 6460 02 00 00 00             		.long	2
+ 26643 6464 46 64 00 00             		.long	.LC55
+ 26644 6468 03 00 00 00             		.long	3
  26645                             		.section P,"ax"
  26646                             		.global	_SelectParity
  26648                             	_SelectParity:
@@ -27516,7 +27517,7 @@
  829:SOURCES/demo.c **** 
  830:SOURCES/demo.c **** 	sSelMenu mnuSelParity[] =
  26657                             		.loc 1 830 0
- 26658 0d8c FB B2 30 64 00 00       		mov.L	#.LC137, r11
+ 26658 0d8c FB B2 4C 64 00 00       		mov.L	#.LC137, r11
  26659 0d92 75 4A 20                		mov.L	#32, r10
  26660 0d95 EF 61                   		mov.L	r6, r1
  26661 0d97 EF B2                   		mov.L	r11, r2
@@ -27545,19 +27546,19 @@
  26676                             		.section C,"a",@progbits
  26677                             		.p2align 2
  26678                             	.LC50:
- 26679 6450 37 20 64 61 74 61 62 69 		.string	"7 databits"
+ 26679 646c 37 20 64 61 74 61 62 69 		.string	"7 databits"
  26679      74 73 00 
  26680                             	.LC51:
- 26681 645b 38 20 64 61 74 61 62 69 		.string	"8 databits"
+ 26681 6477 38 20 64 61 74 61 62 69 		.string	"8 databits"
  26681      74 73 00 
- 26682 6466 00 00                   		.balign 4
+ 26682 6482 00 00                   		.balign 4
  26683                             	.LC138:
- 26684 6468 90 63 00 00             		.long	.LC8
- 26685 646c FF FF FF FF             		.long	-1
- 26686 6470 50 64 00 00             		.long	.LC50
- 26687 6474 07 00 00 00             		.long	7
- 26688 6478 5B 64 00 00             		.long	.LC51
- 26689 647c 08 00 00 00             		.long	8
+ 26684 6484 AC 63 00 00             		.long	.LC8
+ 26685 6488 FF FF FF FF             		.long	-1
+ 26686 648c 6C 64 00 00             		.long	.LC50
+ 26687 6490 07 00 00 00             		.long	7
+ 26688 6494 77 64 00 00             		.long	.LC51
+ 26689 6498 08 00 00 00             		.long	8
  26690                             		.section P,"ax"
  26691                             		.global	_SelectDatabits
  26693                             	_SelectDatabits:
@@ -27575,7 +27576,7 @@
  843:SOURCES/demo.c **** 
  844:SOURCES/demo.c **** 	sSelMenu mnuSelDatabits[] =
  26702                             		.loc 1 844 0
- 26703 0dbb FB B2 68 64 00 00       		mov.L	#.LC138, r11
+ 26703 0dbb FB B2 84 64 00 00       		mov.L	#.LC138, r11
  26704 0dc1 75 4A 18                		mov.L	#24, r10
  26705 0dc4 EF 61                   		mov.L	r6, r1
  26706 0dc6 EF B2                   		mov.L	r11, r2
@@ -27603,19 +27604,19 @@
  26721                             		.section C,"a",@progbits
  26722                             		.p2align 2
  26723                             	.LC47:
- 26724 6480 31 20 73 74 6F 70 62 69 		.string	"1 stopbit"
+ 26724 649c 31 20 73 74 6F 70 62 69 		.string	"1 stopbit"
  26724      74 00 
  26725                             	.LC48:
- 26726 648a 32 20 73 74 6F 70 62 69 		.string	"2 stopbits"
+ 26726 64a6 32 20 73 74 6F 70 62 69 		.string	"2 stopbits"
  26726      74 73 00 
- 26727 6495 00 00 00                		.balign 4
+ 26727 64b1 00 00 00                		.balign 4
  26728                             	.LC139:
- 26729 6498 90 63 00 00             		.long	.LC8
- 26730 649c FF FF FF FF             		.long	-1
- 26731 64a0 80 64 00 00             		.long	.LC47
- 26732 64a4 01 00 00 00             		.long	1
- 26733 64a8 8A 64 00 00             		.long	.LC48
- 26734 64ac 02 00 00 00             		.long	2
+ 26729 64b4 AC 63 00 00             		.long	.LC8
+ 26730 64b8 FF FF FF FF             		.long	-1
+ 26731 64bc 9C 64 00 00             		.long	.LC47
+ 26732 64c0 01 00 00 00             		.long	1
+ 26733 64c4 A6 64 00 00             		.long	.LC48
+ 26734 64c8 02 00 00 00             		.long	2
  26735                             		.section P,"ax"
  26736                             		.global	_SelectStopbits
  26738                             	_SelectStopbits:
@@ -27633,7 +27634,7 @@
  856:SOURCES/demo.c **** 
  857:SOURCES/demo.c **** 	sSelMenu mnuSelStopbits[] =
  26747                             		.loc 1 857 0
- 26748 0dea FB B2 98 64 00 00       		mov.L	#.LC139, r11
+ 26748 0dea FB B2 B4 64 00 00       		mov.L	#.LC139, r11
  26749 0df0 75 4A 18                		mov.L	#24, r10
  26750 0df3 EF 61                   		mov.L	r6, r1
  26751 0df5 EF B2                   		mov.L	r11, r2
@@ -27661,38 +27662,38 @@
  26766                             		.section C,"a",@progbits
  26767                             		.p2align 2
  26768                             	.LC41:
- 26769 64b0 50 6F 72 74 00          		.string	"Port"
+ 26769 64cc 50 6F 72 74 00          		.string	"Port"
  26770                             	.LC42:
- 26771 64b5 42 61 75 64 72 61 74 65 		.string	"Baudrate"
+ 26771 64d1 42 61 75 64 72 61 74 65 		.string	"Baudrate"
  26771      00 
  26772                             	.LC43:
- 26773 64be 50 61 72 69 74 79 00    		.string	"Parity"
+ 26773 64da 50 61 72 69 74 79 00    		.string	"Parity"
  26774                             	.LC44:
- 26775 64c5 44 61 74 61 62 69 74 73 		.string	"Databits"
+ 26775 64e1 44 61 74 61 62 69 74 73 		.string	"Databits"
  26775      00 
  26776                             	.LC45:
- 26777 64ce 53 74 6F 70 62 69 74 73 		.string	"Stopbits"
+ 26777 64ea 53 74 6F 70 62 69 74 73 		.string	"Stopbits"
  26777      00 
- 26778 64d7 00                      		.balign 4
+ 26778 64f3 00                      		.balign 4
  26779                             	.LC140:
- 26780 64d8 90 63 00 00             		.long	.LC8
- 26781 64dc 00 00 00 00             		.long	0
- 26782 64e0 00 00 00 00             		.long	0
- 26783 64e4 B0 64 00 00             		.long	.LC41
- 26784 64e8 00 00 00 00             		.long	__com_port_pic
- 26785 64ec 00 00 00 00             		.long	_SelectPort
- 26786 64f0 B5 64 00 00             		.long	.LC42
- 26787 64f4 00 00 00 00             		.long	__baudrate_pic
- 26788 64f8 00 00 00 00             		.long	_SelectBaudrate
- 26789 64fc BE 64 00 00             		.long	.LC43
- 26790 6500 00 00 00 00             		.long	__parity_pic
- 26791 6504 00 00 00 00             		.long	_SelectParity
- 26792 6508 C5 64 00 00             		.long	.LC44
- 26793 650c 00 00 00 00             		.long	__data_bits_pic
- 26794 6510 00 00 00 00             		.long	_SelectDatabits
- 26795 6514 CE 64 00 00             		.long	.LC45
- 26796 6518 00 00 00 00             		.long	__stop_bits_pic
- 26797 651c 00 00 00 00             		.long	_SelectStopbits
+ 26780 64f4 AC 63 00 00             		.long	.LC8
+ 26781 64f8 00 00 00 00             		.long	0
+ 26782 64fc 00 00 00 00             		.long	0
+ 26783 6500 CC 64 00 00             		.long	.LC41
+ 26784 6504 00 00 00 00             		.long	__com_port_pic
+ 26785 6508 00 00 00 00             		.long	_SelectPort
+ 26786 650c D1 64 00 00             		.long	.LC42
+ 26787 6510 00 00 00 00             		.long	__baudrate_pic
+ 26788 6514 00 00 00 00             		.long	_SelectBaudrate
+ 26789 6518 DA 64 00 00             		.long	.LC43
+ 26790 651c 00 00 00 00             		.long	__parity_pic
+ 26791 6520 00 00 00 00             		.long	_SelectParity
+ 26792 6524 E1 64 00 00             		.long	.LC44
+ 26793 6528 00 00 00 00             		.long	__data_bits_pic
+ 26794 652c 00 00 00 00             		.long	_SelectDatabits
+ 26795 6530 EA 64 00 00             		.long	.LC45
+ 26796 6534 00 00 00 00             		.long	__stop_bits_pic
+ 26797 6538 00 00 00 00             		.long	_SelectStopbits
  26798                             		.section P,"ax"
  26799                             		.global	_ComPortSettings
  26801                             	_ComPortSettings:
@@ -27716,7 +27717,7 @@
  875:SOURCES/demo.c **** #elif OPH1005
  876:SOURCES/demo.c **** 	sgraphMenu mnuComm[] =
  26810                             		.loc 1 876 0
- 26811 0e19 FB B2 D8 64 00 00       		mov.L	#.LC140, r11
+ 26811 0e19 FB B2 F4 64 00 00       		mov.L	#.LC140, r11
  26812 0e1f 75 4A 48                		mov.L	#0x48, r10
  26813 0e22 EF 61                   		mov.L	r6, r1
  26814 0e24 EF B2                   		mov.L	r11, r2
@@ -27753,25 +27754,25 @@
  26825                             		.section C,"a",@progbits
  26826                             		.p2align 2
  26827                             	.LC37:
- 26828 6520 4E 6F 20 70 72 6F 74 6F 		.string	"No protocol"
+ 26828 653c 4E 6F 20 70 72 6F 74 6F 		.string	"No protocol"
  26828      63 6F 6C 00 
  26829                             	.LC38:
- 26830 652c 4E 65 74 4F 20 70 72 6F 		.string	"NetO protocol"
+ 26830 6548 4E 65 74 4F 20 70 72 6F 		.string	"NetO protocol"
  26830      74 6F 63 6F 6C 00 
  26831                             	.LC39:
- 26832 653a 4F 73 65 43 6F 6D 6D 20 		.string	"OseComm protocol"
+ 26832 6556 4F 73 65 43 6F 6D 6D 20 		.string	"OseComm protocol"
  26832      70 72 6F 74 6F 63 6F 6C 
  26832      00 
- 26833 654b 00                      		.balign 4
+ 26833 6567 00                      		.balign 4
  26834                             	.LC141:
- 26835 654c 90 63 00 00             		.long	.LC8
- 26836 6550 FF FF FF FF             		.long	-1
- 26837 6554 20 65 00 00             		.long	.LC37
- 26838 6558 01 00 00 00             		.long	1
- 26839 655c 2C 65 00 00             		.long	.LC38
- 26840 6560 02 00 00 00             		.long	2
- 26841 6564 3A 65 00 00             		.long	.LC39
- 26842 6568 03 00 00 00             		.long	3
+ 26835 6568 AC 63 00 00             		.long	.LC8
+ 26836 656c FF FF FF FF             		.long	-1
+ 26837 6570 3C 65 00 00             		.long	.LC37
+ 26838 6574 01 00 00 00             		.long	1
+ 26839 6578 48 65 00 00             		.long	.LC38
+ 26840 657c 02 00 00 00             		.long	2
+ 26841 6580 56 65 00 00             		.long	.LC39
+ 26842 6584 03 00 00 00             		.long	3
  26843                             		.section P,"ax"
  26844                             		.global	_SelectProtocol
  26846                             	_SelectProtocol:
@@ -27789,7 +27790,7 @@
  901:SOURCES/demo.c **** 
  902:SOURCES/demo.c **** 	sSelMenu mnuSelProtocol[] =
  26855                             		.loc 1 902 0
- 26856 0e3c FB B2 4C 65 00 00       		mov.L	#.LC141, r11
+ 26856 0e3c FB B2 68 65 00 00       		mov.L	#.LC141, r11
  26857 0e42 75 4A 20                		mov.L	#32, r10
  26858 0e45 EF 61                   		mov.L	r6, r1
  26859 0e47 EF B2                   		mov.L	r11, r2
@@ -27873,119 +27874,119 @@
  26885                             		.section C,"a",@progbits
  26886                             		.p2align 2
  26887                             	.LC14:
- 26888 656c 55 50 43 20 20 20 20 20 		.string	"UPC            "
+ 26888 6588 55 50 43 20 20 20 20 20 		.string	"UPC            "
  26888      20 20 20 20 20 20 20 00 
  26889                             	.LC15:
- 26890 657c 55 50 43 2D 45 31 20 20 		.string	"UPC-E1         "
+ 26890 6598 55 50 43 2D 45 31 20 20 		.string	"UPC-E1         "
  26890      20 20 20 20 20 20 20 00 
  26891                             	.LC16:
- 26892 658c 45 41 4E 20 20 20 20 20 		.string	"EAN            "
+ 26892 65a8 45 41 4E 20 20 20 20 20 		.string	"EAN            "
  26892      20 20 20 20 20 20 20 00 
  26893                             	.LC17:
- 26894 659c 43 6F 64 65 20 33 39 20 		.string	"Code 39        "
+ 26894 65b8 43 6F 64 65 20 33 39 20 		.string	"Code 39        "
  26894      20 20 20 20 20 20 20 00 
  26895                             	.LC18:
- 26896 65ac 43 6F 64 61 62 61 72 20 		.string	"Codabar        "
+ 26896 65c8 43 6F 64 61 62 61 72 20 		.string	"Codabar        "
  26896      20 20 20 20 20 20 20 00 
  26897                             	.LC19:
- 26898 65bc 49 6E 64 75 73 74 2E 20 		.string	"Indust. 2of5   "
+ 26898 65d8 49 6E 64 75 73 74 2E 20 		.string	"Indust. 2of5   "
  26898      32 6F 66 35 20 20 20 00 
  26899                             	.LC20:
- 26900 65cc 49 6E 74 65 72 6C 2E 20 		.string	"Interl. 2of5   "
+ 26900 65e8 49 6E 74 65 72 6C 2E 20 		.string	"Interl. 2of5   "
  26900      32 6F 66 35 20 20 20 00 
  26901                             	.LC21:
- 26902 65dc 53 2D 43 6F 64 65 20 20 		.string	"S-Code         "
+ 26902 65f8 53 2D 43 6F 64 65 20 20 		.string	"S-Code         "
  26902      20 20 20 20 20 20 20 00 
  26903                             	.LC22:
- 26904 65ec 4D 61 74 72 69 78 20 32 		.string	"Matrix 2of5    "
+ 26904 6608 4D 61 74 72 69 78 20 32 		.string	"Matrix 2of5    "
  26904      6F 66 35 20 20 20 20 00 
  26905                             	.LC23:
- 26906 65fc 43 68 69 6E 65 73 65 20 		.string	"Chinese Post   "
+ 26906 6618 43 68 69 6E 65 73 65 20 		.string	"Chinese Post   "
  26906      50 6F 73 74 20 20 20 00 
  26907                             	.LC24:
- 26908 660c 49 41 54 41 20 43 6F 64 		.string	"IATA Code      "
+ 26908 6628 49 41 54 41 20 43 6F 64 		.string	"IATA Code      "
  26908      65 20 20 20 20 20 20 00 
  26909                             	.LC25:
- 26910 661c 4D 53 49 20 20 20 20 20 		.string	"MSI            "
+ 26910 6638 4D 53 49 20 20 20 20 20 		.string	"MSI            "
  26910      20 20 20 20 20 20 20 00 
  26911                             	.LC26:
- 26912 662c 54 65 6C 65 70 65 6E 20 		.string	"Telepen        "
+ 26912 6648 54 65 6C 65 70 65 6E 20 		.string	"Telepen        "
  26912      20 20 20 20 20 20 20 00 
  26913                             	.LC27:
- 26914 663c 55 4B 2F 50 6C 65 73 73 		.string	"UK/Plessey     "
+ 26914 6658 55 4B 2F 50 6C 65 73 73 		.string	"UK/Plessey     "
  26914      65 79 20 20 20 20 20 00 
  26915                             	.LC28:
- 26916 664c 43 6F 64 65 20 31 32 38 		.string	"Code 128       "
+ 26916 6668 43 6F 64 65 20 31 32 38 		.string	"Code 128       "
  26916      20 20 20 20 20 20 20 00 
  26917                             	.LC29:
- 26918 665c 43 6F 64 65 20 39 33 20 		.string	"Code 93        "
+ 26918 6678 43 6F 64 65 20 39 33 20 		.string	"Code 93        "
  26918      20 20 20 20 20 20 20 00 
  26919                             	.LC30:
- 26920 666c 43 6F 64 65 20 31 31 20 		.string	"Code 11        "
+ 26920 6688 43 6F 64 65 20 31 31 20 		.string	"Code 11        "
  26920      20 20 20 20 20 20 20 00 
  26921                             	.LC31:
- 26922 667c 4B 6F 72 65 61 6E 20 50 		.string	"Korean Post    "
+ 26922 6698 4B 6F 72 65 61 6E 20 50 		.string	"Korean Post    "
  26922      6F 73 74 20 20 20 20 00 
  26923                             	.LC32:
- 26924 668c 52 53 53 20 20 20 20 20 		.string	"RSS            "
+ 26924 66a8 52 53 53 20 20 20 20 20 		.string	"RSS            "
  26924      20 20 20 20 20 20 20 00 
  26925                             	.LC33:
- 26926 669c 50 44 46 34 31 37 20 20 		.string	"PDF417         "
+ 26926 66b8 50 44 46 34 31 37 20 20 		.string	"PDF417         "
  26926      20 20 20 20 20 20 20 00 
  26927                             	.LC34:
- 26928 66ac 4D 69 63 72 6F 50 44 46 		.string	"MicroPDF417    "
+ 26928 66c8 4D 69 63 72 6F 50 44 46 		.string	"MicroPDF417    "
  26928      34 31 37 20 20 20 20 00 
  26929                             	.LC35:
- 26930 66bc 41 6C 6C 20 41 64 64 2D 		.string	"All Add-Ons    "
+ 26930 66d8 41 6C 6C 20 41 64 64 2D 		.string	"All Add-Ons    "
  26930      4F 6E 73 20 20 20 20 00 
  26931                             		.balign 4
  26932                             	.LC142:
- 26933 66cc 90 63 00 00             		.long	.LC8
- 26934 66d0 FF FF FF FF             		.long	-1
- 26935 66d4 6C 65 00 00             		.long	.LC14
- 26936 66d8 04 00 00 00             		.long	4
- 26937 66dc 7C 65 00 00             		.long	.LC15
- 26938 66e0 00 00 00 08             		.long	0x8000000
- 26939 66e4 8C 65 00 00             		.long	.LC16
- 26940 66e8 02 00 00 00             		.long	2
- 26941 66ec 9C 65 00 00             		.long	.LC17
- 26942 66f0 01 00 00 00             		.long	1
- 26943 66f4 AC 65 00 00             		.long	.LC18
- 26944 66f8 20 00 00 00             		.long	32
- 26945 66fc BC 65 00 00             		.long	.LC19
- 26946 6700 10 00 00 00             		.long	16
- 26947 6704 CC 65 00 00             		.long	.LC20
- 26948 6708 08 00 00 00             		.long	8
- 26949 670c DC 65 00 00             		.long	.LC21
- 26950 6710 00 20 00 00             		.long	0x2000
- 26951 6714 EC 65 00 00             		.long	.LC22
- 26952 6718 00 40 00 00             		.long	0x4000
- 26953 671c FC 65 00 00             		.long	.LC23
- 26954 6720 00 80 00 00             		.long	0x8000
- 26955 6724 0C 66 00 00             		.long	.LC24
- 26956 6728 00 10 00 00             		.long	0x1000
- 26957 672c 1C 66 00 00             		.long	.LC25
- 26958 6730 00 01 00 00             		.long	0x100
- 26959 6734 2C 66 00 00             		.long	.LC26
- 26960 6738 00 02 00 00             		.long	0x200
- 26961 673c 3C 66 00 00             		.long	.LC27
- 26962 6740 00 04 00 00             		.long	0x400
- 26963 6744 4C 66 00 00             		.long	.LC28
- 26964 6748 80 00 00 00             		.long	0x80
- 26965 674c 5C 66 00 00             		.long	.LC29
- 26966 6750 40 00 00 00             		.long	64
- 26967 6754 6C 66 00 00             		.long	.LC30
- 26968 6758 00 00 01 00             		.long	0x10000
- 26969 675c 7C 66 00 00             		.long	.LC31
- 26970 6760 00 00 02 00             		.long	0x20000
- 26971 6764 8C 66 00 00             		.long	.LC32
- 26972 6768 00 00 04 00             		.long	0x40000
- 26973 676c 9C 66 00 00             		.long	.LC33
- 26974 6770 00 00 08 00             		.long	0x80000
- 26975 6774 AC 66 00 00             		.long	.LC34
- 26976 6778 00 00 10 00             		.long	0x100000
- 26977 677c BC 66 00 00             		.long	.LC35
- 26978 6780 00 08 00 00             		.long	0x800
+ 26933 66e8 AC 63 00 00             		.long	.LC8
+ 26934 66ec FF FF FF FF             		.long	-1
+ 26935 66f0 88 65 00 00             		.long	.LC14
+ 26936 66f4 04 00 00 00             		.long	4
+ 26937 66f8 98 65 00 00             		.long	.LC15
+ 26938 66fc 00 00 00 08             		.long	0x8000000
+ 26939 6700 A8 65 00 00             		.long	.LC16
+ 26940 6704 02 00 00 00             		.long	2
+ 26941 6708 B8 65 00 00             		.long	.LC17
+ 26942 670c 01 00 00 00             		.long	1
+ 26943 6710 C8 65 00 00             		.long	.LC18
+ 26944 6714 20 00 00 00             		.long	32
+ 26945 6718 D8 65 00 00             		.long	.LC19
+ 26946 671c 10 00 00 00             		.long	16
+ 26947 6720 E8 65 00 00             		.long	.LC20
+ 26948 6724 08 00 00 00             		.long	8
+ 26949 6728 F8 65 00 00             		.long	.LC21
+ 26950 672c 00 20 00 00             		.long	0x2000
+ 26951 6730 08 66 00 00             		.long	.LC22
+ 26952 6734 00 40 00 00             		.long	0x4000
+ 26953 6738 18 66 00 00             		.long	.LC23
+ 26954 673c 00 80 00 00             		.long	0x8000
+ 26955 6740 28 66 00 00             		.long	.LC24
+ 26956 6744 00 10 00 00             		.long	0x1000
+ 26957 6748 38 66 00 00             		.long	.LC25
+ 26958 674c 00 01 00 00             		.long	0x100
+ 26959 6750 48 66 00 00             		.long	.LC26
+ 26960 6754 00 02 00 00             		.long	0x200
+ 26961 6758 58 66 00 00             		.long	.LC27
+ 26962 675c 00 04 00 00             		.long	0x400
+ 26963 6760 68 66 00 00             		.long	.LC28
+ 26964 6764 80 00 00 00             		.long	0x80
+ 26965 6768 78 66 00 00             		.long	.LC29
+ 26966 676c 40 00 00 00             		.long	64
+ 26967 6770 88 66 00 00             		.long	.LC30
+ 26968 6774 00 00 01 00             		.long	0x10000
+ 26969 6778 98 66 00 00             		.long	.LC31
+ 26970 677c 00 00 02 00             		.long	0x20000
+ 26971 6780 A8 66 00 00             		.long	.LC32
+ 26972 6784 00 00 04 00             		.long	0x40000
+ 26973 6788 B8 66 00 00             		.long	.LC33
+ 26974 678c 00 00 08 00             		.long	0x80000
+ 26975 6790 C8 66 00 00             		.long	.LC34
+ 26976 6794 00 00 10 00             		.long	0x100000
+ 26977 6798 D8 66 00 00             		.long	.LC35
+ 26978 679c 00 08 00 00             		.long	0x800
  26979                             		.section P,"ax"
  26980                             		.global	_SetBarcodes
  26982                             	_SetBarcodes:
@@ -28035,7 +28036,7 @@
  993:SOURCES/demo.c **** #elif OPH | OPH1004 | OPH1005
  994:SOURCES/demo.c **** 	sSelMenu mnuSelBarcodes[] =
  26991                             		.loc 1 994 0
- 26992 0e6f FB B2 CC 66 00 00       		mov.L	#.LC142, r11
+ 26992 0e6f FB B2 E8 66 00 00       		mov.L	#.LC142, r11
  26993 0e75 75 4A B8                		mov.L	#0xb8, r10
  26994 0e78 EF 61                   		mov.L	r6, r1
  26995 0e7a EF B2                   		mov.L	r11, r2
@@ -28102,7 +28103,7 @@
  27010                             		.section C,"a",@progbits
  27011                             		.p2align 2
  27012                             	.LC143:
- 27013 6784 0C 4D 45 4D 4F 52 59 20 		.string	"\fMEMORY LEFT:\n%ld MBytes+\n%ld Kbytes\n\n\n\n\nPress any key"
+ 27013 67a0 0C 4D 45 4D 4F 52 59 20 		.string	"\fMEMORY LEFT:\n%ld MBytes+\n%ld Kbytes\n\n\n\n\nPress any key"
  27013      4C 45 46 54 3A 0A 25 6C 
  27013      64 20 4D 42 79 74 65 73 
  27013      2B 0A 25 6C 64 20 4B 62 
@@ -28153,7 +28154,7 @@
  27051                             		.balign 2,3,1
  27052                             	.L131:
  27053 0ed6 6A AA                   		shar	#10, r10
- 27054 0ed8 F8 02 84 67 00 00       		mov.L	#.LC143, [r0]
+ 27054 0ed8 F8 02 A0 67 00 00       		mov.L	#.LC143, [r0]
  27055 0ede E7 0B 01                		mov.L	r11, 4[r0]
  27056 0ee1 E7 0A 02                		mov.L	r10, 8[r0]
  27057 0ee4 05 00 00 00             		bsr	_printf
@@ -28171,35 +28172,35 @@
  27061 0eec 3F 6B 0A                		rtsd	#40, r6-r11
  27062                             	.LFE25:
  27064                             		.section C,"a",@progbits
- 27065 67bb 00                      		.p2align 2
+ 27065 67d7 00                      		.p2align 2
  27066                             	.LC9:
- 27067 67bc 43 6F 6D 20 50 6F 72 74 		.string	"Com Port"
+ 27067 67d8 43 6F 6D 20 50 6F 72 74 		.string	"Com Port"
  27067      00 
  27068                             	.LC10:
- 27069 67c5 50 72 6F 74 6F 63 6F 6C 		.string	"Protocol"
+ 27069 67e1 50 72 6F 74 6F 63 6F 6C 		.string	"Protocol"
  27069      00 
  27070                             	.LC11:
- 27071 67ce 42 61 72 63 6F 64 65 73 		.string	"Barcodes"
+ 27071 67ea 42 61 72 63 6F 64 65 73 		.string	"Barcodes"
  27071      00 
  27072                             	.LC12:
- 27073 67d7 4D 65 6D 6F 72 79 00    		.string	"Memory"
- 27074 67de 00 00                   		.balign 4
+ 27073 67f3 4D 65 6D 6F 72 79 00    		.string	"Memory"
+ 27074 67fa 00 00                   		.balign 4
  27075                             	.LC144:
- 27076 67e0 90 63 00 00             		.long	.LC8
- 27077 67e4 00 00 00 00             		.long	0
- 27078 67e8 00 00 00 00             		.long	0
- 27079 67ec BC 67 00 00             		.long	.LC9
- 27080 67f0 00 00 00 00             		.long	__com_port_pic
- 27081 67f4 00 00 00 00             		.long	_ComPortSettings
- 27082 67f8 C5 67 00 00             		.long	.LC10
- 27083 67fc 00 00 00 00             		.long	__protocol_pic
- 27084 6800 00 00 00 00             		.long	_SelectProtocol
- 27085 6804 CE 67 00 00             		.long	.LC11
- 27086 6808 00 00 00 00             		.long	__barcode_pic
- 27087 680c 00 00 00 00             		.long	_SetBarcodes
- 27088 6810 D7 67 00 00             		.long	.LC12
- 27089 6814 00 00 00 00             		.long	__memory_pic
- 27090 6818 00 00 00 00             		.long	_AvailableMemory
+ 27076 67fc AC 63 00 00             		.long	.LC8
+ 27077 6800 00 00 00 00             		.long	0
+ 27078 6804 00 00 00 00             		.long	0
+ 27079 6808 D8 67 00 00             		.long	.LC9
+ 27080 680c 00 00 00 00             		.long	__com_port_pic
+ 27081 6810 00 00 00 00             		.long	_ComPortSettings
+ 27082 6814 E1 67 00 00             		.long	.LC10
+ 27083 6818 00 00 00 00             		.long	__protocol_pic
+ 27084 681c 00 00 00 00             		.long	_SelectProtocol
+ 27085 6820 EA 67 00 00             		.long	.LC11
+ 27086 6824 00 00 00 00             		.long	__barcode_pic
+ 27087 6828 00 00 00 00             		.long	_SetBarcodes
+ 27088 682c F3 67 00 00             		.long	.LC12
+ 27089 6830 00 00 00 00             		.long	__memory_pic
+ 27090 6834 00 00 00 00             		.long	_AvailableMemory
  27091                             		.section P,"ax"
  27092                             		.global	__SystemMenu
  27094                             	__SystemMenu:
@@ -28251,7 +28252,7 @@
  27102                             	.LCFI80:
 1095:SOURCES/demo.c **** 	sgraphMenu mnuSystem[] =
  27103                             		.loc 1 1095 0
- 27104 0ef6 FB B2 E0 67 00 00       		mov.L	#.LC144, r11
+ 27104 0ef6 FB B2 FC 67 00 00       		mov.L	#.LC144, r11
  27105 0efc 75 4A 3C                		mov.L	#60, r10
  27106 0eff EF 61                   		mov.L	r6, r1
  27107 0f01 EF B2                   		mov.L	r11, r2
@@ -28277,7 +28278,7 @@
  27118                             		.section C,"a",@progbits
  27119                             		.p2align 2
  27120                             	.LC145:
- 27121 681c 0C 44 65 6C 65 74 65 20 		.string	"\fDelete Database\n\n[ENT] = YES\n[CLR] = NO"
+ 27121 6838 0C 44 65 6C 65 74 65 20 		.string	"\fDelete Database\n\n[ENT] = YES\n[CLR] = NO"
  27121      44 61 74 61 62 61 73 65 
  27121      0A 0A 5B 45 4E 54 5D 20 
  27121      3D 20 59 45 53 0A 5B 43 
@@ -28321,7 +28322,7 @@
 1129:SOURCES/demo.c **** 	#else
 1130:SOURCES/demo.c **** 		printf("\fDelete Database\n\n[ENT] = YES\n[CLR] = NO");
  27136                             		.loc 1 1130 0
- 27137 0f1c F8 02 1C 68 00 00       		mov.L	#.LC145, [r0]
+ 27137 0f1c F8 02 38 68 00 00       		mov.L	#.LC145, [r0]
  27138 0f22 05 00 00 00             		bsr	_printf
 1131:SOURCES/demo.c **** 	#endif
 1132:SOURCES/demo.c **** 	key = WaitForKeys( 4, ENT_KEY, TRIGGER_KEY, CLR_KEY, ESC_KEY );
@@ -28384,23 +28385,23 @@
  27189 0f6f 24 1D                   		bgtu	.L136
  27190 0f71 EC 6A                   		mov.L	[r6], r10
  27191 0f73 6C 2A                   		shll	#2, r10
- 27192 0f75 70 AA 48 68 00 00       		add	#.L145, r10
+ 27192 0f75 70 AA 64 68 00 00       		add	#.L145, r10
  27193 0f7b EC AA                   		mov.L	[r10], r10
  27194                             		
  27195 0f7d 7F 0A                   	1:jmp	r10
  27196                             		.section C,"a",@progbits
- 27197 6845 00 00 00                		.p2align 2
+ 27197 6861 00 00 00                		.p2align 2
  27198                             		.balign 4
  27199                             		.balign 4
  27200                             	.L145:
- 27201 6848 8C 0F 00 00             		.long .L136
- 27202 684c 8C 0F 00 00             		.long .L136
- 27203 6850 8C 0F 00 00             		.long .L136
- 27204 6854 8C 0F 00 00             		.long .L136
- 27205 6858 8C 0F 00 00             		.long .L136
- 27206 685c 7F 0F 00 00             		.long .L142
- 27207 6860 8C 0F 00 00             		.long .L136
- 27208 6864 8C 0F 00 00             		.long .L136
+ 27201 6864 8C 0F 00 00             		.long .L136
+ 27202 6868 8C 0F 00 00             		.long .L136
+ 27203 686c 8C 0F 00 00             		.long .L136
+ 27204 6870 8C 0F 00 00             		.long .L136
+ 27205 6874 8C 0F 00 00             		.long .L136
+ 27206 6878 7F 0F 00 00             		.long .L142
+ 27207 687c 8C 0F 00 00             		.long .L136
+ 27208 6880 8C 0F 00 00             		.long .L136
  27209                             		.section P,"ax"
  27210                             	.L142:
 1141:SOURCES/demo.c ****     {
@@ -28444,54 +28445,54 @@
  27230                             		.section C,"a",@progbits
  27231                             		.p2align 2
  27232                             	.LC146:
- 27233 6868 0C 45 72 72 6F 72 20 6F 		.string	"\fError open\nCOM port\n\n\n\n\n\nPress any key"
+ 27233 6884 0C 45 72 72 6F 72 20 6F 		.string	"\fError open\nCOM port\n\n\n\n\n\nPress any key"
  27233      70 65 6E 0A 43 4F 4D 20 
  27233      70 6F 72 74 0A 0A 0A 0A 
  27233      0A 0A 50 72 65 73 73 20 
  27233      61 6E 79 20 6B 65 79 00 
  27234                             	.LC147:
- 27235 6890 0C 54 72 61 6E 73 6D 69 		.string	"\fTransmit data"
+ 27235 68ac 0C 54 72 61 6E 73 6D 69 		.string	"\fTransmit data"
  27235      74 20 64 61 74 61 00 
  27236                             	.LC148:
- 27237 689f 4E 65 74 4F 20 70 72 6F 		.string	"NetO protocol\n\n\n\n\n\nScan to cancel"
+ 27237 68bb 4E 65 74 4F 20 70 72 6F 		.string	"NetO protocol\n\n\n\n\n\nScan to cancel"
  27237      74 6F 63 6F 6C 0A 0A 0A 
  27237      0A 0A 0A 53 63 61 6E 20 
  27237      74 6F 20 63 61 6E 63 65 
  27237      6C 00 
  27238                             	.LC149:
- 27239 68c1 31 32 33 34 35 36 00    		.string	"123456"
+ 27239 68dd 31 32 33 34 35 36 00    		.string	"123456"
  27240                             	.LC150:
- 27241 68c8 0C 45 72 72 6F 72 20 4E 		.string	"\fError NetO\nCode=%d\n\n\n\n\n\nPress any key"
+ 27241 68e4 0C 45 72 72 6F 72 20 4E 		.string	"\fError NetO\nCode=%d\n\n\n\n\n\nPress any key"
  27241      65 74 4F 0A 43 6F 64 65 
  27241      3D 25 64 0A 0A 0A 0A 0A 
  27241      0A 50 72 65 73 73 20 61 
  27241      6E 79 20 6B 65 79 00 
  27242                             	.LC151:
- 27243 68ef 0C 53 74 61 72 74 20 4F 		.string	"\fStart OseComm"
+ 27243 690b 0C 53 74 61 72 74 20 4F 		.string	"\fStart OseComm"
  27243      73 65 43 6F 6D 6D 00 
  27244                             	.LC152:
- 27245 68fe 4F 73 65 43 6F 6D 6D 20 		.string	"OseComm example"
+ 27245 691a 4F 73 65 43 6F 6D 6D 20 		.string	"OseComm example"
  27245      65 78 61 6D 70 6C 65 00 
  27246                             	.LC153:
- 27247 690e 0A 4F 73 65 43 6F 6D 6D 		.string	"\nOseComm Success"
+ 27247 692a 0A 4F 73 65 43 6F 6D 6D 		.string	"\nOseComm Success"
  27247      20 53 75 63 63 65 73 73 
  27247      00 
  27248                             	.LC154:
- 27249 691f 0A 4F 73 65 43 6F 6D 6D 		.string	"\nOseComm aborted"
+ 27249 693b 0A 4F 73 65 43 6F 6D 6D 		.string	"\nOseComm aborted"
  27249      20 61 62 6F 72 74 65 64 
  27249      00 
  27250                             	.LC155:
- 27251 6930 0C 45 72 72 6F 72 20 6F 		.string	"\fError open\ndatabase.\nCode=%ld\nPress any key"
+ 27251 694c 0C 45 72 72 6F 72 20 6F 		.string	"\fError open\ndatabase.\nCode=%ld\nPress any key"
  27251      70 65 6E 0A 64 61 74 61 
  27251      62 61 73 65 2E 0A 43 6F 
  27251      64 65 3D 25 6C 64 0A 50 
  27251      72 65 73 73 20 61 6E 79 
  27252                             	.LC156:
- 27253 695d 53 65 6E 64 20 25 30 34 		.string	"Send %04ld/%04ld"
+ 27253 6979 53 65 6E 64 20 25 30 34 		.string	"Send %04ld/%04ld"
  27253      6C 64 2F 25 30 34 6C 64 
  27253      00 
  27254                             	.LC157:
- 27255 696e 0C 45 72 72 6F 72 0A 64 		.string	"\fError\ndatabase.\nCode=%ld\nPress any key"
+ 27255 698a 0C 45 72 72 6F 72 0A 64 		.string	"\fError\ndatabase.\nCode=%ld\nPress any key"
  27255      61 74 61 62 61 73 65 2E 
  27255      0A 43 6F 64 65 3D 25 6C 
  27255      64 0A 50 72 65 73 73 20 
@@ -28526,7 +28527,7 @@
 1171:SOURCES/demo.c **** #if OPH | OPH1004 | OPH1005
 1172:SOURCES/demo.c **** 			printf("\fDatabase\nnot available\n\n\n\n\n\nPress any key");
  27274                             		.loc 1 1172 0
- 27275 0fad F8 02 64 63 00 00       		mov.L	#.LC134, [r0]
+ 27275 0fad F8 02 80 63 00 00       		mov.L	#.LC134, [r0]
  27276 0fb3 05 00 00 00             		bsr	_printf
 1173:SOURCES/demo.c **** #else
 1174:SOURCES/demo.c **** 			printf("\fDatabase\nnot available\n\nPress any key");
@@ -28552,7 +28553,7 @@
 1181:SOURCES/demo.c **** #if OPH | OPH1004 | OPH1005
 1182:SOURCES/demo.c **** 			printf("\fError open\nCOM port\n\n\n\n\n\nPress any key");
  27290                             		.loc 1 1182 0
- 27291 0fd2 F8 02 68 68 00 00       		mov.L	#.LC146, [r0]
+ 27291 0fd2 F8 02 84 68 00 00       		mov.L	#.LC146, [r0]
  27292 0fd8 05 00 00 00             		bsr	_printf
 1183:SOURCES/demo.c **** #else
 1184:SOURCES/demo.c **** 			printf("\fError open\nCOM port\n\nPress any key");
@@ -28567,7 +28568,7 @@
 1188:SOURCES/demo.c **** 	}
 1189:SOURCES/demo.c **** 	printf("\fTransmit data\n");
  27298                             		.loc 1 1189 0
- 27299 0fe3 FB 12 90 68 00 00       		mov.L	#.LC147, r1
+ 27299 0fe3 FB 12 AC 68 00 00       		mov.L	#.LC147, r1
  27300 0fe9 05 00 00 00             		bsr	_puts
 1190:SOURCES/demo.c **** 	if( lProtocol == ID_NETO_PROTOCOL )
  27301                             		.loc 1 1190 0
@@ -28578,14 +28579,14 @@
 1191:SOURCES/demo.c **** 	{
 1192:SOURCES/demo.c **** 		printf("NetO protocol\n\n\n\n\n\nScan to cancel");
  27306                             		.loc 1 1192 0
- 27307 0ff9 F8 02 9F 68 00 00       		mov.L	#.LC148, [r0]
+ 27307 0ff9 F8 02 BB 68 00 00       		mov.L	#.LC148, [r0]
  27308 0fff 05 00 00 00             		bsr	_printf
 1193:SOURCES/demo.c **** 		nRet = neto_transmit( (char(*)[12+1+3])DBASE_NAME, 1, "123456", TRIGGER_KEY, 3 );
  27309                             		.loc 1 1193 0
  27310 1003 3E 00 03                		mov.L	#3, [r0]
  27311 1006 FB 12 91 61 00 00       		mov.L	#.LC117, r1
  27312 100c 66 12                   		mov.L	#1, r2
- 27313 100e FB 32 C1 68 00 00       		mov.L	#.LC149, r3
+ 27313 100e FB 32 DD 68 00 00       		mov.L	#.LC149, r3
  27314 1014 75 44 80                		mov.L	#0x80, r4
  27315 1017 05 00 00 00             		bsr	_neto_transmit
  27316 101b E3 61                   		mov.L	r1, [r6]
@@ -28602,7 +28603,7 @@
 1197:SOURCES/demo.c **** #if OPH | OPH1004 | OPH1005
 1198:SOURCES/demo.c **** 				printf("\fError NetO\nCode=%d\n\n\n\n\n\nPress any key", nRet);
  27324                             		.loc 1 1198 0
- 27325 102a F8 02 C8 68 00 00       		mov.L	#.LC150, [r0]
+ 27325 102a F8 02 E4 68 00 00       		mov.L	#.LC150, [r0]
  27326 1030 EC 6A                   		mov.L	[r6], r10
  27327 1032 E7 0A 01                		mov.L	r10, 4[r0]
  27328 1035 05 00 00 00             		bsr	_printf
@@ -28626,13 +28627,13 @@
 1207:SOURCES/demo.c **** 	{
 1208:SOURCES/demo.c **** 		printf("\fStart OseComm");
  27338                             		.loc 1 1208 0
- 27339 104c F8 02 EF 68 00 00       		mov.L	#.LC151, [r0]
+ 27339 104c F8 02 0B 69 00 00       		mov.L	#.LC151, [r0]
  27340 1052 05 00 00 00             		bsr	_printf
 1209:SOURCES/demo.c **** 		if (OseComm( -1L, ANY_KEYS_ABORT, "OseComm example", OnOseComInfo) == COMM_OK)
  27341                             		.loc 1 1209 0
  27342 1056 FB 16 FF                		mov.L	#-1, r1
  27343 1059 FB 2A 00 02             		mov.L	#0x200, r2
- 27344 105d FB 32 FE 68 00 00       		mov.L	#.LC152, r3
+ 27344 105d FB 32 1A 69 00 00       		mov.L	#.LC152, r3
  27345 1063 FB 42 00 00 00 00       		mov.L	#_OnOseComInfo, r4
  27346 1069 05 00 00 00             		bsr	_OseComm
  27347 106d EF 1A                   		mov.L	r1, r10
@@ -28640,14 +28641,14 @@
  27349 1071 21 0E                   		bne	.L155
 1210:SOURCES/demo.c **** 			printf("\nOseComm Success");
  27350                             		.loc 1 1210 0
- 27351 1073 F8 02 0E 69 00 00       		mov.L	#.LC153, [r0]
+ 27351 1073 F8 02 2A 69 00 00       		mov.L	#.LC153, [r0]
  27352 1079 05 00 00 00             		bsr	_printf
  27353 107d 2E 0D                   		bra	.L156
  27354                             	.L155:
 1211:SOURCES/demo.c **** 		else
 1212:SOURCES/demo.c **** 			printf("\nOseComm aborted");
  27355                             		.loc 1 1212 0
- 27356 107f F8 02 1F 69 00 00       		mov.L	#.LC154, [r0]
+ 27356 107f F8 02 3B 69 00 00       		mov.L	#.LC154, [r0]
  27357 1085 05 00 00 00             		bsr	_printf
  27358 1089 03                      		.balign 2,3,3
  27359                             	.L156:
@@ -28677,7 +28678,7 @@
  27372                             		.loc 1 1223 0
  27373 10aa 05 00 00 00             		bsr	_GetDBErrorCode
  27374 10ae EF 1A                   		mov.L	r1, r10
- 27375 10b0 F8 02 30 69 00 00       		mov.L	#.LC155, [r0]
+ 27375 10b0 F8 02 4C 69 00 00       		mov.L	#.LC155, [r0]
  27376 10b6 E7 0A 01                		mov.L	r10, 4[r0]
  27377 10b9 05 00 00 00             		bsr	_printf
 1224:SOURCES/demo.c **** 			#endif
@@ -28795,7 +28796,7 @@
  27478 11c1 71 AB 01                		add	#1, r10, r11
  27479 11c4 FB A2 0C 00 00 00       		mov.L	#_dbFile.3907, r10
  27480 11ca ED AA 03                		mov.L	12[r10], r10
- 27481 11cd F8 02 5D 69 00 00       		mov.L	#.LC156, [r0]
+ 27481 11cd F8 02 79 69 00 00       		mov.L	#.LC156, [r0]
  27482 11d3 E7 0B 01                		mov.L	r11, 4[r0]
  27483 11d6 E7 0A 02                		mov.L	r10, 8[r0]
  27484 11d9 05 00 00 00             		bsr	_printf
@@ -28848,7 +28849,7 @@
  27517                             		.loc 1 1247 0
  27518 121f 05 00 00 00             		bsr	_GetDBErrorCode
  27519 1223 EF 1A                   		mov.L	r1, r10
- 27520 1225 F8 02 6E 69 00 00       		mov.L	#.LC157, [r0]
+ 27520 1225 F8 02 8A 69 00 00       		mov.L	#.LC157, [r0]
  27521 122b E7 0A 01                		mov.L	r10, 4[r0]
  27522 122e 05 00 00 00             		bsr	_printf
 1248:SOURCES/demo.c **** 				#endif
@@ -28879,19 +28880,19 @@
  27540 124e 3F 6B 0A                		rtsd	#40, r6-r11
  27541                             	.LFE29:
  27543                             		.section C,"a",@progbits
- 27544 6996 00 00                   		.p2align 2
+ 27544 69b2 00 00                   		.p2align 2
  27545                             	.LC158:
- 27546 6998 0C 09 72 20 20 20 20 43 		.string	"\f\tr    CowAlert    \tr\nSoftware\nVersion #"
+ 27546 69b4 0C 09 72 20 20 20 20 43 		.string	"\f\tr    CowAlert    \tr\nSoftware\nVersion #"
  27546      6F 77 41 6C 65 72 74 20 
  27546      20 20 20 09 72 0A 53 6F 
  27546      66 74 77 61 72 65 0A 56 
  27546      65 72 73 69 6F 6E 20 23 
  27547                             	.LC159:
- 27548 69c1 0A 0A 25 73 25 73 0A 0A 		.string	"\n\n%s%s\n\n\nPress any key"
+ 27548 69dd 0A 0A 25 73 25 73 0A 0A 		.string	"\n\n%s%s\n\n\nPress any key"
  27548      0A 50 72 65 73 73 20 61 
  27548      6E 79 20 6B 65 79 00 
  27549                             	.LC160:
- 27550 69d8 33 30 39 32 45 00       		.string	"3092E"
+ 27550 69f4 33 30 39 32 45 00       		.string	"3092E"
  27551                             		.section P,"ax"
  27552                             		.global	_ShowVersion
  27554                             	_ShowVersion:
@@ -28929,13 +28930,13 @@
 1268:SOURCES/demo.c **** #if OPH | OPH1004 | OPH1005
 1269:SOURCES/demo.c **** 		printf("\f\tr    CowAlert    \tr\nSoftware\nVersion #");
  27574                             		.loc 1 1269 0
- 27575 1279 F8 02 98 69 00 00       		mov.L	#.LC158, [r0]
+ 27575 1279 F8 02 B4 69 00 00       		mov.L	#.LC158, [r0]
  27576 127f 05 00 00 00             		bsr	_printf
 1270:SOURCES/demo.c **** 		printf("\n\n%s%s\n\n\nPress any key", os,VERSIONSUFFIX);
  27577                             		.loc 1 1270 0
- 27578 1283 F8 02 C1 69 00 00       		mov.L	#.LC159, [r0]
+ 27578 1283 F8 02 DD 69 00 00       		mov.L	#.LC159, [r0]
  27579 1289 F9 02 01 00 00 00 00    		mov.L	#_os.3917, 4[r0]
- 27580 1290 F9 02 02 D8 69 00 00    		mov.L	#.LC160, 8[r0]
+ 27580 1290 F9 02 02 F4 69 00 00    		mov.L	#.LC160, 8[r0]
  27581 1297 05 00 00 00             		bsr	_printf
 1271:SOURCES/demo.c **** #else
 1272:SOURCES/demo.c **** 		printf("\fSoftware Version");
@@ -28967,29 +28968,29 @@
  27591 12aa 02                      		rts
  27592                             	.LFE30:
  27594                             		.section C,"a",@progbits
- 27595 69de 00 00                   		.p2align 2
+ 27595 69fa 00 00                   		.p2align 2
  27596                             	.LC161:
- 27597 69e0 0C 48 75 67 65 20 46 6F 		.string	"\fHuge Font\n %d chars * %d lines"
+ 27597 69fc 0C 48 75 67 65 20 46 6F 		.string	"\fHuge Font\n %d chars * %d lines"
  27597      6E 74 0A 20 25 64 20 63 
  27597      68 61 72 73 20 2A 20 25 
  27597      64 20 6C 69 6E 65 73 00 
  27598                             	.LC162:
- 27599 6a00 4C 61 72 67 65 20 46 6F 		.string	"Large Font\n%d chars * %d lines"
+ 27599 6a1c 4C 61 72 67 65 20 46 6F 		.string	"Large Font\n%d chars * %d lines"
  27599      6E 74 0A 25 64 20 63 68 
  27599      61 72 73 20 2A 20 25 64 
  27599      20 6C 69 6E 65 73 00 
  27600                             	.LC163:
- 27601 6a1f 4D 65 64 69 75 6D 20 46 		.string	"Medium Font\n%d chars * %d lines"
+ 27601 6a3b 4D 65 64 69 75 6D 20 46 		.string	"Medium Font\n%d chars * %d lines"
  27601      6F 6E 74 0A 25 64 20 63 
  27601      68 61 72 73 20 2A 20 25 
  27601      64 20 6C 69 6E 65 73 00 
  27602                             	.LC164:
- 27603 6a3f 53 6D 61 6C 6C 20 46 6F 		.string	"Small Font\n%d chars * %d lines"
+ 27603 6a5b 53 6D 61 6C 6C 20 46 6F 		.string	"Small Font\n%d chars * %d lines"
  27603      6E 74 0A 25 64 20 63 68 
  27603      61 72 73 20 2A 20 25 64 
  27603      20 6C 69 6E 65 73 00 
  27604                             	.LC165:
- 27605 6a5e 54 69 6E 79 20 46 6F 6E 		.string	"Tiny Font\n%d chars * %d lines"
+ 27605 6a7a 54 69 6E 79 20 46 6F 6E 		.string	"Tiny Font\n%d chars * %d lines"
  27605      74 0A 25 64 20 63 68 61 
  27605      72 73 20 2A 20 25 64 20 
  27605      6C 69 6E 65 73 00 
@@ -29037,7 +29038,7 @@
  27636 12d5 05 00 00 00             		bsr	_SetTextColor
 1301:SOURCES/demo.c **** 	printf("\fHuge Font\n %d chars * %d lines",x,y);
  27637                             		.loc 1 1301 0
- 27638 12d9 F8 02 E0 69 00 00       		mov.L	#.LC161, [r0]
+ 27638 12d9 F8 02 FC 69 00 00       		mov.L	#.LC161, [r0]
  27639 12df EC 6A                   		mov.L	[r6], r10
  27640 12e1 E7 0A 01                		mov.L	r10, 4[r0]
  27641 12e4 ED 6A 01                		mov.L	4[r6], r10
@@ -29068,7 +29069,7 @@
  27660 130d 05 00 00 00             		bsr	_SetTextColor
 1308:SOURCES/demo.c **** 	printf("Large Font\n%d chars * %d lines",x,y);
  27661                             		.loc 1 1308 0
- 27662 1311 F8 02 00 6A 00 00       		mov.L	#.LC162, [r0]
+ 27662 1311 F8 02 1C 6A 00 00       		mov.L	#.LC162, [r0]
  27663 1317 EC 6A                   		mov.L	[r6], r10
  27664 1319 E7 0A 01                		mov.L	r10, 4[r0]
  27665 131c ED 6A 01                		mov.L	4[r6], r10
@@ -29099,7 +29100,7 @@
  27684 1345 05 00 00 00             		bsr	_SetTextColor
 1315:SOURCES/demo.c **** 	printf("Medium Font\n%d chars * %d lines",x,y);
  27685                             		.loc 1 1315 0
- 27686 1349 F8 02 1F 6A 00 00       		mov.L	#.LC163, [r0]
+ 27686 1349 F8 02 3B 6A 00 00       		mov.L	#.LC163, [r0]
  27687 134f EC 6A                   		mov.L	[r6], r10
  27688 1351 E7 0A 01                		mov.L	r10, 4[r0]
  27689 1354 ED 6A 01                		mov.L	4[r6], r10
@@ -29130,7 +29131,7 @@
  27708 137f 05 00 00 00             		bsr	_gotoxy
 1322:SOURCES/demo.c **** 	printf("Small Font\n%d chars * %d lines",x,y);
  27709                             		.loc 1 1322 0
- 27710 1383 F8 02 3F 6A 00 00       		mov.L	#.LC164, [r0]
+ 27710 1383 F8 02 5B 6A 00 00       		mov.L	#.LC164, [r0]
  27711 1389 EC 6A                   		mov.L	[r6], r10
  27712 138b E7 0A 01                		mov.L	r10, 4[r0]
  27713 138e ED 6A 01                		mov.L	4[r6], r10
@@ -29161,7 +29162,7 @@
  27732 13b9 05 00 00 00             		bsr	_gotoxy
 1329:SOURCES/demo.c **** 	printf("Tiny Font\n%d chars * %d lines",x,y);
  27733                             		.loc 1 1329 0
- 27734 13bd F8 02 5E 6A 00 00       		mov.L	#.LC165, [r0]
+ 27734 13bd F8 02 7A 6A 00 00       		mov.L	#.LC165, [r0]
  27735 13c3 EC 6A                   		mov.L	[r6], r10
  27736 13c5 E7 0A 01                		mov.L	r10, 4[r0]
  27737 13c8 ED 6A 01                		mov.L	4[r6], r10
@@ -29215,52 +29216,52 @@
  27756                             		.section C,"a",@progbits
  27757                             		.p2align 2
  27758                             	.LC167:
- 27759 6a7c 2A 51 00                		.string	"*Q"
+ 27759 6a98 2A 51 00                		.string	"*Q"
  27760                             	.LC168:
- 27761 6a7f 37 47 00                		.string	"7G"
+ 27761 6a9b 37 47 00                		.string	"7G"
  27762                             	.LC0:
- 27763 6a82 53 63 61 6E 20 4C 61 62 		.string	"Scan Labels"
+ 27763 6a9e 53 63 61 6E 20 4C 61 62 		.string	"Scan Labels"
  27763      65 6C 73 00 
  27764                             	.LC1:
- 27765 6a8e 53 63 72 6F 6C 6C 20 44 		.string	"Scroll DBase"
+ 27765 6aaa 53 63 72 6F 6C 6C 20 44 		.string	"Scroll DBase"
  27765      42 61 73 65 00 
  27766                             	.LC2:
- 27767 6a9b 54 72 61 6E 73 6D 69 74 		.string	"Transmit Data"
+ 27767 6ab7 54 72 61 6E 73 6D 69 74 		.string	"Transmit Data"
  27767      20 44 61 74 61 00 
  27768                             	.LC3:
- 27769 6aa9 44 65 6C 65 74 65 20 44 		.string	"Delete DBase"
+ 27769 6ac5 44 65 6C 65 74 65 20 44 		.string	"Delete DBase"
  27769      42 61 73 65 00 
  27770                             	.LC4:
- 27771 6ab6 53 79 73 74 65 6D 20 4D 		.string	"System Menu"
+ 27771 6ad2 53 79 73 74 65 6D 20 4D 		.string	"System Menu"
  27771      65 6E 75 00 
  27772                             	.LC5:
- 27773 6ac2 53 68 6F 77 20 66 6F 6E 		.string	"Show fonts"
+ 27773 6ade 53 68 6F 77 20 66 6F 6E 		.string	"Show fonts"
  27773      74 73 00 
  27774                             	.LC6:
- 27775 6acd 56 65 72 73 69 6F 6E 00 		.string	"Version"
- 27776 6ad5 00 00 00                		.balign 4
+ 27775 6ae9 56 65 72 73 69 6F 6E 00 		.string	"Version"
+ 27776 6af1 00 00 00                		.balign 4
  27777                             	.LC166:
- 27778 6ad8 82 6A 00 00             		.long	.LC0
- 27779 6adc 00 00 00 00             		.long	__barcode_pic
- 27780 6ae0 00 00 00 00             		.long	_ScanLabels
- 27781 6ae4 8E 6A 00 00             		.long	.LC1
- 27782 6ae8 00 00 00 00             		.long	__open_file_pic
- 27783 6aec 00 00 00 00             		.long	_ScrollDatabase
- 27784 6af0 9B 6A 00 00             		.long	.LC2
- 27785 6af4 00 00 00 00             		.long	__wireless_pic
- 27786 6af8 00 00 00 00             		.long	_TransmitData
- 27787 6afc A9 6A 00 00             		.long	.LC3
- 27788 6b00 00 00 00 00             		.long	__recycle_pic
- 27789 6b04 00 00 00 00             		.long	_DeleteDatabase
- 27790 6b08 B6 6A 00 00             		.long	.LC4
- 27791 6b0c 00 00 00 00             		.long	__setting_pic
- 27792 6b10 00 00 00 00             		.long	__SystemMenu
- 27793 6b14 C2 6A 00 00             		.long	.LC5
- 27794 6b18 00 00 00 00             		.long	__folder_fonts_pic
- 27795 6b1c 00 00 00 00             		.long	_ShowFonts
- 27796 6b20 CD 6A 00 00             		.long	.LC6
- 27797 6b24 00 00 00 00             		.long	__info_pic
- 27798 6b28 00 00 00 00             		.long	_ShowVersion
+ 27778 6af4 9E 6A 00 00             		.long	.LC0
+ 27779 6af8 00 00 00 00             		.long	__barcode_pic
+ 27780 6afc 00 00 00 00             		.long	_ScanLabels
+ 27781 6b00 AA 6A 00 00             		.long	.LC1
+ 27782 6b04 00 00 00 00             		.long	__open_file_pic
+ 27783 6b08 00 00 00 00             		.long	_ScrollDatabase
+ 27784 6b0c B7 6A 00 00             		.long	.LC2
+ 27785 6b10 00 00 00 00             		.long	__wireless_pic
+ 27786 6b14 00 00 00 00             		.long	_TransmitData
+ 27787 6b18 C5 6A 00 00             		.long	.LC3
+ 27788 6b1c 00 00 00 00             		.long	__recycle_pic
+ 27789 6b20 00 00 00 00             		.long	_DeleteDatabase
+ 27790 6b24 D2 6A 00 00             		.long	.LC4
+ 27791 6b28 00 00 00 00             		.long	__setting_pic
+ 27792 6b2c 00 00 00 00             		.long	__SystemMenu
+ 27793 6b30 DE 6A 00 00             		.long	.LC5
+ 27794 6b34 00 00 00 00             		.long	__folder_fonts_pic
+ 27795 6b38 00 00 00 00             		.long	_ShowFonts
+ 27796 6b3c E9 6A 00 00             		.long	.LC6
+ 27797 6b40 00 00 00 00             		.long	__info_pic
+ 27798 6b44 00 00 00 00             		.long	_ShowVersion
  27799                             		.section P,"ax"
  27800                             		.global	_main
  27802                             	_main:
@@ -29279,7 +29280,7 @@
 1364:SOURCES/demo.c **** #if OPH1005
 1365:SOURCES/demo.c **** 	sgraphMenu mnuMain[] =
  27811                             		.loc 1 1365 0
- 27812 13fb FB B2 D8 6A 00 00       		mov.L	#.LC166, r11
+ 27812 13fb FB B2 F4 6A 00 00       		mov.L	#.LC166, r11
  27813 1401 75 4A 54                		mov.L	#0x54, r10
  27814 1404 EF 61                   		mov.L	r6, r1
  27815 1406 EF B2                   		mov.L	r11, r2
@@ -29394,12 +29395,12 @@
 1441:SOURCES/demo.c **** #if OPH1005 | OPH3000
 1442:SOURCES/demo.c **** 	systemsetting("*Q");	// shift key handled by OS
  27849                             		.loc 1 1442 0
- 27850 145f FB 12 7C 6A 00 00       		mov.L	#.LC167, r1
+ 27850 145f FB 12 98 6A 00 00       		mov.L	#.LC167, r1
  27851 1465 05 00 00 00             		bsr	_systemsetting
 1443:SOURCES/demo.c **** #endif
 1444:SOURCES/demo.c **** 	systemsetting("7G");	// Charging indication LED enabled
  27852                             		.loc 1 1444 0
- 27853 1469 FB 12 7F 6A 00 00       		mov.L	#.LC168, r1
+ 27853 1469 FB 12 9B 6A 00 00       		mov.L	#.LC168, r1
  27854 146f 05 00 00 00             		bsr	_systemsetting
 1445:SOURCES/demo.c **** 
 1446:SOURCES/demo.c **** 	InitGraphMenu();
@@ -29462,26 +29463,26 @@
  28960                             		.file 11 "SOURCES/vga_15_32.fnt"
 DEFINED SYMBOLS
                             *ABS*:00000000 demo.c
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:9      C:00000000 __scan
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:527    C:00000202 __scroll
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:1045   C:00000404 __tools
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:1563   C:00000606 __trash
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:2081   C:00000808 __transmit
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:2599   C:00000a0a __version
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:3117   C:00000c0c __comp
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:3635   C:00000e0e __protocol
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:4153   C:00001010 __display
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:4671   C:00001212 __barcode
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:5189   C:00001414 __memory
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:5707   C:00001616 __flash
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:6225   C:00001818 __stop
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:6743   C:00001a1a __parity
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:7261   C:00001c1c __databits
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:7779   C:00001e1e __drive
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:8297   C:00002020 __comport
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:8815   C:00002222 __fonts
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:9333   C:00002424 __vga_15_32
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24700  C:00006028 _logo_pix
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:9      C:00000000 __scan
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:527    C:00000202 __scroll
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:1045   C:00000404 __tools
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:1563   C:00000606 __trash
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:2081   C:00000808 __transmit
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:2599   C:00000a0a __version
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:3117   C:00000c0c __comp
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:3635   C:00000e0e __protocol
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:4153   C:00001010 __display
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:4671   C:00001212 __barcode
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:5189   C:00001414 __memory
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:5707   C:00001616 __flash
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:6225   C:00001818 __stop
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:6743   C:00001a1a __parity
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:7261   C:00001c1c __databits
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:7779   C:00001e1e __drive
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:8297   C:00002020 __comport
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:8815   C:00002222 __fonts
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:9333   C:00002424 __vga_15_32
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:24700  C:00006028 _logo_pix
                             *COM*:00000004 _lPort
                             *COM*:00000004 _lProtocol
                             *COM*:00000004 _lBarcodes
@@ -29490,55 +29491,55 @@ C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24700  C:00006028 _logo_pix
                             *COM*:00000004 _lDatabits
                             *COM*:00000004 _lStopbits
                             *COM*:00000004 _lDrive
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24716  P:00000000 _set_stopbits
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24720  P:00000000 L0
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24756  P:0000002d _set_databits
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24797  P:0000005b _set_parity
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:24859  P:0000009b _set_baudrate
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25005  P:00000111 _set_barcodes
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25332  P:00000411 _GetMaxCharsXPos
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25362  P:0000043d _GetMaxCharsYPos
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25404  P:00000469 _display_input_data
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25491  P:0000050b _store_input_data
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27892  B_1:0000014f _record.3773
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27896  B_1:00000178 _dbFile.3772
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25646  P:00000661 _string_wearer_to_long
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27890  B_1:00000146 _tmp.3778
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25751  P:0000070d _fill_record_struct
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25826  P:00000794 _FindBarcodeInDatabase
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27886  B_1:000000e4 _dbFile.3794
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27886  B_1:000000f8 _record.3795
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27888  B_1:00000120 _db_rec.3796
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:25911  P:00000816 _ScanLabels
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27878  B_1:000000ac _device.3801
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27880  B_1:000000b5 _db_rec.3803
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27882  B_1:000000db _wearer.3802
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26159  P:00000a52 _display_scroll_data
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26211  P:00000aa5 _get_record
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27876  B_1:00000070 _dbFile.3825
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27876  B_1:00000084 _record.3826
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26312  P:00000b79 _ScrollDatabase
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27872  B_1:00000048 _db_rec.3832
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26528  P:00000d19 _SelectPort
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26595  P:00000d4d _SelectBaudrate
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26648  P:00000d85 _SelectParity
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26693  P:00000db4 _SelectDatabits
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26738  P:00000de3 _SelectStopbits
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26801  P:00000e12 _ComPortSettings
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26846  P:00000e35 _SelectProtocol
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26874  P:00000e60 _ChangeContrast
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:26982  P:00000e67 _SetBarcodes
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27017  P:00000e98 _AvailableMemory
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27094  P:00000eef __SystemMenu
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27125  P:00000f12 _DeleteDatabase
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27171  P:00000f5a _OnOseComInfo
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27259  P:00000f94 _TransmitData
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27870  B_1:0000000c _dbFile.3907
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27870  B_1:00000020 _record.3908
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27554  P:00001251 _ShowVersion
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:24716  P:00000000 _set_stopbits
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:24720  P:00000000 L0
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:24756  P:0000002d _set_databits
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:24797  P:0000005b _set_parity
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:24859  P:0000009b _set_baudrate
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25005  P:00000111 _set_barcodes
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25332  P:00000411 _GetMaxCharsXPos
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25362  P:0000043d _GetMaxCharsYPos
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25404  P:00000469 _display_input_data
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25491  P:0000050b _store_input_data
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27892  B_1:0000014f _record.3773
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27896  B_1:00000178 _dbFile.3772
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25646  P:00000661 _string_wearer_to_long
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27890  B_1:00000146 _tmp.3778
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25751  P:0000070d _fill_record_struct
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25826  P:00000794 _FindBarcodeInDatabase
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27886  B_1:000000e4 _dbFile.3794
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27886  B_1:000000f8 _record.3795
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27888  B_1:00000120 _db_rec.3796
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:25911  P:00000816 _ScanLabels
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27878  B_1:000000ac _device.3801
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27880  B_1:000000b5 _db_rec.3803
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27882  B_1:000000db _wearer.3802
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26159  P:00000a52 _display_scroll_data
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26211  P:00000aa5 _get_record
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27876  B_1:00000070 _dbFile.3825
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27876  B_1:00000084 _record.3826
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26312  P:00000b79 _ScrollDatabase
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27872  B_1:00000048 _db_rec.3832
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26528  P:00000d19 _SelectPort
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26595  P:00000d4d _SelectBaudrate
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26648  P:00000d85 _SelectParity
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26693  P:00000db4 _SelectDatabits
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26738  P:00000de3 _SelectStopbits
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26801  P:00000e12 _ComPortSettings
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26846  P:00000e35 _SelectProtocol
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26874  P:00000e60 _ChangeContrast
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:26982  P:00000e67 _SetBarcodes
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27017  P:00000e98 _AvailableMemory
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27094  P:00000eef __SystemMenu
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27125  P:00000f12 _DeleteDatabase
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27171  P:00000f5a _OnOseComInfo
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27259  P:00000f94 _TransmitData
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27870  B_1:0000000c _dbFile.3907
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27870  B_1:00000020 _record.3908
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27554  P:00001251 _ShowVersion
                               B_1:00000000 _os.3917
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27609  P:000012ab _ShowFonts
-C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27802  P:000013f4 _main
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27609  P:000012ab _ShowFonts
+C:\Users\willem\AppData\Local\Temp\ccNJrSvQ.s:27802  P:000013f4 _main
                                 C:00006028 .LC68
                                 C:0000602b .LC69
                                 C:00006030 .LC70
@@ -29596,52 +29597,52 @@ C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27802  P:000013f4 _main
                                 C:00006228 .LC121
                                 C:00006234 .LC122
                                 C:0000624d .LC123
-                                C:00006269 .LC124
-                                C:0000626a .LC125
-                                C:0000628e .LC126
-                                C:00006293 .LC127
-                                C:000062a2 .LC128
-                                C:000062b4 .LC129
-                                C:000062cb .LC130
-                                C:000062d4 .LC131
-                                C:00006305 .LC132
-                                C:00006334 .LC133
-                                C:00006364 .LC134
-                                C:000063a0 .LC135
-                                C:000063e0 .LC136
-                                C:00006430 .LC137
-                                C:00006468 .LC138
-                                C:00006498 .LC139
-                                C:000064d8 .LC140
-                                C:0000654c .LC141
-                                C:000066cc .LC142
-                                C:00006784 .LC143
-                                C:000067e0 .LC144
-                                C:0000681c .LC145
-                                C:00006848 .L145
-                                C:00006868 .LC146
-                                C:00006890 .LC147
-                                C:0000689f .LC148
-                                C:000068c1 .LC149
-                                C:000068c8 .LC150
-                                C:000068ef .LC151
-                                C:000068fe .LC152
-                                C:0000690e .LC153
-                                C:0000691f .LC154
-                                C:00006930 .LC155
-                                C:0000695d .LC156
-                                C:0000696e .LC157
-                                C:00006998 .LC158
-                                C:000069c1 .LC159
-                                C:000069d8 .LC160
-                                C:000069e0 .LC161
-                                C:00006a00 .LC162
-                                C:00006a1f .LC163
-                                C:00006a3f .LC164
-                                C:00006a5e .LC165
-                                C:00006ad8 .LC166
-                                C:00006a7c .LC167
-                                C:00006a7f .LC168
+                                C:00006286 .LC124
+                                C:00006287 .LC125
+                                C:000062ab .LC126
+                                C:000062b0 .LC127
+                                C:000062bf .LC128
+                                C:000062d0 .LC129
+                                C:000062e7 .LC130
+                                C:000062f0 .LC131
+                                C:00006321 .LC132
+                                C:00006350 .LC133
+                                C:00006380 .LC134
+                                C:000063bc .LC135
+                                C:000063fc .LC136
+                                C:0000644c .LC137
+                                C:00006484 .LC138
+                                C:000064b4 .LC139
+                                C:000064f4 .LC140
+                                C:00006568 .LC141
+                                C:000066e8 .LC142
+                                C:000067a0 .LC143
+                                C:000067fc .LC144
+                                C:00006838 .LC145
+                                C:00006864 .L145
+                                C:00006884 .LC146
+                                C:000068ac .LC147
+                                C:000068bb .LC148
+                                C:000068dd .LC149
+                                C:000068e4 .LC150
+                                C:0000690b .LC151
+                                C:0000691a .LC152
+                                C:0000692a .LC153
+                                C:0000693b .LC154
+                                C:0000694c .LC155
+                                C:00006979 .LC156
+                                C:0000698a .LC157
+                                C:000069b4 .LC158
+                                C:000069dd .LC159
+                                C:000069f4 .LC160
+                                C:000069fc .LC161
+                                C:00006a1c .LC162
+                                C:00006a3b .LC163
+                                C:00006a5b .LC164
+                                C:00006a7a .LC165
+                                C:00006af4 .LC166
+                                C:00006a98 .LC167
+                                C:00006a9b .LC168
                                 P:00000101 .L14
                                 P:000000b9 .L15
                                 P:000000c5 .L16
@@ -29649,66 +29650,66 @@ C:\Users\willem\AppData\Local\Temp\ccm2L6cq.s:27802  P:000013f4 _main
                                 P:000000dd .L18
                                 P:000000e9 .L19
                                 P:000000f5 .L20
-                                C:00006390 .LC8
-                                C:00006395 .LC65
-                                C:0000639a .LC66
-                                C:000063b8 .LC57
-                                C:000063bf .LC58
-                                C:000063c5 .LC59
-                                C:000063cb .LC60
-                                C:000063d1 .LC61
-                                C:000063d6 .LC62
-                                C:000063db .LC63
-                                C:00006420 .LC53
-                                C:00006425 .LC54
-                                C:0000642a .LC55
-                                C:00006450 .LC50
-                                C:0000645b .LC51
-                                C:00006480 .LC47
-                                C:0000648a .LC48
-                                C:000064b0 .LC41
-                                C:000064b5 .LC42
-                                C:000064be .LC43
-                                C:000064c5 .LC44
-                                C:000064ce .LC45
-                                C:00006520 .LC37
-                                C:0000652c .LC38
-                                C:0000653a .LC39
-                                C:0000656c .LC14
-                                C:0000657c .LC15
-                                C:0000658c .LC16
-                                C:0000659c .LC17
-                                C:000065ac .LC18
-                                C:000065bc .LC19
-                                C:000065cc .LC20
-                                C:000065dc .LC21
-                                C:000065ec .LC22
-                                C:000065fc .LC23
-                                C:0000660c .LC24
-                                C:0000661c .LC25
-                                C:0000662c .LC26
-                                C:0000663c .LC27
-                                C:0000664c .LC28
-                                C:0000665c .LC29
-                                C:0000666c .LC30
-                                C:0000667c .LC31
-                                C:0000668c .LC32
-                                C:0000669c .LC33
-                                C:000066ac .LC34
-                                C:000066bc .LC35
-                                C:000067bc .LC9
-                                C:000067c5 .LC10
-                                C:000067ce .LC11
-                                C:000067d7 .LC12
+                                C:000063ac .LC8
+                                C:000063b1 .LC65
+                                C:000063b6 .LC66
+                                C:000063d4 .LC57
+                                C:000063db .LC58
+                                C:000063e1 .LC59
+                                C:000063e7 .LC60
+                                C:000063ed .LC61
+                                C:000063f2 .LC62
+                                C:000063f7 .LC63
+                                C:0000643c .LC53
+                                C:00006441 .LC54
+                                C:00006446 .LC55
+                                C:0000646c .LC50
+                                C:00006477 .LC51
+                                C:0000649c .LC47
+                                C:000064a6 .LC48
+                                C:000064cc .LC41
+                                C:000064d1 .LC42
+                                C:000064da .LC43
+                                C:000064e1 .LC44
+                                C:000064ea .LC45
+                                C:0000653c .LC37
+                                C:00006548 .LC38
+                                C:00006556 .LC39
+                                C:00006588 .LC14
+                                C:00006598 .LC15
+                                C:000065a8 .LC16
+                                C:000065b8 .LC17
+                                C:000065c8 .LC18
+                                C:000065d8 .LC19
+                                C:000065e8 .LC20
+                                C:000065f8 .LC21
+                                C:00006608 .LC22
+                                C:00006618 .LC23
+                                C:00006628 .LC24
+                                C:00006638 .LC25
+                                C:00006648 .LC26
+                                C:00006658 .LC27
+                                C:00006668 .LC28
+                                C:00006678 .LC29
+                                C:00006688 .LC30
+                                C:00006698 .LC31
+                                C:000066a8 .LC32
+                                C:000066b8 .LC33
+                                C:000066c8 .LC34
+                                C:000066d8 .LC35
+                                C:000067d8 .LC9
+                                C:000067e1 .LC10
+                                C:000067ea .LC11
+                                C:000067f3 .LC12
                                 P:00000f8c .L136
                                 P:00000f7f .L142
-                                C:00006a82 .LC0
-                                C:00006a8e .LC1
-                                C:00006a9b .LC2
-                                C:00006aa9 .LC3
-                                C:00006ab6 .LC4
-                                C:00006ac2 .LC5
-                                C:00006acd .LC6
+                                C:00006a9e .LC0
+                                C:00006aaa .LC1
+                                C:00006ab7 .LC2
+                                C:00006ac5 .LC3
+                                C:00006ad2 .LC4
+                                C:00006ade .LC5
+                                C:00006ae9 .LC6
                      .debug_frame:00000000 .Lframe0
                                 P:00000000 .LFB0
                                 P:0000002d .LFB1

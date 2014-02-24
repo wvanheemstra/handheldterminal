@@ -51,7 +51,7 @@ LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02\libgcc.a
  APP_INFO       0x06000010       0x26 startup.o
                 0x06000036                __cs_end = .
 
-PROGRAM         0x06000036    0x27f0a
+PROGRAM         0x06000036    0x27f26
                 0x06000036                __text = .
  *(APP_START)
  APP_START      0x06000036      0x8c3 startup.o
@@ -587,7 +587,7 @@ PROGRAM         0x06000036    0x27f0a
  *(C_2)
  *(C)
  *fill*         0x060051b6        0x2 00
- C              0x060051b8     0x6b2c obj/demo.o
+ C              0x060051b8     0x6b48 obj/demo.o
                 0x060051b8                __scan
                 0x060053ba                __scroll
                 0x060055bc                __tools
@@ -608,30 +608,30 @@ PROGRAM         0x06000036    0x27f0a
                 0x060073da                __fonts
                 0x060075dc                __vga_15_32
                 0x0600b1e0                _logo_pix
- C              0x0600bce4       0x18 obj/input.o
- C              0x0600bcfc       0x80 obj/menu.o
- C              0x0600bd7c    0x1c1c4 obj/oph1005_pic.o
-                0x0600bd7c                __barcode_pic
-                0x0600e915                __folder_fonts_pic
-                0x06010b56                __info_pic
-                0x060125d2                __open_file_pic
-                0x06013cd1                __recycle_pic
-                0x060167ff                __setting_pic
-                0x06017e5b                __wireless_pic
-                0x06019c9b                __exit_pic
-                0x0601b354                __com_port_pic
-                0x0601c416                __memory_pic
-                0x0601dc85                __protocol_pic
-                0x0601f14c                __checked
-                0x06020d20                __uncheck
-                0x060225cd                __data_bits_pic
-                0x060237cf                __stop_bits_pic
-                0x06024acb                __parity_pic
-                0x06025d33                __baudrate_pic
-                0x06027f40                __etext = .
-                0x06027f40                . = ALIGN (0x4)
+ C              0x0600bd00       0x18 obj/input.o
+ C              0x0600bd18       0x80 obj/menu.o
+ C              0x0600bd98    0x1c1c4 obj/oph1005_pic.o
+                0x0600bd98                __barcode_pic
+                0x0600e931                __folder_fonts_pic
+                0x06010b72                __info_pic
+                0x060125ee                __open_file_pic
+                0x06013ced                __recycle_pic
+                0x0601681b                __setting_pic
+                0x06017e77                __wireless_pic
+                0x06019cb7                __exit_pic
+                0x0601b370                __com_port_pic
+                0x0601c432                __memory_pic
+                0x0601dca1                __protocol_pic
+                0x0601f168                __checked
+                0x06020d3c                __uncheck
+                0x060225e9                __data_bits_pic
+                0x060237eb                __stop_bits_pic
+                0x06024ae7                __parity_pic
+                0x06025d4f                __baudrate_pic
+                0x06027f5c                __etext = .
+                0x06027f5c                . = ALIGN (0x4)
 
-.data           0x04000000      0x42c load address 0x06027f40
+.data           0x04000000      0x42c load address 0x06027f5c
                 0x04000000                __data = .
  *(.data)
  *(.data.*)
@@ -657,7 +657,7 @@ PROGRAM         0x06000036    0x27f0a
  *(D_2)
                 0x0400042c                __edata = .
 
-.bss            0x0400042c      0x250 load address 0x0602836c
+.bss            0x0400042c      0x250 load address 0x06028388
                 0x0400042c                __bss = .
  *(.bss)
  *(.bss.*)
