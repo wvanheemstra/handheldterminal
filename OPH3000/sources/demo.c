@@ -604,9 +604,9 @@ void ScanLabels( void )
 			//OLD printf("Total: %*ld\nAdd:         ", SZ_SIGN+SZ_QUANTITY, lTotal);
 			printf("Current: %*ld\nNew:         ", SZ_WEARER, lCurrentWearer);
 
-			// Set the quantity to default value
+			// Set the quantity to default value (empty)
 			//OLD strcpy( quantity, "1");
-			strcpy( wearer, "1");
+			strcpy( wearer, "");
 
 			//OLD key = KeyboardNumeric( quantity, 4, INPUT_NUM | INPUT_NEGATIVE | INPUT_SHOW_DEFAULT, 9, GetMaxCharsYPos()-1, 5, 4, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
 			key = KeyboardNumeric( wearer, 4, INPUT_NUM | INPUT_NEGATIVE | INPUT_SHOW_DEFAULT, 9, GetMaxCharsYPos()-1, 5, 4, CLR_KEY, ESC_KEY, ENT_KEY, TRIGGER_KEY );
