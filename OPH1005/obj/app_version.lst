@@ -11,7 +11,7 @@
   12                             		.file 1 "SOURCES/app_version.c"
 DEFINED SYMBOLS
                             *ABS*:00000000 app_version.c
-C:\Users\willem\AppData\Local\Temp\ccLVNYu7.s:8      .version:00000000 _app_version
+C:\Users\willem\AppData\Local\Temp\ccchiZGo.s:8      .version:00000000 _app_version
                     .debug_abbrev:00000000 .Ldebug_abbrev0
                        .debug_str:00000015 .LASF2
                        .debug_str:0000004c .LASF3

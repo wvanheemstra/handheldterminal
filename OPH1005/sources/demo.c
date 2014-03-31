@@ -1411,7 +1411,7 @@ void main( void )
 #endif
 
 	// Set some default values
-	lPort = COM9; // USB port is used as default
+	lPort = COM2; // IrDA port is used as default
 	lProtocol = ID_NETO_PROTOCOL;
 
 #if OPH | OPH1004 | PX25 | OPH1005 | OPH3000

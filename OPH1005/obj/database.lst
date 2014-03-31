@@ -3849,34 +3849,34 @@
  3824                             		.file 2 "SOURCES/database.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 database.c
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:5      B_1:00000000 _lErrorCode
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:8      P:00000000 _GetDBErrorCode
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:12     P:00000000 L0
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:29     P:00000015 _IsFileOpen
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:60     P:0000003e _OpenDatabase
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:244    P:00000183 _CloseDatabase
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:176    P:0000010b _CreateDatabase
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:290    P:000001bb _GetCurrentRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:342    P:00000203 _GetTotalRecords
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:382    P:00000235 _GotoRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:437    P:0000027f _ReadCurrentRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:518    P:00000309 _ReadFirstRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:567    P:00000343 _ReadLastRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:629    P:00000393 _ReadPreviousRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:691    P:000003e3 _ReadNextRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:753    P:00000433 _DeleteRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:927    P:0000053f _WriteRecord
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:1071   P:00000647 _InsertionSort
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:1343   P:000007e3 _downheap
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:1567   P:0000095d _HeapSort
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:1858   P:00000b29 _QuickSort
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2383   P:00000e9f _BinarySearch
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2501   P:00000f5b _LineairSearch
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2597   P:00000ff1 _CreateIndexFile
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2775   P:00001117 _OpenIndexFile
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2807   P:00001140 _SearchIndexFile
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:3000   B_1:00000004 _recnr.3799
-C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2907   P:000011fd _AddNewSearchkeyToIndex
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:5      B_1:00000000 _lErrorCode
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:8      P:00000000 _GetDBErrorCode
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:12     P:00000000 L0
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:29     P:00000015 _IsFileOpen
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:60     P:0000003e _OpenDatabase
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:244    P:00000183 _CloseDatabase
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:176    P:0000010b _CreateDatabase
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:290    P:000001bb _GetCurrentRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:342    P:00000203 _GetTotalRecords
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:382    P:00000235 _GotoRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:437    P:0000027f _ReadCurrentRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:518    P:00000309 _ReadFirstRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:567    P:00000343 _ReadLastRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:629    P:00000393 _ReadPreviousRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:691    P:000003e3 _ReadNextRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:753    P:00000433 _DeleteRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:927    P:0000053f _WriteRecord
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:1071   P:00000647 _InsertionSort
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:1343   P:000007e3 _downheap
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:1567   P:0000095d _HeapSort
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:1858   P:00000b29 _QuickSort
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:2383   P:00000e9f _BinarySearch
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:2501   P:00000f5b _LineairSearch
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:2597   P:00000ff1 _CreateIndexFile
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:2775   P:00001117 _OpenIndexFile
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:2807   P:00001140 _SearchIndexFile
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:3000   B_1:00000004 _recnr.3799
+C:\Users\willem\AppData\Local\Temp\cc4hwleo.s:2907   P:000011fd _AddNewSearchkeyToIndex
                      .debug_frame:00000000 .Lframe0
                                 P:00000000 .LFB0
                                 P:00000015 .LFB1
@@ -3904,27 +3904,27 @@ C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2907   P:000011fd _AddNewSearchkey
                                 P:00001140 .LFB23
                                 P:000011fd .LFB24
                     .debug_abbrev:00000000 .Ldebug_abbrev0
-                       .debug_str:000002ac .LASF75
-                       .debug_str:000001a5 .LASF76
-                       .debug_str:000002e2 .LASF77
+                       .debug_str:000002cc .LASF75
+                       .debug_str:000001c5 .LASF76
+                       .debug_str:0000001f .LASF77
                                 P:00000000 .Ltext0
                                 P:00001299 .Letext0
                       .debug_line:00000000 .Ldebug_line0
-                       .debug_str:00000106 .LASF0
-                       .debug_str:0000008d .LASF1
-                       .debug_str:00000214 .LASF2
-                       .debug_str:0000023c .LASF3
-                       .debug_str:00000120 .LASF4
-                       .debug_str:000000f9 .LASF5
-                       .debug_str:0000007f .LASF6
-                       .debug_str:0000002b .LASF7
-                       .debug_str:000000c8 .LASF8
-                       .debug_str:00000193 .LASF9
-                       .debug_str:000002a7 .LASF10
-                       .debug_str:0000024c .LASF11
-                       .debug_str:00000230 .LASF12
-                       .debug_str:000000db .LASF13
-                       .debug_str:000001d4 .LASF14
+                       .debug_str:00000126 .LASF0
+                       .debug_str:000000ad .LASF1
+                       .debug_str:00000234 .LASF2
+                       .debug_str:0000025c .LASF3
+                       .debug_str:00000140 .LASF4
+                       .debug_str:00000119 .LASF5
+                       .debug_str:0000009f .LASF6
+                       .debug_str:0000004b .LASF7
+                       .debug_str:000000e8 .LASF8
+                       .debug_str:000001b3 .LASF9
+                       .debug_str:000002c7 .LASF10
+                       .debug_str:0000026c .LASF11
+                       .debug_str:00000250 .LASF12
+                       .debug_str:000000fb .LASF13
+                       .debug_str:000001f4 .LASF14
                        .debug_str:00000343 .LASF78
                        .debug_str:00000302 .LASF79
                                 P:00000015 .LFE0
@@ -3933,13 +3933,13 @@ C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2907   P:000011fd _AddNewSearchkey
                                 P:0000003e .LFE1
                        .debug_loc:00000038 .LLST1
                        .debug_str:00000388 .LASF15
-                       .debug_str:0000027d .LASF18
+                       .debug_str:0000029d .LASF18
                                 P:0000010b .LFE2
                        .debug_loc:0000007c .LLST2
-                       .debug_str:0000019c .LASF16
-                       .debug_str:00000099 .LASF17
+                       .debug_str:000001bc .LASF16
+                       .debug_str:000000b9 .LASF17
                        .debug_str:0000032e .LASF24
-                       .debug_str:00000298 .LASF19
+                       .debug_str:000002b8 .LASF19
                                 P:00000183 .LFE3
                        .debug_loc:000000b4 .LLST3
                        .debug_str:0000036c .LASF80
@@ -3948,109 +3948,109 @@ C:\Users\willem\AppData\Local\Temp\ccgcmIxO.s:2907   P:000011fd _AddNewSearchkey
                        .debug_str:0000035b .LASF20
                                 P:00000203 .LFE5
                        .debug_loc:00000130 .LLST5
-                       .debug_str:000001f6 .LASF21
+                       .debug_str:00000216 .LASF21
                                 P:00000235 .LFE6
                        .debug_loc:00000174 .LLST6
-                       .debug_str:00000188 .LASF22
+                       .debug_str:000001a8 .LASF22
                                 P:0000027f .LFE7
                        .debug_loc:000001b8 .LLST7
                        .debug_str:00000336 .LASF23
-                       .debug_str:00000055 .LASF25
-                       .debug_str:000001da .LASF26
+                       .debug_str:00000075 .LASF25
+                       .debug_str:000001fa .LASF26
                                 P:00000309 .LFE8
                        .debug_loc:000001f0 .LLST8
-                       .debug_str:000001cd .LASF27
-                       .debug_str:00000222 .LASF28
-                       .debug_str:000000e9 .LASF29
+                       .debug_str:000001ed .LASF27
+                       .debug_str:00000242 .LASF28
+                       .debug_str:00000109 .LASF29
                                 P:00000343 .LFE9
                        .debug_loc:00000228 .LLST9
-                       .debug_str:00000259 .LASF30
+                       .debug_str:00000279 .LASF30
                                 P:00000393 .LFE10
                        .debug_loc:0000026c .LLST10
-                       .debug_str:00000162 .LASF31
-                       .debug_str:00000042 .LASF32
+                       .debug_str:00000182 .LASF31
+                       .debug_str:00000062 .LASF32
                                 P:000003e3 .LFE11
                        .debug_loc:000002b0 .LLST11
-                       .debug_str:000002c3 .LASF33
+                       .debug_str:000002e3 .LASF33
                                 P:00000433 .LFE12
                        .debug_loc:000002f4 .LLST12
-                       .debug_str:0000017b .LASF34
+                       .debug_str:0000019b .LASF34
                                 P:0000053f .LFE13
                        .debug_loc:00000338 .LLST13
-                       .debug_str:0000001f .LASF35
+                       .debug_str:0000003f .LASF35
                        .debug_str:00000013 .LASF36
                                 P:00000647 .LFE14
                        .debug_loc:00000370 .LLST14
-                       .debug_str:000000b2 .LASF37
-                       .debug_str:0000028a .LASF38
+                       .debug_str:000000d2 .LASF37
+                       .debug_str:000002aa .LASF38
                                 P:000007e3 .LFE15
                        .debug_loc:000003a8 .LLST15
-                       .debug_str:000002db .LASF39
-                       .debug_str:000000d1 .LASF40
-                       .debug_str:00000246 .LASF41
+                       .debug_str:000002fb .LASF39
+                       .debug_str:000000f1 .LASF40
+                       .debug_str:00000266 .LASF41
                        .debug_str:00000328 .LASF42
-                       .debug_str:0000013f .LASF43
+                       .debug_str:0000015f .LASF43
                                 P:000007d0 .L89
-                       .debug_str:00000146 .LASF44
+                       .debug_str:00000166 .LASF44
                                 P:000007c6 .L91
-                       .debug_str:0000006c .LASF45
+                       .debug_str:0000008c .LASF45
                                 P:000007bc .L94
-                       .debug_str:000002d2 .LASF47
+                       .debug_str:000002f2 .LASF47
                                 P:0000095d .LFE16
                        .debug_loc:000003e0 .LLST16
-                       .debug_str:00000133 .LASF48
-                       .debug_str:00000067 .LASF49
-                       .debug_str:00000075 .LASF50
-                       .debug_str:0000007a .LASF51
-                       .debug_str:00000227 .LASF52
+                       .debug_str:00000153 .LASF48
+                       .debug_str:00000087 .LASF49
+                       .debug_str:00000095 .LASF50
+                       .debug_str:0000009a .LASF51
+                       .debug_str:00000247 .LASF52
                                 P:00000b29 .LFE17
                        .debug_loc:0000041a .LLST17
-                       .debug_str:00000253 .LASF53
+                       .debug_str:00000273 .LASF53
                                 P:00000b16 .L142
                                 P:00000b0c .L144
-                       .debug_str:0000014d .LASF54
+                       .debug_str:0000016d .LASF54
                                 P:00000b02 .L146
                                 P:00000af8 .L149
-                       .debug_str:00000273 .LASF55
+                       .debug_str:00000293 .LASF55
                                 P:00000e9f .LFE18
                        .debug_loc:00000454 .LLST18
-                       .debug_str:00000206 .LASF56
-                       .debug_str:0000020d .LASF57
+                       .debug_str:00000226 .LASF56
+                       .debug_str:0000022d .LASF57
                                 P:00000e8c .L176
                                 P:00000e82 .L178
                                 P:00000e78 .L180
-                       .debug_str:00000154 .LASF58
+                       .debug_str:00000174 .LASF58
                                 P:00000e6e .L184
-                       .debug_str:0000015b .LASF59
+                       .debug_str:0000017b .LASF59
                                 P:00000e64 .L186
                                 P:00000e5a .L188
-                       .debug_str:000001b8 .LASF60
+                       .debug_str:000001d8 .LASF60
                                 P:00000f5b .LFE19
                        .debug_loc:0000048e .LLST19
-                       .debug_str:000001ec .LASF61
-                       .debug_str:00000062 .LASF62
-                       .debug_str:000001c5 .LASF63
+                       .debug_str:0000020c .LASF61
+                       .debug_str:00000082 .LASF62
+                       .debug_str:000001e5 .LASF63
                        .debug_str:0000037a .LASF64
                                 P:00000ff1 .LFE20
                        .debug_loc:000004c8 .LLST20
-                       .debug_str:000000b8 .LASF65
+                       .debug_str:000000d8 .LASF65
                                 P:00001117 .LFE21
                        .debug_loc:00000500 .LLST21
-                       .debug_str:00000118 .LASF66
-                       .debug_str:0000016d .LASF67
+                       .debug_str:00000138 .LASF66
+                       .debug_str:0000018d .LASF67
                        .debug_str:0000000b .LASF68
-                       .debug_str:000000a4 .LASF69
+                       .debug_str:000000c4 .LASF69
                                 P:00001140 .LFE22
                        .debug_loc:00000538 .LLST22
                        .debug_str:0000034b .LASF70
                                 P:000011fd .LFE23
                        .debug_loc:0000057c .LLST23
-                       .debug_str:00000025 .LASF71
+                       .debug_str:00000045 .LASF71
                        .debug_str:00000311 .LASF72
                                 P:00001299 .LFE24
                        .debug_loc:000005b4 .LLST24
                        .debug_str:0000038f .LASF73
-                       .debug_str:00000268 .LASF74
+                       .debug_str:00000288 .LASF74
                       .debug_info:00000000 .Ldebug_info0
 
 UNDEFINED SYMBOLS

@@ -2213,24 +2213,24 @@
  2262                             		.file 8 "c:\\rx_compiler\\bin\\../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/include/ctype
 DEFINED SYMBOLS
                             *ABS*:00000000 input.c
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:5      P:00000000 _keybeep
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:9      P:00000000 L0
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:25     P:0000001a _okbeep
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:47     P:0000003f _WaitForKey
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:110    P:000000ad _check_key_input
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:162    P:000000f1 _WaitForKeys
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:215    P:00000135 _ScanBarcodeSymbol
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:355    P:0000023d _ScanBarcode
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:387    P:00000267 _remove_key_from_buffer
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:425    P:0000028f _display_input
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:543    P:00000361 _store_key_in_string
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:741    P:000004a5 _KeyboardInput
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:870    P:00000577 _ScanOrKeyboardInput
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1208   P:0000085c _ScanOrKeyboardInputSymbol
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1324   P:00000926 _store_char_in_string_numeric
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:5      P:00000000 _keybeep
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:9      P:00000000 L0
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:25     P:0000001a _okbeep
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:47     P:0000003f _WaitForKey
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:110    P:000000ad _check_key_input
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:162    P:000000f1 _WaitForKeys
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:215    P:00000135 _ScanBarcodeSymbol
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:355    P:0000023d _ScanBarcode
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:387    P:00000267 _remove_key_from_buffer
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:425    P:0000028f _display_input
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:543    P:00000361 _store_key_in_string
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:741    P:000004a5 _KeyboardInput
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:870    P:00000577 _ScanOrKeyboardInput
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:1208   P:0000085c _ScanOrKeyboardInputSymbol
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:1324   P:00000926 _store_char_in_string_numeric
                               B_1:00000000 _tmp.3715
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1512   P:00000a77 _display_input_numeric
-C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1597   P:00000b13 _KeyboardNumeric
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:1512   P:00000a77 _display_input_numeric
+C:\Users\willem\AppData\Local\Temp\ccw26tB9.s:1597   P:00000b13 _KeyboardNumeric
                                 C:00000000 .LC0
                                 C:00000008 .LC1
                                 C:00000010 .LC2
@@ -2252,147 +2252,147 @@ C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1597   P:00000b13 _KeyboardNumeric
                                 P:00000a77 .LFB14
                                 P:00000b13 .LFB15
                     .debug_abbrev:00000000 .Ldebug_abbrev0
-                       .debug_str:000004b6 .LASF152
+                       .debug_str:000004d6 .LASF152
                        .debug_str:0000002b .LASF153
-                       .debug_str:000004ec .LASF154
+                       .debug_str:00000046 .LASF154
                                 P:00000000 .Ltext0
                                 P:00000bd4 .Letext0
                       .debug_line:00000000 .Ldebug_line0
-                       .debug_str:0000021f .LASF0
-                       .debug_str:000002f0 .LASF8
-                       .debug_str:0000015f .LASF155
-                       .debug_str:000000fa .LASF1
-                       .debug_str:00000370 .LASF2
-                       .debug_str:000003cd .LASF3
-                       .debug_str:0000025d .LASF4
-                       .debug_str:000001fb .LASF5
-                       .debug_str:000000ec .LASF6
-                       .debug_str:000000a6 .LASF7
-                       .debug_str:0000035e .LASF9
-                       .debug_str:0000013f .LASF10
-                       .debug_str:0000048d .LASF11
-                       .debug_str:000002a0 .LASF12
-                       .debug_str:0000029a .LASF13
-                       .debug_str:00000208 .LASF14
-                       .debug_str:000002e7 .LASF15
-                       .debug_str:00000462 .LASF16
-                       .debug_str:0000046a .LASF17
-                       .debug_str:000003f5 .LASF18
-                       .debug_str:000001c7 .LASF19
+                       .debug_str:0000023f .LASF0
+                       .debug_str:00000310 .LASF8
+                       .debug_str:0000017f .LASF155
+                       .debug_str:0000011a .LASF1
+                       .debug_str:00000390 .LASF2
+                       .debug_str:000003ed .LASF3
+                       .debug_str:0000027d .LASF4
+                       .debug_str:0000021b .LASF5
+                       .debug_str:0000010c .LASF6
+                       .debug_str:000000c6 .LASF7
+                       .debug_str:0000037e .LASF9
+                       .debug_str:0000015f .LASF10
+                       .debug_str:000004ad .LASF11
+                       .debug_str:000002c0 .LASF12
+                       .debug_str:000002ba .LASF13
+                       .debug_str:00000228 .LASF14
+                       .debug_str:00000307 .LASF15
+                       .debug_str:00000482 .LASF16
+                       .debug_str:0000048a .LASF17
+                       .debug_str:00000415 .LASF18
+                       .debug_str:000001e7 .LASF19
                        .debug_str:00000526 .LASF20
-                       .debug_str:000001d8 .LASF25
-                       .debug_str:000004d9 .LASF21
-                       .debug_str:0000044d .LASF22
-                       .debug_str:000001c1 .LASF23
+                       .debug_str:000001f8 .LASF25
+                       .debug_str:000004f9 .LASF21
+                       .debug_str:0000046d .LASF22
+                       .debug_str:000001e1 .LASF23
                        .debug_str:000005b1 .LASF24
-                       .debug_str:000001f0 .LASF26
-                       .debug_str:000000e3 .LASF27
-                       .debug_str:000004ad .LASF28
-                       .debug_str:00000112 .LASF29
+                       .debug_str:00000210 .LASF26
+                       .debug_str:00000103 .LASF27
+                       .debug_str:000004cd .LASF28
+                       .debug_str:00000132 .LASF29
                        .debug_str:0000065a .LASF30
-                       .debug_str:0000031a .LASF31
-                       .debug_str:000002d6 .LASF32
+                       .debug_str:0000033a .LASF31
+                       .debug_str:000002f6 .LASF32
                        .debug_str:000005b6 .LASF33
-                       .debug_str:000003d7 .LASF34
+                       .debug_str:000003f7 .LASF34
                        .debug_str:000005ff .LASF35
-                       .debug_str:00000121 .LASF36
-                       .debug_str:000001b4 .LASF37
+                       .debug_str:00000141 .LASF36
+                       .debug_str:000001d4 .LASF37
                        .debug_str:00000000 .LASF38
                        .debug_str:0000050c .LASF39
-                       .debug_str:00000157 .LASF40
-                       .debug_str:00000323 .LASF41
-                       .debug_str:0000042e .LASF42
-                       .debug_str:000001bc .LASF43
-                       .debug_str:000003e1 .LASF44
-                       .debug_str:0000010c .LASF45
+                       .debug_str:00000177 .LASF40
+                       .debug_str:00000343 .LASF41
+                       .debug_str:0000044e .LASF42
+                       .debug_str:000001dc .LASF43
+                       .debug_str:00000401 .LASF44
+                       .debug_str:0000012c .LASF45
                        .debug_str:00000012 .LASF46
-                       .debug_str:00000400 .LASF47
-                       .debug_str:00000150 .LASF48
-                       .debug_str:00000231 .LASF49
-                       .debug_str:000000bd .LASF50
-                       .debug_str:0000012f .LASF51
-                       .debug_str:000001e0 .LASF52
-                       .debug_str:000002cf .LASF53
-                       .debug_str:00000472 .LASF54
+                       .debug_str:00000420 .LASF47
+                       .debug_str:00000170 .LASF48
+                       .debug_str:00000251 .LASF49
+                       .debug_str:000000dd .LASF50
+                       .debug_str:0000014f .LASF51
+                       .debug_str:00000200 .LASF52
+                       .debug_str:000002ef .LASF53
+                       .debug_str:00000492 .LASF54
                        .debug_str:00000619 .LASF55
-                       .debug_str:00000106 .LASF56
+                       .debug_str:00000126 .LASF56
                        .debug_str:000005f1 .LASF57
-                       .debug_str:00000171 .LASF58
-                       .debug_str:0000018d .LASF59
-                       .debug_str:00000080 .LASF60
-                       .debug_str:000002a7 .LASF61
-                       .debug_str:00000408 .LASF62
-                       .debug_str:000002c7 .LASF63
-                       .debug_str:00000455 .LASF64
-                       .debug_str:0000049c .LASF65
+                       .debug_str:00000191 .LASF58
+                       .debug_str:000001ad .LASF59
+                       .debug_str:000000a0 .LASF60
+                       .debug_str:000002c7 .LASF61
+                       .debug_str:00000428 .LASF62
+                       .debug_str:000002e7 .LASF63
+                       .debug_str:00000475 .LASF64
+                       .debug_str:000004bc .LASF65
                        .debug_str:000005c6 .LASF66
-                       .debug_str:0000020f .LASF67
-                       .debug_str:000001d0 .LASF68
-                       .debug_str:00000429 .LASF69
+                       .debug_str:0000022f .LASF67
+                       .debug_str:000001f0 .LASF68
+                       .debug_str:00000449 .LASF69
                        .debug_str:0000003b .LASF70
                        .debug_str:00000563 .LASF71
-                       .debug_str:00000433 .LASF72
-                       .debug_str:0000032b .LASF73
-                       .debug_str:00000443 .LASF74
-                       .debug_str:00000292 .LASF75
-                       .debug_str:000001e6 .LASF76
+                       .debug_str:00000453 .LASF72
+                       .debug_str:0000034b .LASF73
+                       .debug_str:00000463 .LASF74
+                       .debug_str:000002b2 .LASF75
+                       .debug_str:00000206 .LASF76
                        .debug_str:00000633 .LASF77
-                       .debug_str:00000354 .LASF78
-                       .debug_str:00000217 .LASF79
-                       .debug_str:00000185 .LASF80
-                       .debug_str:0000038e .LASF81
-                       .debug_str:00000270 .LASF82
+                       .debug_str:00000374 .LASF78
+                       .debug_str:00000237 .LASF79
+                       .debug_str:000001a5 .LASF80
+                       .debug_str:000003ae .LASF81
+                       .debug_str:00000290 .LASF82
                        .debug_str:000005e0 .LASF83
-                       .debug_str:00000137 .LASF84
-                       .debug_str:0000011c .LASF85
-                       .debug_str:000004a3 .LASF86
-                       .debug_str:000003ee .LASF87
+                       .debug_str:00000157 .LASF84
+                       .debug_str:0000013c .LASF85
+                       .debug_str:000004c3 .LASF86
+                       .debug_str:0000040e .LASF87
                        .debug_str:000005c0 .LASF88
-                       .debug_str:0000023f .LASF89
-                       .debug_str:000003e8 .LASF90
+                       .debug_str:0000025f .LASF89
+                       .debug_str:00000408 .LASF90
                        .debug_str:00000023 .LASF91
-                       .debug_str:0000045c .LASF92
-                       .debug_str:000004d3 .LASF93
+                       .debug_str:0000047c .LASF92
+                       .debug_str:000004f3 .LASF93
                        .debug_str:00000521 .LASF94
                        .debug_str:0000059c .LASF95
-                       .debug_str:000004df .LASF96
-                       .debug_str:00000285 .LASF97
+                       .debug_str:000004ff .LASF96
+                       .debug_str:000002a5 .LASF97
                        .debug_str:0000060a .LASF98
-                       .debug_str:00000336 .LASF99
-                       .debug_str:00000411 .LASF100
+                       .debug_str:00000356 .LASF99
+                       .debug_str:00000431 .LASF100
                        .debug_str:00000620 .LASF101
-                       .debug_str:0000041c .LASF102
+                       .debug_str:0000043c .LASF102
                        .debug_str:00000625 .LASF103
-                       .debug_str:000000d5 .LASF104
+                       .debug_str:000000f5 .LASF104
                        .debug_str:000005d6 .LASF105
-                       .debug_str:00000279 .LASF106
+                       .debug_str:00000299 .LASF106
                        .debug_str:0000052e .LASF107
-                       .debug_str:000001a6 .LASF108
-                       .debug_str:000000c6 .LASF109
-                       .debug_str:00000195 .LASF110
-                       .debug_str:00000086 .LASF111
-                       .debug_str:00000095 .LASF112
-                       .debug_str:000003c4 .LASF113
-                       .debug_str:000002ff .LASF114
+                       .debug_str:000001c6 .LASF108
+                       .debug_str:000000e6 .LASF109
+                       .debug_str:000001b5 .LASF110
+                       .debug_str:000000a6 .LASF111
+                       .debug_str:000000b5 .LASF112
+                       .debug_str:000003e4 .LASF113
+                       .debug_str:0000031f .LASF114
                        .debug_str:000005cd .LASF115
                        .debug_str:000005f7 .LASF116
-                       .debug_str:00000078 .LASF117
-                       .debug_str:00000312 .LASF118
-                       .debug_str:000004a8 .LASF119
-                       .debug_str:00000495 .LASF120
-                       .debug_str:00000148 .LASF121
+                       .debug_str:00000098 .LASF117
+                       .debug_str:00000332 .LASF118
+                       .debug_str:000004c8 .LASF119
+                       .debug_str:000004b5 .LASF120
+                       .debug_str:00000168 .LASF121
                                 P:0000001a .LFE0
                        .debug_loc:00000000 .LLST0
                        .debug_str:000005ea .LASF122
                                 P:0000003f .LFE1
                        .debug_loc:0000002c .LLST1
-                       .debug_str:0000017a .LASF125
+                       .debug_str:0000019a .LASF125
                                 P:000000ad .LFE2
                        .debug_loc:00000058 .LLST2
                        .debug_str:0000064a .LASF156
                                 P:000000f1 .LFE3
                        .debug_loc:00000090 .LLST3
-                       .debug_str:00000478 .LASF123
+                       .debug_str:00000498 .LASF123
                        .debug_str:0000000c .LASF124
                        .debug_str:00000515 .LASF126
                                 P:00000135 .LFE4
@@ -2400,23 +2400,23 @@ C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1597   P:00000b13 _KeyboardNumeric
                        .debug_str:00000551 .LASF127
                                 P:0000023d .LFE5
                        .debug_loc:00000100 .LLST5
-                       .debug_str:00000063 .LASF128
+                       .debug_str:00000083 .LASF128
                        .debug_str:00000018 .LASF129
                        .debug_str:00000638 .LASF130
-                       .debug_str:00000237 .LASF131
+                       .debug_str:00000257 .LASF131
                        .debug_str:00000589 .LASF132
-                       .debug_str:00000306 .LASF133
+                       .debug_str:00000326 .LASF133
                                 P:00000267 .LFE6
                        .debug_loc:0000013a .LLST6
-                       .debug_str:00000246 .LASF134
+                       .debug_str:00000266 .LASF134
                                 P:0000028f .LFE7
                        .debug_loc:0000017e .LLST7
-                       .debug_str:000003b6 .LASF135
+                       .debug_str:000003d6 .LASF135
                                 P:00000361 .LFE8
                        .debug_loc:000001b6 .LLST8
-                       .debug_str:00000393 .LASF136
-                       .debug_str:000002e0 .LASF137
-                       .debug_str:000003a2 .LASF138
+                       .debug_str:000003b3 .LASF136
+                       .debug_str:00000300 .LASF137
+                       .debug_str:000003c2 .LASF138
                                 P:000004a5 .LFE9
                        .debug_loc:000001f0 .LLST9
                        .debug_str:000005a9 .LASF139
@@ -2426,26 +2426,26 @@ C:\Users\willem\AppData\Local\Temp\cc1QydLZ.s:1597   P:00000b13 _KeyboardNumeric
                        .debug_str:00000575 .LASF141
                                 P:0000085c .LFE11
                        .debug_loc:00000262 .LLST11
-                       .debug_str:00000345 .LASF142
-                       .debug_str:000004cd .LASF143
+                       .debug_str:00000365 .LASF142
+                       .debug_str:000004ed .LASF143
                                 P:000005a7 .LBB2
                                 P:000007e9 .LBE2
-                       .debug_str:000002ad .LASF144
+                       .debug_str:000002cd .LASF144
                                 P:00000926 .LFE12
                        .debug_loc:0000029c .LLST12
-                       .debug_str:00000046 .LASF145
+                       .debug_str:00000066 .LASF145
                                 P:00000a77 .LFE13
                        .debug_loc:000002d6 .LLST13
                        .debug_str:00000643 .LASF146
                        .debug_str:0000053b .LASF147
                                 P:00000b13 .LFE14
                        .debug_loc:0000030e .LLST14
-                       .debug_str:000001f5 .LASF148
-                       .debug_str:0000037e .LASF149
+                       .debug_str:00000215 .LASF148
+                       .debug_str:0000039e .LASF149
                                 P:00000bd4 .LFE15
                        .debug_loc:00000347 .LLST15
-                       .debug_str:00000481 .LASF150
-                       .debug_str:0000006a .LASF151
+                       .debug_str:000004a1 .LASF150
+                       .debug_str:0000008a .LASF151
                       .debug_info:00000000 .Ldebug_info0
 
 UNDEFINED SYMBOLS

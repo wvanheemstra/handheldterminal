@@ -4,10 +4,10 @@ Baudrate=19200
 Parity=0
 ByteSize=8
 Stopbits=0
-IrdaDev=0
+IrdaDev=1
 [DOWNLOAD]
-RcvDir=C:\
-DownType=0
+RcvDir=C:\Users\willem\Downloads
+DownType=1
 [UPLOAD]
 FileCount=0
 [POLLTIMING]
