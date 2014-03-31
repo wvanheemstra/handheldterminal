@@ -1,0 +1,1444 @@
+Archive member included because of file (symbol)
+
+c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+                              obj/input.o (___ctype_ptr__)
+c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                              obj/demo.o (__impure_ptr)
+
+Allocating common symbols
+Common symbol       size              file
+
+lParity             0x4               obj/demo.o
+lBaudrate           0x4               obj/demo.o
+lBarcodes           0x4               obj/demo.o
+lDatabits           0x4               obj/demo.o
+lDrive              0x4               obj/demo.o
+lStopbits           0x4               obj/demo.o
+lProtocol           0x4               obj/demo.o
+lPort               0x4               obj/demo.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x04000000         0x00010000         xrw
+FLASH            0x06000000         0x003fffff         xr
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD obj/demo.o
+LOAD obj/database.o
+LOAD obj/input.o
+LOAD obj/menu.o
+LOAD obj/oph1005_pic.o
+LOAD obj/app_version.o
+LOAD startup.o
+LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libm.a
+LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02\libgcc.a
+START GROUP
+LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a
+LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libnosys.a
+END GROUP
+LOAD c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02\libgcc.a
+
+.version        0x06000000        0xc
+ *(.version)
+ .version       0x06000000        0xc obj/app_version.o
+                0x06000000                _app_version
+
+.checksum       0x06000010       0x26
+ *(APP_INFO)
+ APP_INFO       0x06000010       0x26 startup.o
+                0x06000036                __cs_end = .
+
+PROGRAM         0x06000036    0x27f32
+                0x06000036                __text = .
+ *(APP_START)
+ APP_START      0x06000036      0x8c3 startup.o
+                0x06000036                _Startup
+                0x0600007a                _GetShadowBuffer
+                0x0600007f                _autopowerdown
+                0x06000084                _backlight
+                0x06000089                _batteryvoltage
+                0x0600008e                _checktime
+                0x06000093                _checkdate
+                0x06000098                _comopen
+                0x0600009d                _comclose
+                0x060000a2                _coreleft
+                0x060000a7                _Heap_CoreLeft
+                0x060000ac                _cursor
+                0x060000b1                _delay
+                0x060000b6                _downloadapplication
+                0x060000bb                _downpressed
+                0x060000c0                _drawline
+                0x060000c5                _endtimer
+                0x060000ca                _findnext
+                0x060000cf                _findfirst
+                0x060000d4                _format2
+                0x060000d9                _fsize
+                0x060000de                _getcom
+                0x060000e3                _getdate
+                0x060000e8                _getfontsize
+                0x060000ed                _GetSystemTime
+                0x060000f2                _getterminalid
+                0x060000f7                _GetTickCount
+                0x060000fc                _gettime
+                0x06000101                _goodreadled
+                0x06000106                _gotoxy
+                0x0600010b                _idle
+                0x06000110                _isBuzzerOn
+                0x06000115                _ischarging
+                0x0600011a                _kbhit
+                0x0600011f                _loaddisplay
+                0x06000124                _neto_receive
+                0x06000129                _neto_receive2
+                0x0600012e                _neto_transmit
+                0x06000133                _neto_transmit2
+                0x06000138                _powereddown
+                0x0600013d                _printsymbol
+                0x06000142                _putcom
+                0x06000147                _readbarcode
+                0x0600014c                _resetkey
+                0x06000151                _resetreceive
+                0x06000156                _runapplfromfile
+                0x0600015b                _savedisplay
+                0x06000160                _scanneroff
+                0x06000165                _scannerpower
+                0x0600016a                _set_offset
+                0x0600016f                _SetAlarm
+                0x06000174                _setdate
+                0x06000179                _setfont
+                0x0600017e                _setpixel
+                0x06000183                _SetSystemTime
+                0x06000188                _setterminalid
+                0x0600018d                _SetTickCount
+                0x06000192                _settime
+                0x06000197                _showpicture
+                0x0600019c                _sound
+                0x060001a1                _starttimer
+                0x060001a6                _systemsetting
+                0x060001ab                _timervalue
+                0x060001b0                _triggerpressed
+                0x060001b5                _uppressed
+                0x060001ba                _wherex
+                0x060001bf                _wherey
+                0x060001c4                _xmodemreceive
+                0x060001c9                _xmodemtransmit
+                0x060001ce                _version_os
+                0x060001d3                _version_rom
+                0x060001d8                _GetOsVersion
+                0x060001dd                _GetBootVersion
+                0x060001e2                _GetFlashSize
+                0x060001e7                _eraseblock
+                0x060001ec                _erasesector
+                0x060001f1                _programbyte
+                0x060001f6                _programword
+                0x060001fb                _programbuffer
+                0x06000200                _DisableInts
+                0x06000205                _EnableInts
+                0x0600020a                _InstallHeartbeatHandler
+                0x0600020f                _RemoveHeartbeatHandler
+                0x06000214                _WaitKey
+                0x06000219                _setdatetime
+                0x0600021e                _getdatetime
+                0x06000223                _tell
+                0x06000228                _chsize
+                0x0600022d                _PutByte
+                0x06000232                _PutShort
+                0x06000237                _PutString
+                0x0600023c                _PutBuffer
+                0x06000241                _SoftReset
+                0x06000246                _GetBatteryVoltage_mV
+                0x0600024b                _SetTextColor
+                0x06000250                _SetBackColor
+                0x06000255                _secretstring
+                0x0600025a                _SetCursorColor
+                0x0600025f                _ShowBMP
+                0x06000264                _ShowJPG_File
+                0x06000269                _ShowJPG
+                0x0600026e                _BitBlt
+                0x06000273                _ShowGIF
+                0x06000278                _BackLightLvl
+                0x0600027d                _SetBackLightLvl
+                0x06000282                _SetAutoBacklight
+                0x06000287                _SetPrintCharFunction
+                0x0600028c                _PrintChar
+                0x06000296                _ScrollUp
+                0x0600029b                _FillScreen
+                0x060002a0                _DrawCircle
+                0x060002a5                _FillCircle
+                0x060002aa                _DrawEllipse
+                0x060002af                _FillEllipse
+                0x060002b4                _itoa
+                0x060002b9                _OseComm
+                0x060002be                _set_default_drive
+                0x060002c3                _GetImpurePtr
+                0x060002c8                _GetSerial
+                0x060002cd                _DelayMs
+                0x060002d2                _DelayUs
+                0x060002d7                ___srget_r
+                0x060002dc                ___swbuf_r
+                0x060002e1                ___srget
+                0x060002e6                ___swbuf
+                0x060002eb                _abs
+                0x060002f0                _access
+                0x060002f5                _argz_add
+                0x060002fa                _argz_add_sep
+                0x060002ff                _argz_append
+                0x06000304                _argz_count
+                0x06000309                _argz_create
+                0x0600030e                _argz_create_sep
+                0x06000313                _argz_delete
+                0x06000318                _argz_extract
+                0x0600031d                _argz_insert
+                0x06000322                _argz_next
+                0x06000327                _argz_replace
+                0x0600032c                _argz_stringify
+                0x06000331                _asctime
+                0x06000336                _asiprintf
+                0x0600033b                _asprintf
+                0x06000340                _atexit
+                0x06000345                _atof
+                0x0600034a                _atoff
+                0x0600034f                _atoi
+                0x06000354                _atol
+                0x06000359                _atoll
+                0x0600035e                _bcmp
+                0x06000363                _bcopy
+                0x06000368                _bsearch
+                0x0600036d                _btowc
+                0x06000372                _bzero
+                0x06000377                _calloc
+                0x0600037c                _cfree
+                0x06000381                _clearerr
+                0x06000386                ___errno
+                0x0600038b                _ctime
+                0x06000390                _difftime
+                0x06000395                _div
+                0x0600039a                _exit
+                0x0600039f                _fclose
+                0x060003a4                _fcloseall
+                0x060003a9                _fdopen
+                0x060003ae                _feof
+                0x060003b3                _ferror
+                0x060003b8                _fflush
+                0x060003bd                _ffs
+                0x060003c2                _fgetc
+                0x060003c7                _fgetpos
+                0x060003cc                _fgets
+                0x060003d1                _fileno
+                0x060003d6                _fiprintf
+                0x060003db                _fiscanf
+                0x060003e0                _fopen
+                0x060003e5                _fprintf
+                0x060003ea                _fputc
+                0x060003ef                _fputs
+                0x060003f4                _fread
+                0x060003f9                _freopen
+                0x060003fe                _fscanf
+                0x06000403                _fseek
+                0x06000408                _fseeko
+                0x0600040d                _fsetpos
+                0x06000412                _ftell
+                0x06000417                _ftello
+                0x0600041c                _fwrite
+                0x06000421                _getc
+                0x06000426                _getchar
+                0x0600042b                _getenv
+                0x06000430                _getopt
+                0x06000435                _gets
+                0x0600043a                _getsubopt
+                0x0600043f                _getw
+                0x06000444                _gmtime
+                0x06000449                _hcreate
+                0x0600044e                _hdestroy
+                0x06000453                _hsearch
+                0x06000458                _index
+                0x0600045d                _iprintf
+                0x06000462                _isalnum
+                0x06000467                _isalpha
+                0x0600046c                _isascii
+                0x06000471                _isblank
+                0x06000476                _iscanf
+                0x0600047b                _iscntrl
+                0x06000480                _isdigit
+                0x06000485                _islower
+                0x0600048a                _isgraph
+                0x0600048f                _isprint
+                0x06000494                _ispunct
+                0x06000499                _isspace
+                0x0600049e                _isupper
+                0x060004a3                _iswalnum
+                0x060004a8                _iswalpha
+                0x060004ad                _iswblank
+                0x060004b2                _iswcntrl
+                0x060004b7                _iswctype
+                0x060004bc                _iswdigit
+                0x060004c1                _iswgraph
+                0x060004c6                _iswlower
+                0x060004cb                _iswprint
+                0x060004d0                _iswpunct
+                0x060004d5                _iswspace
+                0x060004da                _iswupper
+                0x060004df                _iswxdigit
+                0x060004e4                _isxdigit
+                0x060004e9                _jrand48
+                0x060004ee                _l64a
+                0x060004f3                _labs
+                0x060004f8                _localtime
+                0x060004fd                _lcong48
+                0x06000502                _ldiv
+                0x06000507                _llabs
+                0x0600050c                _lldiv
+                0x06000511                _setlocale
+                0x06000516                _localeconv
+                0x0600051b                _memalign
+                0x06000520                _malloc
+                0x06000525                _free
+                0x0600052a                _mblen
+                0x0600052f                _mbrlen
+                0x06000534                _mbrtowc
+                0x06000539                _mbsinit
+                0x0600053e                _mbsrtowcs
+                0x06000543                _mbstowcs
+                0x06000548                _mbtowc
+                0x0600054d                _memccpy
+                0x06000552                _memchr
+                0x06000557                _memcmp
+                0x0600055c                _memcpy
+                0x06000561                _memmove
+                0x06000566                _mempcpy
+                0x0600056b                _memset
+                0x06000570                _mktime
+                0x06000575                _mrand48
+                0x0600057a                _malloc_usable_size
+                0x0600057f                _mallinfo
+                0x06000584                _malloc_stats
+                0x06000589                _mallopt
+                0x0600058e                _mstats
+                0x06000593                _malloc_trim
+                0x06000598                _nl_langinfo
+                0x0600059d                _nrand48
+                0x060005a2                _on_exit
+                0x060005a7                _perror
+                0x060005ac                _printf
+                0x060005b1                _putc
+                0x060005b6                _putc_unlocked
+                0x060005bb                _putchar
+                0x060005c0                _putchar_unlocked
+                0x060005c5                _putenv
+                0x060005ca                _puts
+                0x060005cf                _putw
+                0x060005d4                _qsort
+                0x060005d9                _srand
+                0x060005de                _rand
+                0x060005e3                _realloc
+                0x060005e8                _remove
+                0x060005ed                _rename
+                0x060005f2                _rewind
+                0x060005f7                _rindex
+                0x060005fc                _copysign
+                0x06000601                _finite
+                0x06000606                _frexp
+                0x0600060b                _isinf
+                0x06000610                _isnan
+                0x06000615                _ldexp
+                0x0600061a                _modf
+                0x0600061f                _scalbn
+                0x06000624                _scanf
+                0x06000629                _seed48
+                0x0600062e                _setbuf
+                0x06000633                _setbuffer
+                0x06000638                _setenv
+                0x0600063d                _unsetenv
+                0x06000642                _setjmp
+                0x06000647                _longjmp
+                0x0600064c                _setlinebuf
+                0x06000651                _setvbuf
+                0x06000656                _copysignf
+                0x0600065b                _finitef
+                0x06000660                _frexpf
+                0x06000665                _isinff
+                0x0600066a                _isnanf
+                0x0600066f                _ldexpf
+                0x06000674                _modff
+                0x06000679                _scalbnf
+                0x0600067e                _siprintf
+                0x06000683                _siscanf
+                0x06000688                _sniprintf
+                0x0600068d                _snprintf
+                0x06000692                _sprintf
+                0x06000697                _srand48
+                0x0600069c                _sscanf
+                0x060006a1                _strcasecmp
+                0x060006a6                _strcat
+                0x060006ab                _strchr
+                0x060006b0                _strcmp
+                0x060006b5                _strcoll
+                0x060006ba                _strcpy
+                0x060006bf                _strcspn
+                0x060006c4                _strdup
+                0x060006c9                _strerror
+                0x060006ce                _strftime
+                0x060006d3                _strlcat
+                0x060006d8                _strlcpy
+                0x060006dd                _strlen
+                0x060006e2                _strlwr
+                0x060006e7                _strncasecmp
+                0x060006ec                _strncat
+                0x060006f1                _strncmp
+                0x060006f6                _strncpy
+                0x060006fb                _strndup
+                0x06000700                _strnlen
+                0x06000705                _strpbrk
+                0x0600070a                _strptime
+                0x0600070f                _strrchr
+                0x06000714                _strsep
+                0x06000719                _strspn
+                0x0600071e                _strstr
+                0x06000723                _strtod
+                0x06000728                _strtof
+                0x0600072d                _strtok
+                0x06000732                _strtol
+                0x06000737                _strtoll
+                0x0600073c                _strtoul
+                0x06000741                _strtoull
+                0x06000746                _strupr
+                0x0600074b                _strxfrm
+                0x06000750                _swab
+                0x06000755                _isatty
+                0x0600075a                _close
+                0x0600075f                _fstat
+                0x06000764                _getpid
+                0x06000769                _gettimeofday
+                0x0600076e                _lseek
+                0x06000773                _open
+                0x06000778                _read
+                0x0600077d                _sbrk
+                0x06000782                _stat
+                0x06000787                _unlink
+                0x0600078c                _write
+                0x06000791                _tdelete
+                0x06000796                _tdestroy
+                0x0600079b                _tfind
+                0x060007a0                _time
+                0x060007a5                _tmpfile
+                0x060007aa                _tempnam
+                0x060007af                _tmpnam
+                0x060007b4                _toascii
+                0x060007b9                _tolower
+                0x060007be                _toupper
+                0x060007c3                _towctrans
+                0x060007c8                _towlower
+                0x060007cd                _towupper
+                0x060007d2                _tsearch
+                0x060007d7                _twalk
+                0x060007dc                _tzset
+                0x060007e1                _ungetc
+                0x060007e6                _valloc
+                0x060007eb                _pvalloc
+                0x060007f0                _vasiprintf
+                0x060007f5                _vasprintf
+                0x060007fa                _vfiprintf
+                0x060007ff                _vfiscanf
+                0x06000804                _vfprintf
+                0x06000809                _vfscanf
+                0x0600080e                _viprintf
+                0x06000813                _viscanf
+                0x06000818                _vprintf
+                0x0600081d                _vscanf
+                0x06000822                _vsiprintf
+                0x06000827                _vsiscanf
+                0x0600082c                _vsniprintf
+                0x06000831                _vsnprintf
+                0x06000836                _vsprintf
+                0x0600083b                _vsscanf
+                0x06000840                _wcrtomb
+                0x06000845                _wcscat
+                0x0600084a                _wcschr
+                0x0600084f                _wcscmp
+                0x06000854                _wcscoll
+                0x06000859                _wcscpy
+                0x0600085e                _wcscspn
+                0x06000863                _wcslcat
+                0x06000868                _wcslcpy
+                0x0600086d                _wcslen
+                0x06000872                _wcsncat
+                0x06000877                _wcsncmp
+                0x0600087c                _wcsncpy
+                0x06000881                _wcsnlen
+                0x06000886                _wcspbrk
+                0x0600088b                _wcsrchr
+                0x06000890                _wcsrtombs
+                0x06000895                _wcsspn
+                0x0600089a                _wcsstr
+                0x0600089f                _wcstombs
+                0x060008a4                _wcswidth
+                0x060008a9                _wctob
+                0x060008ae                _wctomb
+                0x060008b3                _wctrans
+                0x060008b8                _wctype
+                0x060008bd                _wcwidth
+                0x060008c2                _wmemchr
+                0x060008c7                _wmemcmp
+                0x060008cc                _wmemcpy
+                0x060008d1                _wmemmove
+                0x060008d6                _wmemset
+                0x060008db                _SetPowerOffDelay
+                0x060008e0                _GpsPower
+                0x060008e5                _GpsRead
+                0x060008ea                _InstallReceiveCallBack
+                0x060008ef                _StartUsecCounter
+                0x060008f4                _StopUsecCounter
+ *(.OS_HEADER)
+ *(.text)
+ *(.text.*)
+ *(P)
+ *fill*         0x060008f9        0x1 00
+ P              0x060008fa     0x148a obj/demo.o
+                0x060008fa                _set_stopbits
+                0x06000927                _set_databits
+                0x06000955                _set_parity
+                0x06000995                _set_baudrate
+                0x06000a0b                _set_barcodes
+                0x06000d63                _display_input_data
+                0x06000e05                _store_input_data
+                0x06000f5b                _string_wearer_to_long
+                0x06001007                _fill_record_struct
+                0x0600108e                _FindBarcodeInDatabase
+                0x06001110                _ScanLabels
+                0x06001354                _display_scroll_data
+                0x060013a7                _get_record
+                0x0600147b                _ScrollDatabase
+                0x0600161b                _SelectPort
+                0x0600164f                _SelectBaudrate
+                0x06001687                _SelectParity
+                0x060016b6                _SelectDatabits
+                0x060016e5                _SelectStopbits
+                0x06001714                _ComPortSettings
+                0x06001737                _SelectProtocol
+                0x06001762                _ChangeContrast
+                0x06001769                _SetBarcodes
+                0x0600179a                _AvailableMemory
+                0x060017f1                __SystemMenu
+                0x06001814                _DeleteDatabase
+                0x0600185c                _OnOseComInfo
+                0x06001896                _TransmitData
+                0x06001b53                _ShowVersion
+                0x06001bad                _ShowFonts
+                0x06001cf6                _main
+ P              0x06001d84     0x129a obj/database.o
+                0x06001d84                _GetDBErrorCode
+                0x06001dc2                _OpenDatabase
+                0x06001e8f                _CreateDatabase
+                0x06001f07                _CloseDatabase
+                0x06001f3f                _GetCurrentRecord
+                0x06001f87                _GetTotalRecords
+                0x06001fb9                _GotoRecord
+                0x06002003                _ReadCurrentRecord
+                0x0600208d                _ReadFirstRecord
+                0x060020c7                _ReadLastRecord
+                0x06002117                _ReadPreviousRecord
+                0x06002167                _ReadNextRecord
+                0x060021b7                _DeleteRecord
+                0x060022c3                _WriteRecord
+                0x060023cb                _InsertionSort
+                0x060026e1                _HeapSort
+                0x060028ad                _QuickSort
+                0x06002c23                _BinarySearch
+                0x06002cdf                _LineairSearch
+                0x06002d75                _CreateIndexFile
+                0x06002e9b                _OpenIndexFile
+                0x06002ec4                _SearchIndexFile
+                0x06002f81                _AddNewSearchkeyToIndex
+ P              0x0600301e      0xbd4 obj/input.o
+                0x0600305d                _WaitForKey
+                0x0600310f                _WaitForKeys
+                0x06003153                _ScanBarcodeSymbol
+                0x0600325b                _ScanBarcode
+                0x060034c3                _KeyboardInput
+                0x06003595                _ScanOrKeyboardInput
+                0x0600387a                _ScanOrKeyboardInputSymbol
+                0x06003b31                _KeyboardNumeric
+ P              0x06003bf2     0x14c4 obj/menu.o
+                0x06003f9b                _ShowTextMenu
+                0x06004501                _ShowTextSelectionMenu
+                0x06004648                _InitGraphMenu
+                0x0600465d                _GraphIncLayer
+                0x06004a13                _ShowGraphMenu
+                0x06004f39                _ShowGraphSelectionMenu
+ P              0x060050b6        0x0 obj/oph1005_pic.o
+ P              0x060050b6        0x0 obj/app_version.o
+ P              0x060050b6        0x0 startup.o
+ P              0x060050b6        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+ P              0x060050b6        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+ *(.rodata)
+ *(.rodata.*)
+ .rodata._ctype_
+                0x060050b6      0x101 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+                0x060050b6                __ctype_
+ *fill*         0x060051b7        0x1 00
+ .rodata._global_impure_ptr
+                0x060051b8        0x4 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                0x060051b8                __global_impure_ptr
+ .rodata.str1.1
+                0x060051bc        0x2 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+ *(C_1)
+ *(C_2)
+ *(C)
+ *fill*         0x060051be        0x2 00
+ C              0x060051c0     0x6b4c obj/demo.o
+                0x060051c0                __scan
+                0x060053c2                __scroll
+                0x060055c4                __tools
+                0x060057c6                __trash
+                0x060059c8                __transmit
+                0x06005bca                __version
+                0x06005dcc                __comp
+                0x06005fce                __protocol
+                0x060061d0                __display
+                0x060063d2                __barcode
+                0x060065d4                __memory
+                0x060067d6                __flash
+                0x060069d8                __stop
+                0x06006bda                __parity
+                0x06006ddc                __databits
+                0x06006fde                __drive
+                0x060071e0                __comport
+                0x060073e2                __fonts
+                0x060075e4                __vga_15_32
+                0x0600b1e8                _logo_pix
+ C              0x0600bd0c       0x18 obj/input.o
+ C              0x0600bd24       0x80 obj/menu.o
+ C              0x0600bda4    0x1c1c4 obj/oph1005_pic.o
+                0x0600bda4                __barcode_pic
+                0x0600e93d                __folder_fonts_pic
+                0x06010b7e                __info_pic
+                0x060125fa                __open_file_pic
+                0x06013cf9                __recycle_pic
+                0x06016827                __setting_pic
+                0x06017e83                __wireless_pic
+                0x06019cc3                __exit_pic
+                0x0601b37c                __com_port_pic
+                0x0601c43e                __memory_pic
+                0x0601dcad                __protocol_pic
+                0x0601f174                __checked
+                0x06020d48                __uncheck
+                0x060225f5                __data_bits_pic
+                0x060237f7                __stop_bits_pic
+                0x06024af3                __parity_pic
+                0x06025d5b                __baudrate_pic
+                0x06027f68                __etext = .
+                0x06027f68                . = ALIGN (0x4)
+
+.data           0x04000000      0x42c load address 0x06027f68
+                0x04000000                __data = .
+ *(.data)
+ *(.data.*)
+ .data.__ctype_ptr__
+                0x04000000        0x4 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+                0x04000000                ___ctype_ptr__
+ .data._impure_ptr
+                0x04000004        0x4 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                0x04000004                __impure_ptr
+ .data.impure_data
+                0x04000008      0x424 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+ *(D)
+ *(D_1)
+ D_1            0x0400042c        0x0 obj/demo.o
+ D_1            0x0400042c        0x0 obj/database.o
+ D_1            0x0400042c        0x0 obj/input.o
+ D_1            0x0400042c        0x0 obj/menu.o
+ D_1            0x0400042c        0x0 obj/oph1005_pic.o
+ D_1            0x0400042c        0x0 obj/app_version.o
+ D_1            0x0400042c        0x0 startup.o
+ D_1            0x0400042c        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+ D_1            0x0400042c        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+ *(D_2)
+                0x0400042c                __edata = .
+
+.bss            0x0400042c      0x250 load address 0x06028394
+                0x0400042c                __bss = .
+ *(.bss)
+ *(.bss.*)
+ *(COMMON)
+ COMMON         0x0400042c       0x20 obj/demo.o
+                0x0400042c                _lParity
+                0x04000430                _lBaudrate
+                0x04000434                _lBarcodes
+                0x04000438                _lDatabits
+                0x0400043c                _lDrive
+                0x04000440                _lStopbits
+                0x04000444                _lProtocol
+                0x04000448                _lPort
+ *(B)
+ *(B_1)
+ B_1            0x0400044c      0x18c obj/demo.o
+ B_1            0x040005d8        0x8 obj/database.o
+ B_1            0x040005e0       0x33 obj/input.o
+ *fill*         0x04000613        0x1 00
+ B_1            0x04000614       0x68 obj/menu.o
+ B_1            0x0400067c        0x0 obj/oph1005_pic.o
+ B_1            0x0400067c        0x0 obj/app_version.o
+ B_1            0x0400067c        0x0 startup.o
+ B_1            0x0400067c        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+ B_1            0x0400067c        0x0 c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+ *(B_2)
+                0x0400067c                __ebss = .
+OUTPUT(XFP3092E.elf elf32-rx-le)
+
+.debug_frame    0x00000000      0xf14
+ .debug_frame   0x00000000      0x4fc obj/demo.o
+ .debug_frame   0x000004fc      0x3dc obj/database.o
+ .debug_frame   0x000008d8      0x27c obj/input.o
+ .debug_frame   0x00000b54      0x3c0 obj/menu.o
+
+.debug_info     0x00000000     0x49b0
+ .debug_info    0x00000000     0x176e obj/demo.o
+ .debug_info    0x0000176e      0xb26 obj/database.o
+ .debug_info    0x00002294     0x1079 obj/input.o
+ .debug_info    0x0000330d     0x130e obj/menu.o
+ .debug_info    0x0000461b      0x2e4 obj/oph1005_pic.o
+ .debug_info    0x000048ff       0x53 obj/app_version.o
+ .debug_info    0x00004952       0x5e startup.o
+
+.debug_abbrev   0x00000000      0x9f8
+ .debug_abbrev  0x00000000      0x26a obj/demo.o
+ .debug_abbrev  0x0000026a      0x179 obj/database.o
+ .debug_abbrev  0x000003e3      0x29e obj/input.o
+ .debug_abbrev  0x00000681      0x2c8 obj/menu.o
+ .debug_abbrev  0x00000949       0x56 obj/oph1005_pic.o
+ .debug_abbrev  0x0000099f       0x45 obj/app_version.o
+ .debug_abbrev  0x000009e4       0x14 startup.o
+
+.debug_loc      0x00000000     0x1648
+ .debug_loc     0x00000000      0x775 obj/demo.o
+ .debug_loc     0x00000775      0x5ec obj/database.o
+ .debug_loc     0x00000d61      0x381 obj/input.o
+ .debug_loc     0x000010e2      0x566 obj/menu.o
+
+.debug_aranges  0x00000000       0xd0
+ .debug_aranges
+                0x00000000       0x20 obj/demo.o
+ .debug_aranges
+                0x00000020       0x20 obj/database.o
+ .debug_aranges
+                0x00000040       0x20 obj/input.o
+ .debug_aranges
+                0x00000060       0x20 obj/menu.o
+ .debug_aranges
+                0x00000080       0x18 obj/oph1005_pic.o
+ .debug_aranges
+                0x00000098       0x18 obj/app_version.o
+ .debug_aranges
+                0x000000b0       0x20 startup.o
+
+.debug_line     0x00000000     0x1282
+ .debug_line    0x00000000      0x449 obj/demo.o
+ .debug_line    0x00000449      0x32b obj/database.o
+ .debug_line    0x00000774      0x3e0 obj/input.o
+ .debug_line    0x00000b54      0x4c2 obj/menu.o
+ .debug_line    0x00001016       0x36 obj/oph1005_pic.o
+ .debug_line    0x0000104c       0x36 obj/app_version.o
+ .debug_line    0x00001082      0x200 startup.o
+
+.debug_str      0x00000000     0x1095
+ .debug_str     0x00000000      0x964 obj/demo.o
+                                0xa39 (size before relaxing)
+ .debug_str     0x00000964      0x26e obj/database.o
+                                0x39b (size before relaxing)
+ .debug_str     0x00000bd2      0x1a4 obj/input.o
+                                0x664 (size before relaxing)
+ .debug_str     0x00000d76      0x2e7 obj/menu.o
+                                0x7c7 (size before relaxing)
+ .debug_str     0x0000105d       0x16 obj/oph1005_pic.o
+                                0x153 (size before relaxing)
+ .debug_str     0x00001073       0x22 obj/app_version.o
+                                 0x67 (size before relaxing)
+
+.comment        0x00000000       0x1c
+ .comment       0x00000000       0x1c obj/demo.o
+                                 0x1d (size before relaxing)
+ .comment       0x00000000       0x1d obj/database.o
+ .comment       0x00000000       0x1d obj/input.o
+ .comment       0x00000000       0x1d obj/menu.o
+ .comment       0x00000000       0x1d obj/oph1005_pic.o
+ .comment       0x00000000       0x1d obj/app_version.o
+ .comment       0x00000000       0x1d c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+ .comment       0x00000000       0x1d c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+
+Cross Reference Table
+
+Symbol                                            File
+AddNewSearchkeyToIndex                            obj/database.o
+AvailableMemory                                   obj/demo.o
+BackLightLvl                                      startup.o
+BinarySearch                                      obj/database.o
+                                                  obj/demo.o
+BitBlt                                            startup.o
+ChangeContrast                                    obj/demo.o
+CloseDatabase                                     obj/database.o
+                                                  obj/demo.o
+ComPortSettings                                   obj/demo.o
+CreateDatabase                                    obj/database.o
+                                                  obj/demo.o
+CreateIndexFile                                   obj/database.o
+DelayMs                                           startup.o
+DelayUs                                           startup.o
+DeleteDatabase                                    obj/demo.o
+DeleteRecord                                      obj/database.o
+DisableInts                                       startup.o
+DrawCircle                                        startup.o
+DrawEllipse                                       startup.o
+EnableInts                                        startup.o
+FillCircle                                        startup.o
+FillEllipse                                       startup.o
+FillScreen                                        startup.o
+FindBarcodeInDatabase                             obj/demo.o
+GetBatteryVoltage_mV                              startup.o
+GetBootVersion                                    startup.o
+GetCurrentRecord                                  obj/database.o
+GetDBErrorCode                                    obj/database.o
+                                                  obj/demo.o
+GetFlashSize                                      startup.o
+GetImpurePtr                                      startup.o
+GetOsVersion                                      startup.o
+GetSerial                                         startup.o
+GetShadowBuffer                                   startup.o
+GetSystemTime                                     startup.o
+GetTickCount                                      startup.o
+GetTotalRecords                                   obj/database.o
+                                                  obj/demo.o
+GotoRecord                                        obj/database.o
+                                                  obj/demo.o
+GpsPower                                          startup.o
+GpsRead                                           startup.o
+GraphIncLayer                                     obj/menu.o
+HeapSort                                          obj/database.o
+Heap_CoreLeft                                     startup.o
+InitGraphMenu                                     obj/menu.o
+                                                  obj/demo.o
+InsertionSort                                     obj/database.o
+InstallHeartbeatHandler                           startup.o
+InstallReceiveCallBack                            startup.o
+KeyboardInput                                     obj/input.o
+                                                  obj/demo.o
+KeyboardNumeric                                   obj/input.o
+LineairSearch                                     obj/database.o
+OnOseComInfo                                      obj/demo.o
+OpenDatabase                                      obj/database.o
+                                                  obj/demo.o
+OpenIndexFile                                     obj/database.o
+OseComm                                           startup.o
+                                                  obj/demo.o
+PrintChar                                         startup.o
+PutBuffer                                         startup.o
+PutByte                                           startup.o
+PutShort                                          startup.o
+PutString                                         startup.o
+QuickSort                                         obj/database.o
+                                                  obj/demo.o
+ReadCurrentRecord                                 obj/database.o
+                                                  obj/demo.o
+ReadFirstRecord                                   obj/database.o
+                                                  obj/demo.o
+ReadLastRecord                                    obj/database.o
+ReadNextRecord                                    obj/database.o
+                                                  obj/demo.o
+ReadPreviousRecord                                obj/database.o
+RemoveHeartbeatHandler                            startup.o
+ScanBarcode                                       obj/input.o
+ScanBarcodeSymbol                                 obj/input.o
+ScanLabels                                        obj/demo.o
+ScanOrKeyboardInput                               obj/input.o
+                                                  obj/demo.o
+ScanOrKeyboardInputSymbol                         obj/input.o
+ScrollDatabase                                    obj/demo.o
+ScrollUp                                          startup.o
+SearchIndexFile                                   obj/database.o
+SelectBaudrate                                    obj/demo.o
+SelectDatabits                                    obj/demo.o
+SelectParity                                      obj/demo.o
+SelectPort                                        obj/demo.o
+SelectProtocol                                    obj/demo.o
+SelectStopbits                                    obj/demo.o
+SetAlarm                                          startup.o
+SetAutoBacklight                                  startup.o
+SetBackColor                                      startup.o
+SetBackLightLvl                                   startup.o
+SetBarcodes                                       obj/demo.o
+SetCursorColor                                    startup.o
+SetPowerOffDelay                                  startup.o
+SetPrintCharFunction                              startup.o
+SetSystemTime                                     startup.o
+SetTextColor                                      startup.o
+                                                  obj/demo.o
+SetTickCount                                      startup.o
+ShowBMP                                           startup.o
+ShowFonts                                         obj/demo.o
+ShowGIF                                           startup.o
+ShowGraphMenu                                     obj/menu.o
+                                                  obj/demo.o
+ShowGraphSelectionMenu                            obj/menu.o
+                                                  obj/demo.o
+ShowJPG                                           startup.o
+                                                  obj/menu.o
+ShowJPG_File                                      startup.o
+ShowTextMenu                                      obj/menu.o
+ShowTextSelectionMenu                             obj/menu.o
+ShowVersion                                       obj/demo.o
+SoftReset                                         startup.o
+StartUsecCounter                                  startup.o
+Startup                                           startup.o
+StopUsecCounter                                   startup.o
+TransmitData                                      obj/demo.o
+WaitForKey                                        obj/input.o
+                                                  obj/menu.o
+                                                  obj/demo.o
+WaitForKeys                                       obj/input.o
+                                                  obj/demo.o
+WaitKey                                           startup.o
+WriteRecord                                       obj/database.o
+                                                  obj/demo.o
+_SystemMenu                                       obj/demo.o
+__ctype_ptr__                                     c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+                                                  obj/input.o
+__errno                                           startup.o
+__srget                                           startup.o
+__srget_r                                         startup.o
+                                                  obj/input.o
+__swbuf                                           startup.o
+__swbuf_r                                         startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+                                                  obj/demo.o
+_barcode                                          obj/demo.o
+_barcode_pic                                      obj/oph1005_pic.o
+                                                  obj/demo.o
+_baudrate_pic                                     obj/oph1005_pic.o
+                                                  obj/demo.o
+_bss                                              startup.o
+_checked                                          obj/oph1005_pic.o
+                                                  obj/menu.o
+_com_port_pic                                     obj/oph1005_pic.o
+                                                  obj/demo.o
+_comp                                             obj/demo.o
+_comport                                          obj/demo.o
+_ctype_                                           c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-ctype_.o)
+_data                                             startup.o
+_data_bits_pic                                    obj/oph1005_pic.o
+                                                  obj/demo.o
+_databits                                         obj/demo.o
+_display                                          obj/demo.o
+_drive                                            obj/demo.o
+_ebss                                             startup.o
+_edata                                            startup.o
+_etext                                            startup.o
+_exit_pic                                         obj/oph1005_pic.o
+                                                  obj/menu.o
+_flash                                            obj/demo.o
+_folder_fonts_pic                                 obj/oph1005_pic.o
+                                                  obj/demo.o
+_fonts                                            obj/demo.o
+_global_impure_ptr                                c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+_impure_ptr                                       c:/rx_compiler/bin/../lib/gcc/rx-elf/4.7-GNURX_v12.02/../../../../rx-elf/lib\libc.a(lib_a-impure.o)
+                                                  startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+                                                  obj/demo.o
+_info_pic                                         obj/oph1005_pic.o
+                                                  obj/demo.o
+_memory                                           obj/demo.o
+_memory_pic                                       obj/oph1005_pic.o
+                                                  obj/demo.o
+_open_file_pic                                    obj/oph1005_pic.o
+                                                  obj/demo.o
+_parity                                           obj/demo.o
+_parity_pic                                       obj/oph1005_pic.o
+                                                  obj/demo.o
+_protocol                                         obj/demo.o
+_protocol_pic                                     obj/oph1005_pic.o
+                                                  obj/demo.o
+_recycle_pic                                      obj/oph1005_pic.o
+                                                  obj/demo.o
+_scan                                             obj/demo.o
+_scroll                                           obj/demo.o
+_setting_pic                                      obj/oph1005_pic.o
+                                                  obj/demo.o
+_stop                                             obj/demo.o
+_stop_bits_pic                                    obj/oph1005_pic.o
+                                                  obj/demo.o
+_text                                             startup.o
+_tools                                            obj/demo.o
+_transmit                                         obj/demo.o
+_trash                                            obj/demo.o
+_uncheck                                          obj/oph1005_pic.o
+                                                  obj/menu.o
+_version                                          obj/demo.o
+_vga_15_32                                        obj/demo.o
+                                                  obj/menu.o
+_wireless_pic                                     obj/oph1005_pic.o
+                                                  obj/demo.o
+abs                                               startup.o
+access                                            startup.o
+app_version                                       obj/app_version.o
+argz_add                                          startup.o
+argz_add_sep                                      startup.o
+argz_append                                       startup.o
+argz_count                                        startup.o
+argz_create                                       startup.o
+argz_create_sep                                   startup.o
+argz_delete                                       startup.o
+argz_extract                                      startup.o
+argz_insert                                       startup.o
+argz_next                                         startup.o
+argz_replace                                      startup.o
+argz_stringify                                    startup.o
+asctime                                           startup.o
+asiprintf                                         startup.o
+asprintf                                          startup.o
+atexit                                            startup.o
+atof                                              startup.o
+atoff                                             startup.o
+atoi                                              startup.o
+atol                                              startup.o
+                                                  obj/demo.o
+atoll                                             startup.o
+autopowerdown                                     startup.o
+backlight                                         startup.o
+batteryvoltage                                    startup.o
+bcmp                                              startup.o
+bcopy                                             startup.o
+bsearch                                           startup.o
+btowc                                             startup.o
+bzero                                             startup.o
+calloc                                            startup.o
+cfree                                             startup.o
+checkdate                                         startup.o
+checktime                                         startup.o
+chsize                                            startup.o
+                                                  obj/database.o
+clearerr                                          startup.o
+close                                             startup.o
+                                                  obj/database.o
+comclose                                          startup.o
+                                                  obj/demo.o
+comopen                                           startup.o
+                                                  obj/demo.o
+copysign                                          startup.o
+copysignf                                         startup.o
+coreleft                                          startup.o
+                                                  obj/demo.o
+ctime                                             startup.o
+cursor                                            startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+                                                  obj/demo.o
+delay                                             startup.o
+                                                  obj/demo.o
+difftime                                          startup.o
+display_input_data                                obj/demo.o
+display_scroll_data                               obj/demo.o
+div                                               startup.o
+downloadapplication                               startup.o
+downpressed                                       startup.o
+drawline                                          startup.o
+endtimer                                          startup.o
+eraseblock                                        startup.o
+erasesector                                       startup.o
+exit                                              startup.o
+fclose                                            startup.o
+fcloseall                                         startup.o
+fdopen                                            startup.o
+feof                                              startup.o
+ferror                                            startup.o
+fflush                                            startup.o
+ffs                                               startup.o
+fgetc                                             startup.o
+fgetpos                                           startup.o
+fgets                                             startup.o
+fileno                                            startup.o
+fill_record_struct                                obj/demo.o
+findfirst                                         startup.o
+findnext                                          startup.o
+finite                                            startup.o
+finitef                                           startup.o
+fiprintf                                          startup.o
+fiscanf                                           startup.o
+fopen                                             startup.o
+format2                                           startup.o
+fprintf                                           startup.o
+fputc                                             startup.o
+fputs                                             startup.o
+fread                                             startup.o
+free                                              startup.o
+                                                  obj/database.o
+freopen                                           startup.o
+frexp                                             startup.o
+frexpf                                            startup.o
+fscanf                                            startup.o
+fseek                                             startup.o
+fseeko                                            startup.o
+fsetpos                                           startup.o
+fsize                                             startup.o
+                                                  obj/database.o
+                                                  obj/demo.o
+fstat                                             startup.o
+ftell                                             startup.o
+ftello                                            startup.o
+fwrite                                            startup.o
+get_record                                        obj/demo.o
+getc                                              startup.o
+getchar                                           startup.o
+getcom                                            startup.o
+getdate                                           startup.o
+                                                  obj/demo.o
+getdatetime                                       startup.o
+getenv                                            startup.o
+getfontsize                                       startup.o
+                                                  obj/menu.o
+                                                  obj/demo.o
+getopt                                            startup.o
+getpid                                            startup.o
+gets                                              startup.o
+getsubopt                                         startup.o
+getterminalid                                     startup.o
+gettime                                           startup.o
+                                                  obj/demo.o
+gettimeofday                                      startup.o
+getw                                              startup.o
+gmtime                                            startup.o
+goodreadled                                       startup.o
+                                                  obj/input.o
+gotoxy                                            startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+                                                  obj/demo.o
+hcreate                                           startup.o
+hdestroy                                          startup.o
+hsearch                                           startup.o
+idle                                              startup.o
+                                                  obj/input.o
+index                                             startup.o
+iprintf                                           startup.o
+isBuzzerOn                                        startup.o
+isalnum                                           startup.o
+isalpha                                           startup.o
+isascii                                           startup.o
+isatty                                            startup.o
+isblank                                           startup.o
+iscanf                                            startup.o
+ischarging                                        startup.o
+iscntrl                                           startup.o
+isdigit                                           startup.o
+isgraph                                           startup.o
+isinf                                             startup.o
+isinff                                            startup.o
+islower                                           startup.o
+isnan                                             startup.o
+isnanf                                            startup.o
+isprint                                           startup.o
+ispunct                                           startup.o
+isspace                                           startup.o
+isupper                                           startup.o
+iswalnum                                          startup.o
+iswalpha                                          startup.o
+iswblank                                          startup.o
+iswcntrl                                          startup.o
+iswctype                                          startup.o
+iswdigit                                          startup.o
+iswgraph                                          startup.o
+iswlower                                          startup.o
+iswprint                                          startup.o
+iswpunct                                          startup.o
+iswspace                                          startup.o
+iswupper                                          startup.o
+iswxdigit                                         startup.o
+isxdigit                                          startup.o
+itoa                                              startup.o
+jrand48                                           startup.o
+kbhit                                             startup.o
+                                                  obj/input.o
+l64a                                              startup.o
+lBarcodes                                         obj/demo.o
+lBaudrate                                         obj/demo.o
+lDatabits                                         obj/demo.o
+lDrive                                            obj/demo.o
+lParity                                           obj/demo.o
+lPort                                             obj/demo.o
+lProtocol                                         obj/demo.o
+lStopbits                                         obj/demo.o
+labs                                              startup.o
+lcong48                                           startup.o
+ldexp                                             startup.o
+ldexpf                                            startup.o
+ldiv                                              startup.o
+llabs                                             startup.o
+lldiv                                             startup.o
+loaddisplay                                       startup.o
+localeconv                                        startup.o
+localtime                                         startup.o
+logo_pix                                          obj/demo.o
+longjmp                                           startup.o
+lseek                                             startup.o
+                                                  obj/database.o
+main                                              obj/demo.o
+                                                  startup.o
+mallinfo                                          startup.o
+malloc                                            startup.o
+                                                  obj/database.o
+malloc_stats                                      startup.o
+malloc_trim                                       startup.o
+malloc_usable_size                                startup.o
+mallopt                                           startup.o
+mblen                                             startup.o
+mbrlen                                            startup.o
+mbrtowc                                           startup.o
+mbsinit                                           startup.o
+mbsrtowcs                                         startup.o
+mbstowcs                                          startup.o
+mbtowc                                            startup.o
+memalign                                          startup.o
+memccpy                                           startup.o
+memchr                                            startup.o
+memcmp                                            startup.o
+                                                  obj/database.o
+memcpy                                            startup.o
+                                                  obj/database.o
+                                                  obj/demo.o
+memmove                                           startup.o
+                                                  obj/database.o
+mempcpy                                           startup.o
+memset                                            startup.o
+                                                  obj/menu.o
+                                                  obj/demo.o
+mktime                                            startup.o
+modf                                              startup.o
+modff                                             startup.o
+mrand48                                           startup.o
+mstats                                            startup.o
+neto_receive                                      startup.o
+neto_receive2                                     startup.o
+neto_transmit                                     startup.o
+                                                  obj/demo.o
+neto_transmit2                                    startup.o
+nl_langinfo                                       startup.o
+nrand48                                           startup.o
+on_exit                                           startup.o
+open                                              startup.o
+                                                  obj/database.o
+perror                                            startup.o
+powereddown                                       startup.o
+printf                                            startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+                                                  obj/demo.o
+printsymbol                                       startup.o
+programbuffer                                     startup.o
+programbyte                                       startup.o
+programword                                       startup.o
+putc                                              startup.o
+putc_unlocked                                     startup.o
+putchar                                           startup.o
+                                                  obj/menu.o
+putchar_unlocked                                  startup.o
+putcom                                            startup.o
+                                                  obj/demo.o
+putenv                                            startup.o
+puts                                              startup.o
+                                                  obj/demo.o
+putw                                              startup.o
+pvalloc                                           startup.o
+qsort                                             startup.o
+rand                                              startup.o
+read                                              startup.o
+                                                  obj/database.o
+readbarcode                                       startup.o
+                                                  obj/input.o
+realloc                                           startup.o
+remove                                            startup.o
+                                                  obj/database.o
+                                                  obj/demo.o
+rename                                            startup.o
+resetkey                                          startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+resetreceive                                      startup.o
+rewind                                            startup.o
+rindex                                            startup.o
+runapplfromfile                                   startup.o
+savedisplay                                       startup.o
+sbrk                                              startup.o
+scalbn                                            startup.o
+scalbnf                                           startup.o
+scanf                                             startup.o
+scanneroff                                        startup.o
+scannerpower                                      startup.o
+                                                  obj/input.o
+secretstring                                      startup.o
+seed48                                            startup.o
+set_barcodes                                      obj/demo.o
+set_baudrate                                      obj/demo.o
+set_databits                                      obj/demo.o
+set_default_drive                                 startup.o
+set_offset                                        startup.o
+set_parity                                        obj/demo.o
+set_stopbits                                      obj/demo.o
+setbuf                                            startup.o
+setbuffer                                         startup.o
+setdate                                           startup.o
+setdatetime                                       startup.o
+setenv                                            startup.o
+setfont                                           startup.o
+                                                  obj/menu.o
+                                                  obj/demo.o
+setjmp                                            startup.o
+setlinebuf                                        startup.o
+setlocale                                         startup.o
+setpixel                                          startup.o
+setterminalid                                     startup.o
+settime                                           startup.o
+setvbuf                                           startup.o
+showpicture                                       startup.o
+siprintf                                          startup.o
+siscanf                                           startup.o
+sniprintf                                         startup.o
+snprintf                                          startup.o
+sound                                             startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+sprintf                                           startup.o
+                                                  obj/menu.o
+                                                  obj/demo.o
+srand                                             startup.o
+srand48                                           startup.o
+sscanf                                            startup.o
+starttimer                                        startup.o
+stat                                              startup.o
+store_input_data                                  obj/demo.o
+strcasecmp                                        startup.o
+strcat                                            startup.o
+strchr                                            startup.o
+                                                  obj/input.o
+strcmp                                            startup.o
+strcoll                                           startup.o
+strcpy                                            startup.o
+                                                  obj/input.o
+strcspn                                           startup.o
+strdup                                            startup.o
+strerror                                          startup.o
+strftime                                          startup.o
+string_wearer_to_long                             obj/demo.o
+strlcat                                           startup.o
+strlcpy                                           startup.o
+strlen                                            startup.o
+                                                  obj/menu.o
+                                                  obj/input.o
+strlwr                                            startup.o
+strncasecmp                                       startup.o
+strncat                                           startup.o
+strncmp                                           startup.o
+strncpy                                           startup.o
+                                                  obj/demo.o
+strndup                                           startup.o
+strnlen                                           startup.o
+strpbrk                                           startup.o
+strptime                                          startup.o
+strrchr                                           startup.o
+                                                  obj/menu.o
+strsep                                            startup.o
+strspn                                            startup.o
+strstr                                            startup.o
+strtod                                            startup.o
+strtof                                            startup.o
+strtok                                            startup.o
+strtol                                            startup.o
+strtoll                                           startup.o
+strtoul                                           startup.o
+strtoull                                          startup.o
+strupr                                            startup.o
+strxfrm                                           startup.o
+swab                                              startup.o
+systemsetting                                     startup.o
+                                                  obj/demo.o
+tdelete                                           startup.o
+tdestroy                                          startup.o
+tell                                              startup.o
+tempnam                                           startup.o
+tfind                                             startup.o
+time                                              startup.o
+timervalue                                        startup.o
+tmpfile                                           startup.o
+tmpnam                                            startup.o
+toascii                                           startup.o
+tolower                                           startup.o
+toupper                                           startup.o
+towctrans                                         startup.o
+towlower                                          startup.o
+towupper                                          startup.o
+triggerpressed                                    startup.o
+tsearch                                           startup.o
+twalk                                             startup.o
+tzset                                             startup.o
+ungetc                                            startup.o
+                                                  obj/input.o
+unlink                                            startup.o
+unsetenv                                          startup.o
+uppressed                                         startup.o
+valloc                                            startup.o
+vasiprintf                                        startup.o
+vasprintf                                         startup.o
+version_os                                        startup.o
+                                                  obj/demo.o
+version_rom                                       startup.o
+vfiprintf                                         startup.o
+vfiscanf                                          startup.o
+vfprintf                                          startup.o
+vfscanf                                           startup.o
+viprintf                                          startup.o
+viscanf                                           startup.o
+vprintf                                           startup.o
+vscanf                                            startup.o
+vsiprintf                                         startup.o
+vsiscanf                                          startup.o
+vsniprintf                                        startup.o
+vsnprintf                                         startup.o
+vsprintf                                          startup.o
+vsscanf                                           startup.o
+wcrtomb                                           startup.o
+wcscat                                            startup.o
+wcschr                                            startup.o
+wcscmp                                            startup.o
+wcscoll                                           startup.o
+wcscpy                                            startup.o
+wcscspn                                           startup.o
+wcslcat                                           startup.o
+wcslcpy                                           startup.o
+wcslen                                            startup.o
+wcsncat                                           startup.o
+wcsncmp                                           startup.o
+wcsncpy                                           startup.o
+wcsnlen                                           startup.o
+wcspbrk                                           startup.o
+wcsrchr                                           startup.o
+wcsrtombs                                         startup.o
+wcsspn                                            startup.o
+wcsstr                                            startup.o
+wcstombs                                          startup.o
+wcswidth                                          startup.o
+wctob                                             startup.o
+wctomb                                            startup.o
+wctrans                                           startup.o
+wctype                                            startup.o
+wcwidth                                           startup.o
+wherex                                            startup.o
+wherey                                            startup.o
+wmemchr                                           startup.o
+wmemcmp                                           startup.o
+wmemcpy                                           startup.o
+wmemmove                                          startup.o
+wmemset                                           startup.o
+write                                             startup.o
+                                                  obj/database.o
+xmodemreceive                                     startup.o
+xmodemtransmit                                    startup.o

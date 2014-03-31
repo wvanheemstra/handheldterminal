@@ -1,0 +1,32 @@
+_____________________ Making the Load File _____________
+
+From a command prompt type:
+
+m <name of the program, e.g. myprogram>
+
+When running this for the demo program, just type:
+
+m 
+
+This will run the m.bat file, which will run the make.exe command, which will create the program, using the sources in the sources folder etc.
+
+To clean up the directory type:
+
+m clean
+
+_______________________ Load File ___________
+
+As a result of the make command (with m.bat), a new file is created with a .hex extension (e.g. XFP3092F.hex). This is the so-called Load File. This file needs to be uploaded to the bar code scanner with the program called Appload.exe
+
+Start the program Appload.exe (C:\Program Files (x86)\Appload\appload.exe).
+From the 'File' menu choose 'Download. A window will open to browse for the Opticon firmware file to download to the handheld terminal. Fro example, choose a demo firmware application file called XFP3092E.hex. A progress indicator will show as well as a notification on the handheld Terminal stating 'Load software'. Once the loading has completed, a pop-up window on the computer will state 'Download successfully completed'.
+
+Choose the menu 'Version' on the handheld Terminal to verify if the firmware application has been successfully installed (e.g. Software Version # XFM3092E). 
+
+
+
+  
+
+
+
+
